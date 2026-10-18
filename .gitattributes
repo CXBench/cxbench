@@ -1,0 +1,2 @@
+# Raw downloaded legal source snapshots keep upstream whitespace.
+data/raw/lii/pages/*.html -whitespace

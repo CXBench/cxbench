@@ -1,0 +1,20 @@
+{
+  "bytes": 131616,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:44:10.895697+00:00",
+  "final_url": "https://www.law.cornell.edu/uscode/text/15/1681m",
+  "id": "uscode__text__15__1681m__ac4ae6b4e6",
+  "kind": "uscode",
+  "references": [
+    "docs/cite-snapshots/usc-15-1681m-a.txt",
+    "tasks/banking/CX-04.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:44:09 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "328c82a65f0c1484276bdcc5f8ef2e0175a70a94491a87aa4a01abe456c03f06",
+  "source": "cornell_lii",
+  "source_last_modified": "Thu, 23 Apr 2026 19:51:21 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/uscode/text/15/1681m",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

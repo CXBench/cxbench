@@ -1,0 +1,35 @@
+name: Offline checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+      - run: uv sync --frozen
+      - run: uv run --frozen ruff check .
+      - run: uv run --frozen ruff format --check .
+      - run: uv run --frozen pytest -q
+      - run: ./run.sh --dry-run
+      - run: ./run.sh --smoke-test --dry-run
+      - run: uv build
+      - name: Check installed wheel outside the checkout
+        run: |
+          uv venv "$RUNNER_TEMP/cxbench-wheel"
+          uv pip install --python "$RUNNER_TEMP/cxbench-wheel/bin/python" dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/cxbench-wheel/bin/cxbench" --help
+          "$RUNNER_TEMP/cxbench-wheel/bin/python" -c 'from cxbench.domain_policy import validate_domain_policy_index; assert not validate_domain_policy_index()'

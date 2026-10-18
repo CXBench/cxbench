@@ -1,0 +1,12 @@
+# LLM generation with the Codex CLI. Paths are relative to this file.
+# For a deterministic offline fixture, use smoke.yaml with --executor local.
+domain: banking
+business_system: banking_customer_ops_v0
+corpus_manifest: ../../data/corpus_manifests/lii_markdown.yaml
+domain_rd: ../../docs/rd/banking-customer-ops-rd.md
+scenario_matrix: ../../data/scenario_matrices/banking_reg_e_mvp.yaml
+target_count: 3
+user_sim_profiles:
+  - deterministic
+  - llm
+  - verify

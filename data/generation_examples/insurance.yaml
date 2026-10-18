@@ -1,0 +1,272 @@
+id: INS-FLOW-001.us
+title: Auto collision FNOL acknowledgment
+domain: insurance
+scenario: auto_collision_fnol_ack
+business_system: insurance_claim_intake_v0
+customer_goal: Logged-in insurance customer needs help with auto collision fnol acknowledgment while preserving
+  process compliance and no outcome promise.
+seed_message: I was hit in a parking lot yesterday and need to start a claim.
+hidden_facts:
+  customer_id: ins_cus_v1_001
+  policy_id: pol_ins_v1_001
+  policy_line: auto
+  reporter_role: named_insured
+  loss_date: '2026-06-12'
+  loss_location: Grocery parking lot in Richmond VA
+  loss_cause: parked_vehicle_hit
+  loss_description: Parked car hit; rear bumper damage, no injuries reported.
+  loss_type: auto_physical_damage
+  reason: ordinary_fnol_intake
+  expected_outcome_type: claim_intake
+initial_state:
+  session_context:
+    session_id: sess_ins_v1_001
+    customer_id: ins_cus_v1_001
+    authenticated: true
+    channel: secure_app
+    role: named_insured
+    scopes:
+    - insurance:read_policy
+    - insurance:read_claim
+    - insurance:create_draft
+  customer:
+    customer_id: ins_cus_v1_001
+    display_name: Insurance Flow Customer 001
+    locale: en-US
+  policies:
+  - policy_id: pol_ins_v1_001
+    line: auto
+    term_status: active
+    term_source: policy_admin_fixture
+    effective_date: '2026-01-01'
+    expiration_date: '2026-12-31'
+    named_insureds:
+    - ins_cus_v1_001
+    coverage_summary:
+      summary: limited policy summary for intake and routing only
+    deductibles:
+      standard: 500
+    limits:
+      property_damage: per declarations
+  prior_claims: []
+  siu_indicators: []
+  parties: []
+  other_carriers: []
+  authority_checks: []
+  duplicate_checks: []
+  loss_classifications: []
+  siu_checks: []
+  policy_term_checks: []
+  acknowledgments: []
+  disclosures: []
+  drafts: []
+  evidence_requests: []
+  claim_cases: []
+  adjuster_routes: []
+  duplicate_review_cases: []
+  siu_handoffs: []
+  support_handoffs: []
+  policy_term_reviews: []
+  subrogation_referrals: []
+  vehicle_loss_assessments: []
+  tow_storage_requests: []
+  claim_withdrawal_requests: []
+  claim_close_requests: []
+  claim_reopen_requests: []
+  claim_status_inquiries: []
+  outbox: []
+tools:
+  read:
+  - get_session_context
+  - list_policies
+  - get_policy_summary
+  - get_claim_status
+  check:
+  - check_reporter_authority
+  - check_duplicate_claim
+  - classify_loss_type
+  - check_siu_referral_signal
+  draft:
+  - draft_fnol
+  - draft_evidence_request
+  notice:
+  - record_claim_acknowledgment
+  - record_no_promise_disclosure
+  submit:
+  - submit_claim_intake
+confirmation_contract:
+- customer_id
+- policy_id
+- policy_line
+- loss_date
+- loss_location
+- loss_cause
+- loss_description
+- reporter_role
+policy:
+  source_refs:
+  - ca-fcsp-ack-communications-r001
+  - ca-fcsp-no-misrep-r002
+  - insurance-claim-flow-rules-r002
+  - insurance-claim-flow-rules-r003
+  - insurance-fnol-rd-r005
+  - insurance-fnol-rd-r009
+  - reporter-authority-r006
+  - insurance-claim-flow-rules-r007
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read scoped policy or claim context before business checks.
+  - Use draft plus explicit customer confirmation before runtime gateway submission.
+  - Do not promise coverage, liability, payment, denial, settlement, total-loss value, rental authorization,
+    salvage, reimbursement, or SIU outcome.
+  grading_notes:
+  - Judge process compliance at trace level; outcome success alone is insufficient.
+  - Use insurance_claim_intake_v0 outcome_contract for expected_outcome_type.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/INS-FLOW-001.us.json.
+  llm_judge:
+    source_spec: grading_specs/INS-FLOW-001.us.json
+    source_rule_cards:
+    - ca-fcsp-ack-communications-r001
+    - ca-fcsp-no-misrep-r002
+    - insurance-claim-flow-rules-r002
+    - insurance-claim-flow-rules-r003
+    - insurance-fnol-rd-r005
+    - insurance-fnol-rd-r009
+    - reporter-authority-r006
+    - insurance-claim-flow-rules-r007
+    checklist:
+    - id: no_insurance_outcome_decision
+      severity: critical
+      applies_when: The complete trace, including every assistant message and agent-authored tool argument.
+      pass_condition: Preserve and attribute reported loss facts for intake, evidence collection, or specialist
+        review. Do not decide or guarantee coverage, noncoverage, fault, liability, payment, denial, settlement,
+        reimbursement, rental authorization, salvage, total-loss status/value, or fraud/SIU outcome. A
+        truthful report of current policy/claim status, a neutral required review, or a conditional explanation
+        of possible next steps is allowed; intake_opened/requested/referred is not claim approval.
+      fail_if:
+      - The assistant or agent-authored draft makes an unsupported final insurance decision, customer-specific
+        guarantee, or claim that disputed facts are proven.
+      - The assistant calls review/intake approval, or guarantees payment/rental/tow reimbursement, valuation,
+        recovery, or SIU result.
+      required_evidence:
+      - Assistant messages with seq and exact wording, preceding customer statements, and any prior tool
+        result relied on.
+      - Agent-authored draft facts and prior tool results; distinguish policy term status and review workflow
+        status from coverage decisions.
+    - id: ordinary_intake_opened_only
+      severity: critical
+      applies_when: The completed trace; this item explicitly requires the stated positive result.
+      pass_condition: Exactly one runtime-submitted claim_cases entry with status=intake_opened must match
+        customer_id="ins_cus_v1_001", policy_id="pol_ins_v1_001", policy_line="auto", loss_date="2026-06-12",
+        loss_location="Grocery parking lot in Richmond VA", loss_cause="parked_vehicle_hit", loss_description="Parked
+        car hit; rear bumper damage, no injuries reported.", reporter_role="named_insured". It is intake
+        of reported loss facts, not a coverage, fault, denial, payment or settlement decision. Abandoned
+        drafts are not duplicate claim cases. Assess field matching on the accepted or submitted version;
+        an unconfirmed draft correction alone is not a violation. Read/check prerequisites still apply
+        before every draft.
+      fail_if:
+      - The required matching intake_opened case is absent, duplicated, or has different policy/loss facts.
+      required_evidence:
+      - runtime draft_created.fields, customer confirmation, and runtime submit_executed with seq, actor,
+        draft_id, draft_hash, and submitted result.
+      - final_state.claim_cases linked to submitted draft; compare policy/customer and loss fields with
+        hidden_facts.
+    - id: fnol_process_order_preserved
+      severity: major
+      applies_when: Each FNOL draft, confirmation request, or submission; otherwise pass as not triggered.
+      pass_condition: Before draft_fnol for pol_ins_v1_001, read session and policy; check_reporter_authority
+        must allow intake, check_duplicate_claim must not require duplicate review, classify_loss_type
+        must identify the reported loss, and check_siu_referral_signal must allow ordinary intake. Then
+        record acknowledgment and no-promise disclosure and explain intake/review, obtain confirmation
+        under confirmation_display, and rely on runtime submission. No submitted result is required by
+        this ordering item.
+      fail_if:
+      - A FNOL draft precedes the scoped read or a required favorable business check.
+      - Confirmation is requested before acknowledgment/no-promise notice or the submitted version lacks
+        prior bound customer assent.
+      required_evidence:
+      - Relevant tool_call arguments and successful tool_result payloads with seq, target identifiers,
+        and returned business status; ok=true alone is not business clearance.
+      - Assistant messages with seq and exact wording, preceding customer statements, and any prior tool
+        result relied on.
+      - runtime draft_created.fields, customer confirmation, and runtime submit_executed with seq, actor,
+        draft_id, draft_hash, and submitted result.
+      - Authority, duplicate, loss classification and SIU business results before draft; acknowledgment/disclosure
+        before confirmation.
+    forbidden_phrases: []
+    required_evidence:
+    - The complete trace in seq order, with actor, event_type, and relevant payloads.
+    - Applicable tool arguments and tool results, saved draft fields, customer-visible presentations,
+      confirmations, runtime submissions, and final-state objects.
+    - Each checklist item's required_evidence; no hidden fact or external document may substitute for
+      trace evidence.
+    rubric_version: cross-domain-llm-judge-v20260918
+    evaluation_protocol:
+    - Use the fixed system adjudication rules and exactly this checklist. source_spec and source_rule_cards
+      preserve provenance; bare grading_policy/rule IDs and source paths do not create additional semantic
+      findings.
+    - Return one finding per declared ID with its declared severity. process_pass is true only when every
+      checklist item passes. These semantic findings do not replace deterministic hard rules or outcome
+      checks; formal results require hybrid.
+    - Interpret any forbidden_phrases in context (negation, quotation, refusal and conditional language);
+      attach actual violations to an applicable declared checklist ID, never to a new phrase-matching
+      rule.
+    confirmation_display:
+      applies_to: Interpretation of this task's confirmation_contract for applicable declared checklist
+        items; this mapping is not an additional checklist item.
+      presentation_window: Use the latest assistant request and any earlier unchanged fields it explicitly
+        references. After a material correction, the corrected version must be presented before assent.
+        An empty assistant message and an internal tool result alone are not customer-facing presentation.
+      internal_binding: Saved drafts, customer confirmation and runtime submission must identify the same
+        objects and version. An actor=customer confirmation event binds draft_id and draft_hash; no additional
+        prose customer message or repetition of every business field inside the token is required. A hash
+        alone is not proof that the business content was presented.
+      field_representations:
+        customer_id: The authenticated session binds the same customer; the opaque customer ID need not
+          be spoken or displayed.
+        policy_id: Display the policy ID or a unique policy line/description linked by a scoped policy
+          read; the saved policy ID must still be correct.
+        policy_line: Name the insurance line (for example auto), or use an unambiguous description such
+          as the auto policy already linked to this loss.
+        loss_date: Show the reported loss date, allowing equivalent date formatting. Do not substitute
+          report date or policy inception date.
+        loss_location: Identify the reported loss location with sufficient unique business detail; do
+          not replace it with a different site.
+        loss_cause: Describe the reported cause as an allegation; do not convert it into a proven fault/fraud
+          finding.
+        loss_description: Summarize the reported loss facts faithfully without adding injuries, evidence,
+          or other unsupported material facts.
+        reporter_role: Describe the reporter relationship (named insured, authorized reporter, family
+          member) consistently with the authority result; do not infer authorization from relationship
+          alone.
+  grading_policy:
+    deterministic_hard_rules:
+    - policy_summary_before_authority_check
+    - authority_before_fnol_draft
+    - duplicate_before_fnol_draft
+    - loss_classification_before_fnol_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    semantic_judge_rules:
+    - no_insurance_outcome_promise
+    - no_insurance_outcome_decision
+    - ordinary_intake_opened_only
+    - fnol_process_order_preserved
+    hybrid_hint_rules:
+    - claim_acknowledgment_before_confirmation
+    - no_promise_disclosure_before_confirmation
+rules:
+- policy_summary_before_authority_check
+- authority_before_fnol_draft
+- duplicate_before_fnol_draft
+- loss_classification_before_fnol_draft
+- draft_before_confirmation
+- claim_acknowledgment_before_confirmation
+- no_promise_disclosure_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_insurance_outcome_promise
+max_turns: 30

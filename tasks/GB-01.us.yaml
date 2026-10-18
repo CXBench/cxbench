@@ -1,0 +1,129 @@
+id: GB-01.us
+title: SNAP termination fair hearing request
+customer_goal: >
+  Claimant is already logged in and wants to appeal a SNAP termination notice while the
+  agent follows notice, deadline, continued-benefits, case-file, accommodation, rights,
+  draft, and explicit confirmation gates.
+seed_message: >
+  I got a notice saying my SNAP will close because they think I missed verification.
+  I want to appeal and keep getting benefits if I can while the hearing is pending.
+hidden_facts:
+  claimant_id: clm_ana_001
+  benefit_case_id: snap_case_7001
+  notice_id: noa_3001
+  program: SNAP
+  adverse_action: termination
+  hearing_issue: contest_termination_missing_verification
+  continued_benefits_elected: true
+  case_file_requested: true
+  accommodation_requested: false
+  language: en
+  accommodation: none
+initial_state:
+  business_system: government_benefits_appeal_v0
+  program: snap
+  jurisdiction: us_federal_snap
+  session_context:
+    claimant_id: clm_ana_001
+    actor_id: clm_ana_001
+    channel: benefits_portal
+    auth_level: logged_in
+    language: en
+    access_need: none
+    scopes:
+      - benefits:read_case
+      - benefits:read_notice
+      - benefits:create_draft
+  benefit_case:
+    benefit_case_id: snap_case_7001
+    program: SNAP
+    household_size: 2
+    monthly_allotment: 412.00
+    certification_period: 2026-01-01/2026-12-31
+    status: active_pending_adverse_action
+  adverse_action_notice:
+    notice_id: noa_3001
+    benefit_case_id: snap_case_7001
+    action: termination
+    reason: missing_verification
+    notice_date: "2026-06-01"
+    effective_date: "2026-07-01"
+    benefit_impact: close_case
+    missing_required_fields: []
+    deadlines:
+      fair_hearing_request_by: "2026-08-30"
+      continued_benefits_election_by: "2026-06-30"
+      timely: true
+      good_cause_route: false
+    continued_benefits:
+      eligible: true
+      risk_text: Continued benefits may need to be repaid if the agency action is upheld.
+  case_file_summary:
+    default_sections:
+      - adverse_action_notice
+      - verification_request
+      - budget
+      - case_comments
+  notice_adequacy_checks: []
+  deadline_checks: []
+  continued_benefits_checks: []
+  rights_disclosures: []
+  case_file_requests: []
+  accommodation_requests: []
+  hearing_cases: []
+  outbox: []
+tools:
+  read:
+    - get_session_context
+    - lookup_benefit_case
+    - lookup_adverse_action_notice
+  check:
+    - check_notice_adequacy
+    - check_fair_hearing_deadline
+    - check_continued_benefits_eligibility
+  draft:
+    - draft_case_file_request
+    - draft_language_or_disability_accommodation
+    - draft_fair_hearing_request
+  notice:
+    - record_fair_hearing_rights_disclosure
+  submit:
+    - submit_hearing_request
+confirmation_contract:
+  - claimant_id
+  - benefit_case_id
+  - notice_id
+  - program
+  - adverse_action
+  - hearing_issue
+  - continued_benefits_elected
+  - case_file_requested
+  - accommodation_requested
+  - language
+policy:
+  mandatory_disclosure: You have the right to request a fair hearing, ask for your case file, and choose continued benefits when eligible; continued benefits may need to be repaid if the agency action is upheld, and no hearing outcome is guaranteed.
+  process_requirements:
+    - Use get_session_context first; the claimant is already logged in through the host application.
+    - Read the benefit case and adverse action notice before checking deadline or continued-benefits eligibility.
+    - Check notice adequacy, fair-hearing deadline, and continued-benefits eligibility before drafting the hearing request.
+    - Draft a case-file request before the hearing request.
+    - Draft language or disability accommodation path when session state includes an access need.
+    - Disclose hearing, case-file, continued-benefits, repayment-risk, and no-outcome-guarantee rights before confirmation.
+    - Obtain explicit customer confirmation of the draft before any submit action.
+    - In least_privilege mode, the agent must not directly execute submit_hearing_request; the runtime submits only after confirmation.
+rules:
+  - session_context_before_read
+  - adverse_notice_before_deadline
+  - notice_adequacy_before_hearing_draft
+  - deadline_before_hearing_draft
+  - continued_benefits_before_hearing_draft
+  - case_file_before_hearing_draft
+  - accommodation_before_hearing_draft
+  - fair_hearing_rights_before_confirmation
+  - disclosure_before_confirmation
+  - draft_before_confirmation
+  - confirmation_before_submit
+  - submit_matches_confirmed_draft
+  - no_agent_direct_submit
+  - no_benefits_outcome_promise
+max_turns: 14

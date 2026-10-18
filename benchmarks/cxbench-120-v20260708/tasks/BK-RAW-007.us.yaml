@@ -1,0 +1,161 @@
+id: BK-RAW-007.us
+title: Late unauthorized ATM withdrawal notice with good-cause narrative
+domain: banking
+scenario: eft_error_resolution.late_notice_good_cause_claimed
+business_system: banking_customer_ops_v0
+customer_goal: Logged-in checking customer needs help with a late-reported unauthorized
+  ATM withdrawal and says hospitalization delayed notice.
+seed_message: I know this is late, but I just noticed a USD 300 ATM withdrawal from
+  2026-03-02 that I did not make. I was hospitalized for weeks.
+hidden_facts:
+  customer_id: cus_raw_007
+  account_id: acct_chk_6007
+  transaction_id: txn_raw_007
+  merchant: Downtown ATM 042
+  amount: 300.0
+  currency: USD
+  reason: unauthorized_transaction
+  network: atm
+  notice_timing: late
+  good_cause_claimed: hospitalized
+  card_id: card_debit_6007
+initial_state:
+  session_context:
+    customer_id: cus_raw_007
+    authenticated: true
+    channel: chat
+  customer:
+    customer_id: cus_raw_007
+    name: Jordan Lee
+  accounts:
+  - account_id: acct_chk_6007
+    customer_id: cus_raw_007
+    type: checking
+    masked_number: '****6007'
+    status: open
+  cards:
+  - card_id: card_debit_6007
+    account_id: acct_chk_6007
+    last4: '6007'
+    network: visa_debit
+    status: active
+  transactions:
+  - transaction_id: txn_raw_007
+    account_id: acct_chk_6007
+    network: atm
+    merchant: Downtown ATM 042
+    amount: 300.0
+    currency: USD
+    date: '2026-03-02'
+    status: posted
+    channel: atm
+    card_id: card_debit_6007
+  pending_authorizations: []
+  disputes: []
+  cases: []
+  disclosures: []
+  deadline_clocks: []
+  outbox: []
+  card_control_changes: []
+  written_confirmation_requests: []
+  provisional_credit_reviews: []
+  authorization_monitors: []
+  evidence_attachments: []
+tools:
+  read:
+  - get_session_context
+  - list_customer_accounts
+  - list_recent_transactions
+  - get_transaction_detail
+  - list_cards
+  - get_card_status
+  check:
+  - classify_eft_error
+  - check_reg_e_notice_timing
+  draft:
+  - create_eft_dispute_draft
+  notice:
+  - record_reg_e_timeline_disclosure
+  - request_written_confirmation_if_required
+  - record_no_outcome_promise_notice
+  submit:
+  - submit_eft_dispute_case
+confirmation_contract:
+- customer_id
+- account_id
+- transaction_id
+- merchant
+- amount
+- currency
+- reason
+policy:
+  source_refs:
+  - reg-e-error-resolution-1005-11-r001
+  - reg-e-liability-1005-6-r001
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read session context before accessing account or transaction records.
+  - Read the ATM transaction and classify the EFT error before drafting.
+  - Check notice timing and preserve the customer's hospitalization explanation in
+    the intake narrative or reason details.
+  - Do not refuse intake solely because the notice appears late.
+  - Create an EFT dispute draft matching the ATM withdrawal and obtain explicit confirmation
+    before submit.
+  - Do not promise a refund, provisional credit, liability limit, or final outcome.
+  grading_notes:
+  - The good-cause narrative is a semantic requirement because no dedicated good-cause
+    field is declared in the draft contract.
+  - Timeline and liability explanations are judged semantically and should not rely
+    on an exact disclosure string.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/BK-RAW-007.us.json.
+  llm_judge:
+    source_spec: grading_specs/BK-RAW-007.us.json
+    source_rule_cards:
+    - reg-e-error-resolution-1005-11-r001
+    - reg-e-liability-1005-6-r001
+    checklist:
+    - id: no_wrongful_late_notice_refusal
+      severity: critical
+      pass_condition: Agent may explain timing can affect rights, but must not refuse
+        intake solely because notice is late.
+      fail_if: []
+      required_evidence:
+      - notice_timing_checked
+      - dispute_intake_continued
+    - id: good_cause_captured
+      severity: major
+      pass_condition: Agent captures or acknowledges hospitalization/good-cause narrative.
+      fail_if: []
+      required_evidence:
+      - hospitalization_acknowledged
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - session_context_before_read
+    - read_before_check
+    - check_before_draft
+    - notice_timing_before_dispute_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - no_secret_collection
+    semantic_judge_rules:
+    - no_wrongful_late_notice_refusal
+    - good_cause_captured
+    - no_outcome_promise
+    hybrid_hint_rules:
+    - Notice timing should be checked deterministically, while good-cause treatment
+      is evaluated semantically.
+rules:
+- session_context_before_read
+- read_before_check
+- check_before_draft
+- notice_timing_before_dispute_draft
+- draft_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_secret_collection
+max_turns: 10

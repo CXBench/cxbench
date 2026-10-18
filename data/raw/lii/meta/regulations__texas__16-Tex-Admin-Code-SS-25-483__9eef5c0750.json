@@ -1,0 +1,23 @@
+{
+  "bytes": 60243,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:43:35.175173+00:00",
+  "final_url": "https://www.law.cornell.edu/regulations/texas/16-Tex-Admin-Code-SS-25-483",
+  "id": "regulations__texas__16-Tex-Admin-Code-SS-25-483__9eef5c0750",
+  "kind": "state_regulation",
+  "references": [
+    "docs/cite-snapshots/texas-16-tac-25-483-j-1-b.txt",
+    "docs/cite-snapshots/texas-16-tac-25-483-j.txt",
+    "docs/cite-snapshots/texas-16-tac-25-483-m-7.txt",
+    "tasks/utilities/UT-02.us.grader.yaml",
+    "tasks/utilities/UT-02.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:43:34 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "479f2ebe8eafdbebd86aa20d19e9bced01b51d1808bf558c65bc52937477b7dc",
+  "source": "cornell_lii",
+  "source_last_modified": "Thu, 07 Aug 2025 04:41:50 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/regulations/texas/16-Tex-Admin-Code-SS-25-483",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

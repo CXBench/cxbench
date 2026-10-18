@@ -1,0 +1,20 @@
+{
+  "bytes": 68134,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:36:31.800834+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/12/appendix-B_to_part_30",
+  "id": "cfr__text__12__appendix-B_to_part_30__2acb70bb47",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/glba-501-b-12cfr30-appB.txt",
+    "tasks/banking/CX-01.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:36:31 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "e2678bd34ac192b5d679d0f757aff7f7170bafa6f37e1c59bd9fdd059fceda95",
+  "source": "cornell_lii",
+  "source_last_modified": "Fri, 12 Jun 2026 16:48:43 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/12/appendix-B_to_part_30",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

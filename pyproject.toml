@@ -1,0 +1,48 @@
+[project]
+name = "cxbench"
+version = "0.1.0"
+description = "Trace-level process-compliance evaluation for regulated customer-service agents."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "json-repair>=0.60.1",
+    "PyYAML>=6.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.0",
+    "pytest>=9.0.0",
+    "ruff>=0.14.0",
+    "types-PyYAML>=6.0.12.20250915",
+]
+
+[project.scripts]
+cxbench = "cxbench.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.hatch.build.targets.wheel]
+packages = ["cxbench"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"data" = "cxbench/data"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "cxbench", "main_experiment", "model_eval", "no_agent_direct_submit_ablation",
+    "scripts", "tasks", "benchmarks", "data", "configs", "docs", "tests",
+    "README.md", "CONTRIBUTING.md", "LICENSING.md", "LICENSE", "NOTICE.md",
+    "CHANGELOG.md", "pyproject.toml", "uv.lock", "run.sh", ".env.example",
+    ".gitignore", ".gitattributes", ".github",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100

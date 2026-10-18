@@ -1,0 +1,22 @@
+{
+  "bytes": 52783,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:42:25.690757+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/7/273.13",
+  "id": "cfr__text__7__273.13__d00518eb0b",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/cfr-7-273-13-a-2.txt",
+    "docs/cite-snapshots/cfr-7-273-13-a.txt",
+    "tasks/government/GV-01.us.grader.yaml",
+    "tasks/government/GV-01.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:42:25 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "070c6b41abe3428cbbc3cb6a2a0a33d4aea33297def276b65a4e8f3b0cdca33d",
+  "source": "cornell_lii",
+  "source_last_modified": "Fri, 12 Jun 2026 12:25:53 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/7/273.13",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

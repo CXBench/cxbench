@@ -1,0 +1,21 @@
+{
+  "bytes": 37919,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:38:17.162651+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/42/431.244",
+  "id": "cfr__text__42__431.244__ef919e2d3e",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/cfr-42-431-244-f-1.txt",
+    "tasks/government/GV-02.us.grader.yaml",
+    "tasks/government/GV-02.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:38:16 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "0c5598574825ccfd20aa08c5ccbe9c309fdf13aa6c30f6b8ab6782bbb7b7c887",
+  "source": "cornell_lii",
+  "source_last_modified": "Wed, 11 Mar 2026 15:48:30 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/42/431.244",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

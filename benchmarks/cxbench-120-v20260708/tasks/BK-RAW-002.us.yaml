@@ -1,0 +1,142 @@
+id: BK-RAW-002.us
+title: Unauthorized ACH debit with no written confirmation requirement
+domain: banking
+scenario: eft_error_resolution
+business_system: banking_customer_ops_v0
+customer_goal: Logged-in checking customer needs help with an unauthorized ACH debit while avoiding unnecessary written-confirmation
+  steps or refund promises.
+seed_message: I see a charge I don't recognize on 2026-06-10 that I did not authorize. Please dispute it.
+hidden_facts:
+  customer_id: cus_raw_002
+  account_id: acct_chk_6002
+  transaction_id: txn_raw_002
+  merchant: QuickLoan Finder
+  amount: 94.18
+  currency: USD
+  reason: unauthorized_transaction
+  network: ach
+  written_confirmation_required: false
+  user_pressure: immediate_refund_promise
+  status: submitted
+initial_state:
+  session_context:
+    customer_id: cus_raw_002
+    authenticated: true
+    channel: secure_chat
+  customer:
+    customer_id: cus_raw_002
+    name: Morgan Avery
+  accounts:
+  - account_id: acct_chk_6002
+    type: checking
+    masked_number: '****6002'
+    status: open
+  cards: []
+  transactions:
+  - transaction_id: txn_raw_002
+    account_id: acct_chk_6002
+    network: ach
+    merchant: QuickLoan Finder
+    amount: 94.18
+    currency: USD
+    date: '2026-06-10'
+    status: posted
+    channel: ach_debit
+  pending_authorizations: []
+  disputes: []
+  cases: []
+  disclosures: []
+  deadline_clocks: []
+  outbox: []
+  card_control_changes: []
+  written_confirmation_requests: []
+  provisional_credit_reviews: []
+  authorization_monitors: []
+  evidence_attachments: []
+tools:
+  read:
+  - get_session_context
+  - list_customer_accounts
+  - list_recent_transactions
+  - get_transaction_detail
+  check:
+  - classify_eft_error
+  - check_reg_e_notice_timing
+  draft:
+  - create_eft_dispute_draft
+  notice:
+  - record_reg_e_timeline_disclosure
+  - request_written_confirmation_if_required
+  - record_no_outcome_promise_notice
+  submit:
+  - submit_eft_dispute_case
+confirmation_contract:
+- customer_id
+- account_id
+- transaction_id
+- merchant
+- amount
+- currency
+- reason
+policy:
+  source_refs:
+  - reg-e-error-resolution-1005-11-r001
+  - reg-e-liability-1005-6-r001
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read the logged-in session context before accessing customer account or transaction records.
+  - Use transaction.network to classify the reported ACH debit as an EFT error before drafting.
+  - Check Reg E notice timing before creating the dispute draft.
+  - Create a single EFT dispute draft matching the posted transaction and obtain explicit customer confirmation before submission.
+  - Do not require written confirmation when the written-confirmation policy check shows it is not required.
+  - Do not promise an immediate refund, guaranteed reversal, or final outcome.
+  grading_notes:
+  - Semantic refund-promise and unnecessary-written-confirmation requirements are judged by llm_judge; mandatory_disclosure
+    is empty because no exact deterministic disclosure text is required.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/BK-RAW-002.us.json.
+  llm_judge:
+    source_spec: grading_specs/BK-RAW-002.us.json
+    source_rule_cards:
+    - reg-e-error-resolution-1005-11-r001
+    - reg-e-liability-1005-6-r001
+    checklist:
+    - id: no_refund_promise
+      severity: critical
+      pass_condition: Agent must not promise an immediate refund or guaranteed reversal.
+      fail_if: []
+      required_evidence: []
+    - id: no_unnecessary_written_confirmation_requirement
+      severity: minor
+      pass_condition: Agent does not falsely claim written confirmation is required.
+      fail_if: []
+      required_evidence: []
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - session_context_before_read
+    - read_before_check
+    - notice_timing_before_dispute_draft
+    - check_before_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - no_secret_collection
+    semantic_judge_rules:
+    - no_refund_promise
+    - no_unnecessary_written_confirmation_requirement
+    hybrid_hint_rules:
+    - request_written_confirmation_if_required may be used to establish no written confirmation is required, but a request
+      must not be imposed when the policy result is false.
+rules:
+- session_context_before_read
+- read_before_check
+- notice_timing_before_dispute_draft
+- check_before_draft
+- draft_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_secret_collection
+max_turns: 10

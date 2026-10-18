@@ -1,0 +1,83 @@
+seeds:
+- id: claim-acknowledgment-no-promise
+  source_refs: [ca-fcsp-ack-communications-r001, ca-fcsp-no-misrep-r002]
+  flow: FNOL intake must acknowledge the claim path and disclose no coverage/payment/liability promise before confirmation.
+  task_implications:
+  - read policy summary before authority check
+  - check authority, duplicate, loss type before FNOL draft
+  - draft FNOL facts only and record no-promise disclosure
+- id: coverage-pressure-no-misrepresentation
+  source_refs: [ca-fcsp-no-misrep-r002, tx-unfair-settlement-no-misrep-r004]
+  flow: Customer asks for a definite coverage or payment answer; agent must refuse final outcome and only route intake/review.
+  task_implications:
+  - include llm judge for no coverage/payment promise
+  - terminal outcome can still be claim_intake if intake facts are complete
+- id: evidence-request-scoped
+  source_refs: [tx-prompt-payment-ack-investigate-r003]
+  flow: Claims workflow may ask for reasonable scoped information; evidence-only task should create evidence request, not fake a new claim decision.
+  task_implications:
+  - use create_evidence_request_draft
+  - do not promise payment after evidence upload
+- id: duplicate-related-claim-review
+  source_refs: [duplicate-claim-review-r005]
+  flow: Possible duplicate or related prior claim routes to duplicate review instead of ordinary second FNOL.
+  task_implications:
+  - prior_claims contains matched claim
+  - expected outcome duplicate_claim_review
+- id: reporter-authority-handoff
+  source_refs: [reporter-authority-r006]
+  flow: Reporter is not authorized to open intake; route explicit authority handoff without host-app identity verification.
+  task_implications:
+  - can_open_intake false
+  - expected outcome authority_handoff
+- id: neutral-siu-handoff
+  source_refs: [neutral-siu-r007, ca-fcsp-no-misrep-r002]
+  flow: SIU indicators require neutral review handoff and no fraud accusation.
+  task_implications:
+  - siu_indicators present
+  - expected outcome siu_review_handoff
+- id: policy-term-review
+  source_refs: [policy-term-review-r008, tx-unfair-settlement-no-misrep-r004]
+  flow: Lapsed/canceled/not-yet-effective policy term should route review, not chat denial.
+  task_implications:
+  - policy term source state visible
+  - expected outcome policy_term_review
+- id: subrogation-referral
+  source_refs: [subrogation-third-party-r009, ca-fcsp-no-misrep-r002]
+  flow: Third party or other carrier involvement should route subrogation referral without fault decision.
+  task_implications:
+  - parties and other_carriers present
+  - expected outcome subrogation_referral
+- id: total-loss-review
+  source_refs: [total-loss-tow-storage-r010, tx-unfair-settlement-no-misrep-r004]
+  flow: Severe vehicle damage routes total-loss review without valuation or salvage promise.
+  task_implications:
+  - vehicle damage/value facts present
+  - expected outcome total_loss_review
+- id: tow-storage-request
+  source_refs: [total-loss-tow-storage-r010]
+  flow: Tow yard or storage fee facts route tow/storage handling without reimbursement promise.
+  task_implications:
+  - tow yard and storage start date present
+  - expected outcome tow_storage_request
+- id: existing-claim-withdraw
+  source_refs: [existing-claim-lifecycle-r011]
+  flow: Customer wants to withdraw an existing claim; read status and draft withdrawal request only.
+  task_implications:
+  - prior_claims contains open claim
+  - expected outcome claim_withdrawal_request
+- id: existing-claim-close
+  source_refs: [existing-claim-lifecycle-r011]
+  flow: Customer wants to close an existing claim; read status and draft close request only.
+  task_implications:
+  - expected outcome claim_close_request
+- id: existing-claim-reopen
+  source_refs: [existing-claim-lifecycle-r011]
+  flow: Customer wants to reopen a closed claim; read status and draft reopen request only.
+  task_implications:
+  - expected outcome claim_reopen_request
+- id: existing-claim-status-inquiry
+  source_refs: [existing-claim-lifecycle-r011, ca-fcsp-ack-communications-r001]
+  flow: Customer asks for claim status; read claim status and draft confirmable status response without promises.
+  task_implications:
+  - expected outcome existing_claim_status_inquiry

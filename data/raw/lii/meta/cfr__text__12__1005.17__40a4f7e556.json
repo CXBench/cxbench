@@ -1,0 +1,20 @@
+{
+  "bytes": 59044,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:35:39.145356+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/12/1005.17",
+  "id": "cfr__text__12__1005.17__40a4f7e556",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/reg-e-1005-17-b.txt",
+    "tasks/banking/CX-06.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:35:38 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "f419f9935896a100a4f719c0c9d5ab01fc2c7591ef364dc65a499c37f82dcf54",
+  "source": "cornell_lii",
+  "source_last_modified": "Fri, 12 Jun 2026 16:41:16 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/12/1005.17",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

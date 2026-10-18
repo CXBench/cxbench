@@ -1,0 +1,9 @@
+# Local compliance chunks used by the rule-card extractor.
+# Keep this manifest versioned so generation runs remain reproducible.
+chunks:
+  - id: reg-e-procedures
+    path: ../raw/lii_markdown/pages/cfr__text__12__1005.11__462aa62ae3.md
+  - id: reg-e-liability
+    path: ../raw/lii_markdown/pages/cfr__text__12__1005.6__765b6f26dd.md
+  - id: reg-e-overdraft-opt-in
+    path: ../raw/lii_markdown/pages/cfr__text__12__1005.17__40a4f7e556.md

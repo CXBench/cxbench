@@ -1,0 +1,21 @@
+{
+  "bytes": 47352,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:40:21.662724+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/47/52.21",
+  "id": "cfr__text__47__52.21__5af3dc87f6",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/cfr-47-52-21.txt",
+    "tasks/telecom/TX-05.us.grader.yaml",
+    "tasks/telecom/TX-05.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:40:21 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "f4945a6372941f6f0fb908f7801168feb610021f628753a51155e84444de91b3",
+  "source": "cornell_lii",
+  "source_last_modified": "Mon, 16 Mar 2026 17:02:19 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/47/52.21",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

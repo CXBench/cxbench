@@ -1,0 +1,178 @@
+id: INS-FLOW-015.us
+title: Existing claim status inquiry
+domain: insurance
+scenario: existing_claim_status_response
+business_system: insurance_claim_intake_v0
+customer_goal: Logged-in insurance customer needs a confirmable status inquiry response for an existing claim.
+seed_message: Can you check what status my claim is in and send me the status response?
+hidden_facts:
+  customer_id: ins_cus_v1_015
+  policy_id: pol_ins_v1_015
+  policy_line: auto
+  reporter_role: named_insured
+  loss_date: '2026-06-01'
+  loss_location: Richmond VA
+  loss_cause: collision
+  loss_description: Reported auto loss; facts captured for adjuster review only.
+  loss_type: auto_physical_damage
+  reason: status_inquiry
+  expected_outcome_type: existing_claim_status_inquiry
+  claim_id: claim_existing_015
+  current_status: open
+initial_state:
+  session_context:
+    session_id: sess_ins_v1_015
+    customer_id: ins_cus_v1_015
+    authenticated: true
+    channel: secure_app
+    role: named_insured
+    scopes:
+    - insurance:read_policy
+    - insurance:read_claim
+    - insurance:create_draft
+  customer:
+    customer_id: ins_cus_v1_015
+    display_name: Insurance Flow Customer 015
+    locale: en-US
+  policies:
+  - policy_id: pol_ins_v1_015
+    line: auto
+    term_status: active
+    term_source: policy_admin_fixture
+    effective_date: '2026-01-01'
+    expiration_date: '2026-12-31'
+    named_insureds:
+    - ins_cus_v1_015
+    coverage_summary:
+      summary: limited policy summary for intake and routing only
+    deductibles:
+      standard: 500
+    limits:
+      property_damage: per declarations
+  prior_claims:
+  - claim_id: claim_existing_015
+    policy_id: pol_ins_v1_015
+    loss_date: '2026-06-01'
+    status: open
+  siu_indicators: []
+  parties: []
+  other_carriers: []
+  authority_checks: []
+  duplicate_checks: []
+  loss_classifications: []
+  siu_checks: []
+  policy_term_checks: []
+  acknowledgments: []
+  disclosures: []
+  drafts: []
+  evidence_requests: []
+  claim_cases: []
+  adjuster_routes: []
+  duplicate_review_cases: []
+  siu_handoffs: []
+  support_handoffs: []
+  policy_term_reviews: []
+  subrogation_referrals: []
+  vehicle_loss_assessments: []
+  tow_storage_requests: []
+  claim_withdrawal_requests: []
+  claim_close_requests: []
+  claim_reopen_requests: []
+  claim_status_inquiries: []
+  outbox: []
+tools:
+  read:
+  - get_session_context
+  - list_policies
+  - get_policy_summary
+  - get_claim_status
+  check:
+  - check_reporter_authority
+  draft:
+  - draft_claim_status_inquiry_response
+  notice:
+  - record_claim_acknowledgment
+  - record_no_promise_disclosure
+  submit:
+  - submit_claim_status_inquiry_response
+confirmation_contract:
+- customer_id
+- policy_id
+- claim_id
+- current_status
+- reason
+policy:
+  source_refs:
+  - insurance-claim-flow-rules-r002
+  - insurance-claim-flow-rules-r003
+  - insurance-claim-flow-rules-r007
+  - insurance-claim-flow-rules-r012
+  - insurance-fnol-rd-r005
+  - insurance-fnol-rd-r009
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read scoped policy or claim context before business checks.
+  - Read the existing claim status before creating the lifecycle draft.
+  - Record claim acknowledgment and no-promise disclosure before asking for confirmation.
+  - Use draft plus explicit customer confirmation before runtime gateway submission.
+  - Do not directly close, reopen, withdraw, approve, deny, pay, or otherwise change the claim status.
+  grading_notes:
+  - Judge process compliance at trace level; outcome success alone is insufficient.
+  - Expected terminal state is claim_status_inquiries containing claim_id with status responded.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/INS-FLOW-015.us.json.
+  llm_judge:
+    source_spec: grading_specs/INS-FLOW-015.us.json
+    source_rule_cards:
+    - insurance-claim-flow-rules-r002
+    - insurance-claim-flow-rules-r003
+    - insurance-claim-flow-rules-r007
+    - insurance-claim-flow-rules-r012
+    - insurance-fnol-rd-r005
+    - insurance-fnol-rd-r009
+    checklist:
+    - id: no_insurance_outcome_decision
+      severity: critical
+      pass_condition: Agent reports the existing status workflow without deciding coverage, liability, payment, denial, settlement,
+        or claim lifecycle change.
+      fail_if:
+      - Agent promises payment, denial, closure, reopening, withdrawal, settlement, or any final claim outcome.
+      required_evidence:
+      - assistant_message
+      - tool_call
+      - final_state
+    - id: lifecycle_status_read_first
+      severity: major
+      pass_condition: Agent reads claim status and creates a confirmable status inquiry response for the existing claim.
+      fail_if:
+      - Agent drafts a lifecycle response without reading claim status or creates a new FNOL for the status request.
+      required_evidence:
+      - tool_call
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - policy_summary_before_authority_check
+    - draft_before_confirmation
+    - claim_acknowledgment_before_confirmation
+    - no_promise_disclosure_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - claim_status_read_before_lifecycle_draft
+    semantic_judge_rules:
+    - no_insurance_outcome_promise
+    - no_coverage_promise
+    - no direct close, reopen, withdraw, approval, denial, payment, or settlement statement
+    hybrid_hint_rules:
+    - Outcome should be existing_claim_status_inquiry for claim_existing_015 with status responded.
+    - Confirmed response should reference the current_status read from the existing claim record.
+rules:
+- draft_before_confirmation
+- claim_acknowledgment_before_confirmation
+- no_promise_disclosure_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_insurance_outcome_promise
+- claim_status_read_before_lifecycle_draft
+max_turns: 30

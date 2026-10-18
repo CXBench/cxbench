@@ -1,0 +1,82 @@
+{
+  "version": "v1",
+  "description": "Domain classification for Cornell/LII Markdown source materials. A source may appear in multiple domains when the legal text is relevant to multiple regulated CX workflows.",
+  "domains": {
+    "banking": {
+      "source_ids": [
+        "cfr__text__12__1002.4__e6ebd12069",
+        "cfr__text__12__1002.9__6d8da8f242",
+        "cfr__text__12__1005.11__462aa62ae3",
+        "cfr__text__12__1005.17__40a4f7e556",
+        "cfr__text__12__1005.6__765b6f26dd",
+        "cfr__text__12__1030.4__8743cc8c6a",
+        "cfr__text__12__appendix-B_to_part_30__2acb70bb47",
+        "cfr__text__31__1020.220__da1ebfb053",
+        "uscode__text__15__1681m__ac4ae6b4e6",
+        "uscode__text__15__6802__3e75a25a3b"
+      ],
+      "extra_markdown_paths": [],
+      "notes": "Banking customer operations: Reg E, ECOA/adverse action, TISA disclosures, GLBA information safeguards/privacy, CIP, and consumer-report adverse action obligations."
+    },
+    "telecom": {
+      "source_ids": [
+        "cfr__text__47__52.21__5af3dc87f6",
+        "cfr__text__47__52.35__e5569151e2",
+        "cfr__text__47__52.36__9cf20b7b54",
+        "cfr__text__47__64.2003__31e67cd39f",
+        "cfr__text__47__64.2010__c07ad51b2f",
+        "cfr__text__47__64.2401__df228215f4",
+        "cfr__text__47__64.6400__c1dfcfb14f"
+      ],
+      "extra_markdown_paths": [],
+      "notes": "Telecom account security: number portability, CPNI safeguards, truth-in-billing, SIM/port-out/Safe Connections related source material."
+    },
+    "insurance": {
+      "source_ids": [
+        "uscode__text__15__1681m__ac4ae6b4e6",
+        "uscode__text__15__6802__3e75a25a3b"
+      ],
+      "extra_markdown_paths": [
+        "data/compliance/insurance_claim_flow_rules.md"
+      ],
+      "notes": "Insurance claim-intake benchmark policy currently combines available LII financial privacy/consumer-report sources with curated insurance claim-flow compliance seeds."
+    },
+    "healthcare": {
+      "source_ids": [
+        "cfr__text__42__456.705__efa4429d4b",
+        "cfr__text__45__147.136__08d18e594b",
+        "cfr__text__45__164.508__d0f6a37d75",
+        "cfr__text__45__164.514__be1b1fb783",
+        "cfr__text__45__92.201__24cda63e20",
+        "uscode__text__42__18116__bcb30401bf"
+      ],
+      "extra_markdown_paths": [],
+      "notes": "Healthcare appeal and PHI workflows: ACA internal appeals/external review, HIPAA authorization/minimum necessary, nondiscrimination/meaningful access, and continuity/prospective review source material."
+    },
+    "utilities": {
+      "source_ids": [
+        "regulations__texas__16-Tex-Admin-Code-SS-25-480__ff1ec72972",
+        "regulations__texas__16-Tex-Admin-Code-SS-25-483__9eef5c0750",
+        "regulations__texas__16-Tex-Admin-Code-SS-25-52__ecbed9cf02"
+      ],
+      "extra_markdown_paths": [],
+      "notes": "Utilities disconnection and payment workflows: Texas bill payment, disconnection, reliability/continuity source material in the current raw corpus."
+    },
+    "government_benefits": {
+      "source_ids": [
+        "cfr__text__7__273.13__d00518eb0b",
+        "cfr__text__7__273.15__bc7cdd6593",
+        "cfr__text__20__416.1336__6dcfc076f4",
+        "cfr__text__28__35.130__5eef188518",
+        "cfr__text__42__431.220__7d3190dd0c",
+        "cfr__text__42__431.230__746fb215d3",
+        "cfr__text__42__431.244__ef919e2d3e",
+        "cfr__text__42__435.916__6670b58041",
+        "cfr__text__45__92.201__24cda63e20",
+        "uscode__text__42__18116__bcb30401bf"
+      ],
+      "extra_markdown_paths": [],
+      "notes": "Government benefits appeal workflows: SNAP notice/fair hearing, SSI notice, Medicaid hearing/continued services/renewal, disability and language access, and nondiscrimination source material."
+    }
+  }
+}

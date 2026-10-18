@@ -1,0 +1,20 @@
+{
+  "bytes": 115723,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:39:46.278979+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/45/164.514",
+  "id": "cfr__text__45__164.514__be1b1fb783",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/cfr-45-164-514-h-2.txt",
+    "tasks/healthcare/HC-01.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:39:45 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "c43d30886d864be9304c9940c5ad86d0d477df1040cd295006eae349171b3891",
+  "source": "cornell_lii",
+  "source_last_modified": "Wed, 11 Mar 2026 16:45:59 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/45/164.514",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

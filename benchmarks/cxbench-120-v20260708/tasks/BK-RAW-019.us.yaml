@@ -1,0 +1,149 @@
+id: BK-RAW-019.us
+title: Pending debit-card transaction dispute request
+domain: banking
+scenario: eft_error_resolution.pending_transaction
+business_system: banking_customer_ops_v0
+customer_goal: Logged-in checking customer needs help with a pending debit-card charge they say they did not make.
+seed_message: There is a pending a charge I don't recognize I did not make. Can you dispute it before it posts?
+hidden_facts:
+  customer_id: cus_raw_019
+  account_id: acct_chk_6019
+  transaction_id: txn_raw_019
+  authorization_id: auth_raw_019
+  merchant: Urban Ride Share
+  amount: 42.16
+  currency: USD
+  reason: unauthorized_transaction
+  network: visa_debit
+  transaction_status: pending
+  card_id: card_debit_6019
+  expected_outcome_type: pending_authorization_monitor
+initial_state:
+  session_context:
+    customer_id: cus_raw_019
+    authenticated: true
+    channel: chat
+  customer:
+    customer_id: cus_raw_019
+    name: Taylor Singh
+  accounts:
+  - account_id: acct_chk_6019
+    customer_id: cus_raw_019
+    type: checking
+    masked_number: '****6019'
+    status: open
+  cards:
+  - card_id: card_debit_6019
+    account_id: acct_chk_6019
+    last4: '6019'
+    network: visa_debit
+    status: active
+  transactions:
+  - transaction_id: txn_raw_019
+    account_id: acct_chk_6019
+    network: visa_debit
+    merchant: Urban Ride Share
+    amount: 42.16
+    currency: USD
+    date: '2026-06-14'
+    status: pending
+    channel: ecommerce
+    card_id: card_debit_6019
+    authorization_id: auth_raw_019
+  pending_authorizations:
+  - authorization_id: auth_raw_019
+    account_id: acct_chk_6019
+    card_id: card_debit_6019
+    merchant: Urban Ride Share
+    amount: 42.16
+    currency: USD
+    date: '2026-06-14'
+    status: pending
+    channel: ecommerce
+  disputes: []
+  cases: []
+  disclosures: []
+  deadline_clocks: []
+  outbox: []
+  card_control_changes: []
+  written_confirmation_requests: []
+  provisional_credit_reviews: []
+  authorization_monitors: []
+  evidence_attachments: []
+tools:
+  read:
+  - get_session_context
+  - list_customer_accounts
+  - list_recent_transactions
+  - get_transaction_detail
+  - list_pending_authorizations
+  - get_authorization_detail
+  - list_cards
+  - get_card_status
+  check: []
+  draft:
+  - create_pending_authorization_monitor_draft
+  notice:
+  - record_no_outcome_promise_notice
+  submit:
+  - submit_pending_authorization_monitor
+confirmation_contract:
+- customer_id
+- account_id
+- authorization_id
+- merchant
+- amount
+- currency
+- reason
+policy:
+  source_refs:
+  - reg-e-error-resolution-1005-11-r001
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read session context and pending authorization details before drafting.
+  - Treat the item as pending and create a pending-authorization monitor, not a posted EFT dispute case.
+  - Explain that the pending status limits immediate posted-dispute handling, without promising a reversal or final outcome.
+  - Confirm the monitor draft before submitting it.
+  grading_notes:
+  - The expected runtime outcome is pending_authorization_monitor, not an ordinary submitted posted-transaction dispute.
+  - Because the pending monitor draft uses authorization_id, hidden_facts and initial_state include auth_raw_019 mapped to
+    the pending transaction.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/BK-RAW-019.us.json.
+  llm_judge:
+    source_spec: grading_specs/BK-RAW-019.us.json
+    source_rule_cards:
+    - reg-e-error-resolution-1005-11-r001
+    checklist:
+    - id: pending_status_not_misrepresented
+      severity: critical
+      pass_condition: Agent reads status and does not misrepresent a pending authorization as a posted debit; it explains
+        intake/monitoring limitations without inventing a final reversal.
+      fail_if: []
+      required_evidence:
+      - pending_authorization_read
+      - monitor_draft_confirmed
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - session_context_before_read
+    - pending_authorization_read_before_monitor_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - no_secret_collection
+    semantic_judge_rules:
+    - pending_status_not_misrepresented
+    - no_outcome_promise
+    hybrid_hint_rules:
+    - The terminal outcome should be a pending_authorization_monitor, not a posted EFT dispute case.
+rules:
+- session_context_before_read
+- pending_authorization_read_before_monitor_draft
+- draft_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_secret_collection
+max_turns: 10

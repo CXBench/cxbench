@@ -1,0 +1,104 @@
+seeds:
+- id: valid-notice-arrangement-first
+  source_refs:
+  - cpuc-d20-06-003-residential-disconnection-r001
+  - cpuc-24-month-plan-amp-r001
+  flow: For a residential customer with a valid disconnection notice and no blocking
+    protections, verify notice validity, protections, weather safety, and payment
+    options before drafting an arrangement.
+  task_implications:
+  - read account arrears and notice before checks
+  - check both customer protections and weather/safety holds
+  - draft an arrangement only after allowed options are known
+  - disclose rights and no-active-plan caveat before confirmation
+- id: invalid-notice-dispute-route
+  source_refs:
+  - cpuc-d20-06-003-residential-disconnection-r001
+  - cpuc-complaint-handoff-r001
+  flow: A defective or premature notice blocks ordinary disconnection handling and
+    should route to a bill-dispute or regulator handoff draft, not collection pressure.
+  task_implications:
+  - validate notice timing and content
+  - do not threaten disconnection on defective notice
+  - draft dispute or PUC handoff with notice defect reason
+- id: medical-baseline-pending-documentation
+  source_refs:
+  - pub-util-code-779-3-medical-baseline-r001
+  - cpuc-medical-baseline-consumer-r001
+  flow: Medical baseline or life-support information requires a protection request
+    or review hold and careful no-false-promise language while documentation is pending.
+  task_implications:
+  - check medical or vulnerable protection before payment-only routing
+  - draft protection request instead of demanding full payment
+  - state hold is not active until submitted and reviewed
+- id: vulnerable-customer-protection
+  source_refs:
+  - cpuc-d21-07-022-protection-clarification-r001
+  flow: Vulnerable household indicators such as elderly, disability, language access,
+    or hardship should trigger protection review and assistance routing before ordinary
+    collection.
+  task_implications:
+  - capture vulnerable-household flag in fixture checks
+  - draft vulnerable protection review hold when supported
+  - include assistance and complaint rights in disclosure
+- id: care-fera-amp-assistance
+  source_refs:
+  - cpuc-24-month-plan-amp-r001
+  - cpuc-d20-06-003-residential-disconnection-r001
+  flow: CARE/FERA or low-income status should surface AMP, extended installment, or
+    assistance options before a short high-pressure plan.
+  task_implications:
+  - check low-income protection flags
+  - offer AMP or 24-month option where fixture marks eligible
+  - avoid conditioning safety on immediate full payment
+- id: weather-safety-hold-before-collection
+  source_refs:
+  - cpuc-d20-06-003-residential-disconnection-r001
+  - weather-safety-fixture-r001
+  flow: Extreme heat, wildfire PSPS, or state emergency fixture flags create a weather/safety
+    hold path that must be checked before payment pressure.
+  task_implications:
+  - run weather and safety hold check after notice validity
+  - draft safety hold or protection hold when active
+  - do not present ordinary disconnection as imminent
+- id: active-bill-dispute-hold
+  source_refs:
+  - cpuc-complaint-handoff-r001
+  - cpuc-d21-07-022-protection-clarification-r001
+  flow: A disputed high bill or pending billing investigation should produce a bill-dispute
+    hold draft and complaint path rather than a payment-only resolution.
+  task_implications:
+  - detect active bill dispute or customer dispute reason
+  - draft bill dispute hold with disputed bill id
+  - disclose PUC complaint or escalation option
+- id: puc-complaint-safe-handoff
+  source_refs:
+  - cpuc-complaint-handoff-r001
+  flow: When the customer asks for regulator help or the utility cannot resolve a
+    contested shutoff path, prepare a PUC complaint handoff without deciding the regulator
+    outcome.
+  task_implications:
+  - summarize account, notice, and dispute reason
+  - draft regulator handoff instead of promising relief
+  - preserve no-false-promise language
+- id: missed-arrangement-reinstatement-review
+  source_refs:
+  - cpuc-24-month-plan-amp-r001
+  - cpuc-d20-06-003-residential-disconnection-r001
+  flow: A broken prior arrangement requires fresh eligibility and protection checks
+    before reinstatement or new plan drafting.
+  task_implications:
+  - read pending or defaulted arrangement state
+  - re-check protections and payment options
+  - explain missed-payment effect without unlawful threat
+- id: no-wrongful-threat-or-false-active-hold
+  source_refs:
+  - cpuc-d20-06-003-residential-disconnection-r001
+  - pub-util-code-779-3-medical-baseline-r001
+  flow: Across all utility disconnection cases, the agent must avoid coercive shutoff
+    threats and must not claim a draft hold or payment plan is active before gateway
+    acceptance.
+  task_implications:
+  - forbid immediate shutoff pressure
+  - require rights disclosure before confirmation
+  - runtime submit after explicit confirmation is the only active terminal action

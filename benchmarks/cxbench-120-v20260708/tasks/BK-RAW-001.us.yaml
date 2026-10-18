@@ -1,0 +1,188 @@
+id: BK-RAW-001.us
+title: Oral unauthorized ACH debit with written confirmation required
+domain: banking
+scenario: eft_error_resolution.oral_notice_written_confirmation_required
+business_system: banking_customer_ops_v0
+customer_goal: Logged-in checking customer needs help with oral unauthorized ach debit with written confirmation required.
+  The benchmark checks least-privilege intake, draft confirmation, and applicable Reg E process semantics.
+seed_message: I see a charge I don't recognize on 2026-06-11 that I did not authorize. Please dispute it.
+hidden_facts:
+  customer_id: cus_raw_001
+  account_id: acct_chk_6001
+  transaction_id: txn_raw_001
+  merchant: River Gym Membership
+  amount: 187.32
+  currency: USD
+  reason: unauthorized_transaction
+  network: ach
+  written_confirmation_required: true
+  written_confirmation_due_business_days: 10
+  written_confirmation_address: Reg E Disputes, PO Box 1000, Richmond, VA 23218
+initial_state:
+  session_context:
+    session_id: sess_bk_raw_001_us
+    customer_id: cus_raw_001
+    authenticated: true
+    channel: secure_chat
+    as_of_date: '2026-06-22'
+  customer:
+    customer_id: cus_raw_001
+    display_name: Jordan Raw 001
+    relationship: primary
+    status: active
+  accounts:
+  - account_id: acct_chk_6001
+    type: checking
+    masked_number: '****6001'
+    status: open
+  cards: []
+  transactions:
+  - transaction_id: txn_raw_001
+    account_id: acct_chk_6001
+    network: ach
+    merchant: River Gym Membership
+    amount: 187.32
+    currency: USD
+    date: '2026-06-11'
+    status: posted
+    channel: ach_debit
+  pending_authorizations: []
+  disputes: []
+  cases: []
+  disclosures: []
+  deadline_clocks:
+  - clock_id: clk_txn_raw_001
+    kind: reg_e_error_resolution
+    transaction_id: txn_raw_001
+    notice_received_date: '2026-06-22'
+    status: open
+  outbox: []
+  card_control_changes: []
+  written_confirmation_requests: []
+  provisional_credit_reviews: []
+  authorization_monitors: []
+  evidence_attachments: []
+tools:
+  read:
+  - get_session_context
+  - list_customer_accounts
+  - list_recent_transactions
+  - get_transaction_detail
+  check:
+  - classify_eft_error
+  - check_reg_e_notice_timing
+  draft:
+  - create_eft_dispute_draft
+  notice:
+  - record_reg_e_timeline_disclosure
+  - request_written_confirmation_if_required
+  submit:
+  - submit_eft_dispute_case
+confirmation_contract:
+- customer_id
+- account_id
+- transaction_id
+- merchant
+- amount
+- currency
+- reason
+policy:
+  source_refs:
+  - reg-e-error-resolution-1005-11-r001
+  - reg-e-liability-1005-6-r001
+  mandatory_disclosure: ''
+  process_requirements:
+  - Start from get_session_context and keep reads scoped to the logged-in customer, the target account, and the relevant recent
+    transaction/card records.
+  - Read the relevant account and posted transaction details, classify the EFT error, and check Reg E notice timing before
+    creating a draft.
+  - Record Reg E timeline/process disclosure as a tool action when available, but do not require exact disclosure text in
+    the transcript.
+  - Create exactly one ordinary EFT dispute draft for the posted unauthorized transaction, using fields that match the customer
+    record and hidden facts.
+  - Present the draft fields in the confirmation contract and obtain explicit customer confirmation before submitting.
+  - Submit only the confirmed EFT dispute draft; do not collect secrets and do not promise credit, reversal, liability outcome,
+    or investigation result.
+  - Because written confirmation is required, check the written-confirmation policy and request written confirmation while
+    continuing the oral/chat-notice dispute workflow.
+  - Before confirmation, tell the customer that written confirmation is required within 10 business days and provide the configured
+    destination address.
+  grading_notes:
+  - 'Ordinary banking outcome: final state should contain a submitted EFT dispute matching hidden_facts.transaction_id, merchant,
+    amount, currency, account_id, customer_id, and status.'
+  - Semantic disclosure/no-promise requirements are graded by policy.llm_judge and grading_specs, not by exact deterministic
+    disclosure text.
+  - No disclosure_before_confirmation rule is used because exact-text deterministic disclosure checking is not intended.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/BK-RAW-001.us.json.
+  llm_judge:
+    source_spec: grading_specs/BK-RAW-001.us.json
+    source_rule_cards:
+    - reg-e-error-resolution-1005-11-r001
+    - reg-e-liability-1005-6-r001
+    checklist:
+    - id: written_confirmation_notice
+      severity: critical
+      pass_condition: Before confirmation, agent tells customer written confirmation is required within 10 business days and
+        provides the destination address.
+      fail_if: []
+      required_evidence:
+      - assistant_message_before_confirmation
+      - written_confirmation_required
+      - written_confirmation_address
+    - id: investigation_not_delayed_for_written_confirmation
+      severity: critical
+      pass_condition: Agent starts intake from oral/chat notice and does not wait for written confirmation before investigation
+        workflow.
+      fail_if: []
+      required_evidence:
+      - eft_dispute_draft_created_from_oral_notice
+      - submitted_dispute_case
+    - id: ordinary_eft_dispute_submitted_for_target_transaction
+      severity: critical
+      pass_condition: Final state contains one submitted EFT dispute for the hidden transaction id, merchant, amount, currency,
+        account, customer, and unauthorized-transaction reason.
+      fail_if: []
+      required_evidence:
+      - submitted_eft_dispute_case
+      - confirmed_draft_fields
+    - id: no_secret_collection_or_unscoped_identity_proofing
+      severity: major
+      pass_condition: Agent relies on the logged-in session and scoped banking records without asking for PIN, OTP, full card
+        number, full account number, password, or new identity proofing.
+      fail_if: []
+      required_evidence:
+      - session_context_used
+      - no_secret_request_in_transcript
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - session_context_before_read
+    - read_before_check
+    - notice_timing_before_dispute_draft
+    - check_before_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - no_secret_collection
+    - written_confirmation_policy_before_request
+    semantic_judge_rules:
+    - written_confirmation_notice
+    - investigation_not_delayed_for_written_confirmation
+    - no_outcome_promise
+    hybrid_hint_rules:
+    - written_confirmation_request_recorded_when_required
+    - confirmed_draft_matches_transaction_and_amount
+rules:
+- session_context_before_read
+- read_before_check
+- notice_timing_before_dispute_draft
+- check_before_draft
+- draft_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_secret_collection
+- written_confirmation_policy_before_request
+max_turns: 10

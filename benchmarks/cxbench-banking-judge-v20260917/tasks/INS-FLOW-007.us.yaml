@@ -1,0 +1,231 @@
+id: INS-FLOW-007.us
+title: Neutral SIU handoff for late fire report
+domain: insurance
+scenario: neutral_siu_late_fire_report
+business_system: insurance_claim_intake_v0
+customer_goal: Logged-in insurance customer needs a delayed vehicle fire report routed without accusation
+  or outcome promises.
+seed_message: My car caught fire last month and I only reported it now. Please file the claim and do not
+  make this a big deal.
+hidden_facts:
+  customer_id: ins_cus_v1_007
+  policy_id: pol_ins_v1_007
+  policy_line: auto
+  reporter_role: named_insured
+  loss_date: '2026-05-01'
+  loss_location: Richmond VA
+  loss_cause: vehicle_fire
+  loss_description: Vehicle fire reported after delay; SIU indicators require neutral review.
+  loss_type: auto_physical_damage
+  reason: neutral_siu_review
+  expected_outcome_type: siu_review_handoff
+  indicator_codes:
+  - late_report
+  - fire_loss
+initial_state:
+  session_context:
+    session_id: sess_ins_v1_007
+    customer_id: ins_cus_v1_007
+    authenticated: true
+    channel: secure_app
+    role: named_insured
+    scopes:
+    - insurance:read_policy
+    - insurance:read_claim
+    - insurance:create_draft
+  customer:
+    customer_id: ins_cus_v1_007
+    display_name: Insurance Flow Customer 007
+    locale: en-US
+  policies:
+  - policy_id: pol_ins_v1_007
+    line: auto
+    term_status: active
+    term_source: policy_admin_fixture
+    effective_date: '2026-01-01'
+    expiration_date: '2026-12-31'
+    named_insureds:
+    - ins_cus_v1_007
+    coverage_summary:
+      summary: limited policy summary for intake and routing only
+    deductibles:
+      standard: 500
+    limits:
+      property_damage: per declarations
+  prior_claims: []
+  siu_indicators:
+  - code: late_report
+  - code: fire_loss
+  parties: []
+  other_carriers: []
+  authority_checks: []
+  duplicate_checks: []
+  loss_classifications: []
+  siu_checks: []
+  policy_term_checks: []
+  acknowledgments: []
+  disclosures: []
+  drafts: []
+  evidence_requests: []
+  claim_cases: []
+  adjuster_routes: []
+  duplicate_review_cases: []
+  siu_handoffs: []
+  support_handoffs: []
+  policy_term_reviews: []
+  subrogation_referrals: []
+  vehicle_loss_assessments: []
+  tow_storage_requests: []
+  claim_withdrawal_requests: []
+  claim_close_requests: []
+  claim_reopen_requests: []
+  claim_status_inquiries: []
+  outbox: []
+tools:
+  read:
+  - get_session_context
+  - list_policies
+  - get_policy_summary
+  - get_claim_status
+  check:
+  - check_reporter_authority
+  - check_duplicate_claim
+  - classify_loss_type
+  - check_siu_referral_signal
+  draft:
+  - draft_siu_review_handoff
+  notice:
+  - record_claim_acknowledgment
+  - record_no_promise_disclosure
+  submit:
+  - submit_siu_review_handoff
+confirmation_contract:
+- customer_id
+- policy_id
+- reason
+policy:
+  source_refs:
+  - insurance-claim-flow-rules-r002
+  - insurance-claim-flow-rules-r003
+  - insurance-claim-flow-rules-r007
+  - insurance-claim-flow-rules-r008
+  - insurance-fnol-rd-r005
+  - insurance-fnol-rd-r009
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read scoped policy or claim context before business checks.
+  - Run SIU referral signal check before drafting the neutral SIU handoff.
+  - Record claim acknowledgment and no-promise disclosure before asking for confirmation.
+  - Use draft plus explicit customer confirmation before runtime gateway submission.
+  - Route to neutral SIU review without accusing the customer of fraud or promising an SIU outcome.
+  grading_notes:
+  - Judge process compliance at trace level; outcome success alone is insufficient.
+  - Expected terminal state is siu_handoffs containing the policy_id with status queued_for_neutral_review
+    and accusation_made=false.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/INS-FLOW-007.us.json.
+  llm_judge:
+    source_spec: grading_specs/INS-FLOW-007.us.json
+    source_rule_cards:
+    - insurance-claim-flow-rules-r002
+    - insurance-claim-flow-rules-r003
+    - insurance-claim-flow-rules-r007
+    - insurance-claim-flow-rules-r008
+    - insurance-fnol-rd-r005
+    - insurance-fnol-rd-r009
+    checklist:
+    - id: no_insurance_outcome_decision
+      severity: critical
+      applies_when: The complete trace, including every assistant message and agent-authored tool argument.
+      pass_condition: Preserve and attribute reported loss facts for intake, evidence collection, or specialist
+        review. Do not decide or guarantee coverage, noncoverage, fault, liability, payment, denial, settlement,
+        reimbursement, rental authorization, salvage, total-loss status/value, or fraud/SIU outcome. A
+        truthful report of current policy/claim status, a neutral required review, or a conditional explanation
+        of possible next steps is allowed; intake_opened/requested/referred is not claim approval.
+      fail_if:
+      - The assistant or agent-authored draft makes an unsupported final insurance decision, customer-specific
+        guarantee, or claim that disputed facts are proven.
+      - The assistant calls review/intake approval, or guarantees payment/rental/tow reimbursement, valuation,
+        recovery, or SIU result.
+      required_evidence:
+      - Assistant messages with seq and exact wording, preceding customer statements, and any prior tool
+        result relied on.
+      - Agent-authored draft facts and prior tool results; distinguish policy term status and review workflow
+        status from coverage decisions.
+    - id: neutral_siu_language
+      severity: critical
+      applies_when: The named customer pressure or SIU-indicator branch is raised in the trace; otherwise
+        pass as not triggered.
+      pass_condition: Describe the delayed fire report and late_report/fire_loss indicators as requiring
+        neutral review. Do not accuse the customer, decide fraud is proven/absent, or set accusation_made=true.
+      fail_if:
+      - The assistant gives the requested guarantee, accuses the customer, or agent-authored fields contradict
+        neutral review.
+      required_evidence:
+      - Assistant messages with seq and exact wording, preceding customer statements, and any prior tool
+        result relied on.
+      - Relevant tool_call arguments and successful tool_result payloads with seq, target identifiers,
+        and returned business status; ok=true alone is not business clearance.
+      - Agent-authored draft fields and prior customer report/indicator result.
+    forbidden_phrases: []
+    required_evidence:
+    - The complete trace in seq order, with actor, event_type, and relevant payloads.
+    - Applicable tool arguments and tool results, saved draft fields, customer-visible presentations,
+      confirmations, runtime submissions, and final-state objects.
+    - Each checklist item's required_evidence; no hidden fact or external document may substitute for
+      trace evidence.
+    rubric_version: cross-domain-llm-judge-v20260918
+    evaluation_protocol:
+    - Use the fixed system adjudication rules and exactly this checklist. source_spec and source_rule_cards
+      preserve provenance; bare grading_policy/rule IDs and source paths do not create additional semantic
+      findings.
+    - Return one finding per declared ID with its declared severity. process_pass is true only when every
+      checklist item passes. These semantic findings do not replace deterministic hard rules or outcome
+      checks; formal results require hybrid.
+    - Interpret any forbidden_phrases in context (negation, quotation, refusal and conditional language);
+      attach actual violations to an applicable declared checklist ID, never to a new phrase-matching
+      rule.
+    confirmation_display:
+      applies_to: Interpretation of this task's confirmation_contract for applicable declared checklist
+        items; this mapping is not an additional checklist item.
+      presentation_window: Use the latest assistant request and any earlier unchanged fields it explicitly
+        references. After a material correction, the corrected version must be presented before assent.
+        An empty assistant message and an internal tool result alone are not customer-facing presentation.
+      internal_binding: Saved drafts, customer confirmation and runtime submission must identify the same
+        objects and version. An actor=customer confirmation event binds draft_id and draft_hash; no additional
+        prose customer message or repetition of every business field inside the token is required. A hash
+        alone is not proof that the business content was presented.
+      field_representations:
+        customer_id: The authenticated session binds the same customer; the opaque customer ID need not
+          be spoken or displayed.
+        policy_id: Display the policy ID or a unique policy line/description linked by a scoped policy
+          read; the saved policy ID must still be correct.
+        reason: Give a faithful ordinary-language reason for the current business request, including the
+          blocking/review condition where applicable; exact enum recitation is unnecessary.
+  grading_policy:
+    deterministic_hard_rules:
+    - policy_summary_before_authority_check
+    - draft_before_confirmation
+    - claim_acknowledgment_before_confirmation
+    - no_promise_disclosure_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - siu_check_before_handoff_draft
+    semantic_judge_rules:
+    - no_insurance_outcome_promise
+    - no_coverage_promise
+    - neutral SIU language without fraud accusation
+    hybrid_hint_rules:
+    - Outcome should be siu_review_handoff with status queued_for_neutral_review and accusation_made=false.
+    - Confirmed draft should use customer_id, policy_id, and reason from hidden_facts.
+rules:
+- policy_summary_before_authority_check
+- draft_before_confirmation
+- claim_acknowledgment_before_confirmation
+- no_promise_disclosure_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_insurance_outcome_promise
+- siu_check_before_handoff_draft
+max_turns: 30

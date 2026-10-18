@@ -1,0 +1,21 @@
+{
+  "bytes": 58374,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:44:28.566267+00:00",
+  "final_url": "https://www.law.cornell.edu/uscode/text/15/6802",
+  "id": "uscode__text__15__6802__3e75a25a3b",
+  "kind": "uscode",
+  "references": [
+    "docs/cite-snapshots/usc-15-6802.txt",
+    "tasks/insurance/IN-01.us.grader.yaml",
+    "tasks/insurance/IN-01.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:44:27 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "e4fd90884458c2558cc9c8af61a9c4ac8b969a6a37a4e0c32bc6f64da4c00ce1",
+  "source": "cornell_lii",
+  "source_last_modified": "Thu, 23 Apr 2026 19:56:29 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/uscode/text/15/6802",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}

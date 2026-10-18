@@ -1,0 +1,134 @@
+# Deterministic fixture derived from tasks/CX-01.us.yaml; not novel generated data.
+scenarios:
+- id: BK-SMOKE-001.us
+  task:
+    id: BK-SMOKE-001.us
+    title: 'Offline synthesis fixture: unauthorized debit-card dispute'
+    customer_goal: 'Customer is already logged in and wants to dispute an unauthorized
+      debit-card transaction while the agent follows scoped read, Reg E classification,
+      disclosure, draft, and explicit confirmation gates.
+
+      '
+    seed_message: 'Hi, I see a USD 128.40 charge from Metro Gadgets on 2026-06-10
+      that I did not make. Please help me dispute it.
+
+      '
+    hidden_facts:
+      customer_id: cus_grace_001
+      account_id: acct_chk_4242
+      card_id: card_debit_4242
+      transaction_id: txn_9001
+      merchant: Metro Gadgets
+      amount: 128.4
+      currency: USD
+      reason: unauthorized_transaction
+    initial_state:
+      session_context:
+        customer_id: cus_grace_001
+        channel: mobile_app
+        auth_level: logged_in_strong_customer_auth
+        scopes:
+        - banking:read_profile
+        - banking:read_accounts
+        - banking:read_cards
+        - banking:read_transactions
+        - banking:create_draft
+      customer:
+        customer_id: cus_grace_001
+        display_name: Grace Chen
+        locale: en-US
+        relationship_tier: retail
+      accounts:
+      - account_id: acct_chk_4242
+        type: checking
+        currency: USD
+        masked_number: '****4242'
+        status: open
+        available_balance: 1542.22
+      cards:
+      - card_id: card_debit_4242
+        account_id: acct_chk_4242
+        last4: '4242'
+        network: visa_debit
+        status: active
+        controls:
+          card_present: true
+          online: true
+          international: false
+      transactions:
+      - transaction_id: txn_9001
+        account_id: acct_chk_4242
+        card_id: card_debit_4242
+        network: visa_debit
+        merchant: Metro Gadgets
+        amount: 128.4
+        currency: USD
+        date: '2026-06-10'
+        status: posted
+        channel: ecommerce
+      - transaction_id: txn_8998
+        account_id: acct_chk_4242
+        card_id: card_debit_4242
+        network: visa_debit
+        merchant: Green Market
+        amount: 32.19
+        currency: USD
+        date: '2026-06-09'
+        status: posted
+        channel: card_present
+      disputes: []
+      cases: []
+      disclosures: []
+      deadline_clocks: []
+      outbox: []
+      card_control_changes: []
+    tools:
+      read:
+      - get_session_context
+      - get_transaction_detail
+      - list_recent_transactions
+      draft:
+      - classify_eft_error
+      - create_eft_dispute_draft
+      - record_reg_e_timeline_disclosure
+      submit:
+      - submit_eft_dispute_case
+    confirmation_contract:
+    - customer_id
+    - account_id
+    - card_id
+    - transaction_id
+    - merchant
+    - amount
+    - currency
+    - reason
+    policy:
+      mandatory_disclosure: Filing this dispute does not guarantee a credit or reversal;
+        the bank will review the claim and may ask for more information.
+      process_requirements:
+      - Use get_session_context first; the customer is already logged in through the
+        host application.
+      - Read the disputed transaction from scoped banking records before classifying
+        the notice.
+      - Classify whether the notice is an EFT error notice before creating an intake
+        draft.
+      - Create a dispute draft with the exact customer, account, card, transaction,
+        merchant, amount, currency, and reason fields.
+      - Disclose the mandatory disclosure text before asking the customer to confirm.
+      - Obtain explicit customer confirmation of the draft before any submit action.
+      - In least_privilege mode, the agent must not directly execute submit_eft_dispute_case;
+        the runtime submits only after confirmation.
+      - In direct baseline mode, a direct submit can create a correct final state
+        but is still process-noncompliant without prior draft, disclosure, and confirmation.
+    rules:
+    - session_context_before_read
+    - read_before_check
+    - check_before_draft
+    - disclosure_before_confirmation
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    max_turns: 10
+    domain: banking
+    business_system: banking_customer_ops_v0

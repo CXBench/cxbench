@@ -1,0 +1,38 @@
+# Runtime results are local artifacts, including nested runs directories.
+runs/
+generated/
+
+# Local credentials; keep reproducible configuration templates.
+.env
+.env.*
+!.env.example
+
+# Python environments, caches, and build products.
+.venv/
+venv/
+.runtime/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.uv-cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Downloaded tools and historical comparison checkouts.
+.tools/
+/uv
+/uvx
+/origin-repo/
+/references/*
+!/references/README.md
+
+# Local editor and operating-system files.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

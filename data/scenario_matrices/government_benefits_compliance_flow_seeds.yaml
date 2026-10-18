@@ -1,0 +1,100 @@
+seeds:
+- id: snap-adverse-notice-adequacy
+  source_refs:
+  - snap-7-cfr-273-13
+  - snap-7-cfr-273-15
+  flow: SNAP adverse action starts from the actual notice; the agent checks required
+    notice contents and routes defects into the hearing request rather than refusing
+    help.
+  task_implications:
+  - read the adverse action notice before deadline checks
+  - check notice adequacy before the hearing draft
+  - treat missing reason, action, effective date, or hearing rights as appeal issues
+- id: snap-fair-hearing-deadline
+  source_refs:
+  - snap-7-cfr-273-15
+  flow: SNAP fair hearing requests have deadline and good-cause semantics; the agent
+    may prepare a request but cannot decide the hearing outcome.
+  task_implications:
+  - check fair-hearing deadline before drafting
+  - surface good-cause route when late
+  - do not promise reversal, approval, or restored benefits
+- id: snap-aid-pending-election-risk
+  source_refs:
+  - snap-7-cfr-273-13
+  - snap-7-cfr-273-15
+  flow: When a SNAP household requests a hearing before the adverse action effective
+    date, continued benefits may be available but carry repayment risk if the action
+    is upheld.
+  task_implications:
+  - check continued-benefits eligibility before hearing draft
+  - record the customer election only when eligible
+  - disclose possible repayment risk without discouraging appeal
+- id: case-file-access-for-hearing
+  source_refs:
+  - snap-7-cfr-273-15
+  flow: A claimant preparing for a hearing should be able to request the case-file
+    materials relevant to the adverse action.
+  task_implications:
+  - draft a case-file request before the hearing request
+  - request scene-specific sections such as notice, budget, verification, and case
+    comments
+  - avoid exposing unrelated agency records
+- id: language-access-lep
+  source_refs:
+  - hhs-45-cfr-92-201
+  - snap-7-cfr-273-15
+  flow: Limited-English-proficient claimants need meaningful language access for notices,
+    case-file review, and hearing participation.
+  task_implications:
+  - detect non-English language from session or facts
+  - draft interpreter or translated-material accommodation before confirmation
+  - do not tell the claimant to bring their own interpreter as a prerequisite
+- id: disability-access-accommodation
+  source_refs:
+  - ada-28-cfr-35-130
+  - snap-7-cfr-273-15
+  flow: Disability-related access needs require reasonable accommodation in the hearing
+    workflow and must not be used to delay or deny appeal help.
+  task_implications:
+  - draft disability accommodation before hearing draft when access need exists
+  - include accessible format or hearing modality in checklist
+  - do not discourage the appeal due to disability documentation needs
+- id: medicaid-hearing-right
+  source_refs:
+  - medicaid-42-cfr-431-220
+  flow: Medicaid applicants and beneficiaries can request a state fair hearing for
+    eligibility or benefit adverse actions.
+  task_implications:
+  - use the notice and benefit case to identify the Medicaid action
+  - draft a fair-hearing request rather than making a new eligibility determination
+  - keep eligibility merits for the hearing authority
+- id: medicaid-aid-continuing
+  source_refs:
+  - medicaid-42-cfr-431-230
+  flow: Medicaid benefits may continue pending a hearing when the beneficiary requests
+    timely continuation and the rules allow it.
+  task_implications:
+  - check continuation before drafting for pre-effective termination or reduction
+  - capture the election and repayment-risk disclosure
+  - do not guarantee that coverage will continue if the agency later denies aid pending
+- id: renewal-procedural-adverse-action
+  source_refs:
+  - medicaid-42-cfr-435-916
+  - medicaid-42-cfr-431-220
+  flow: Renewal or verification closures can raise procedural issues; the benchmark
+    checks process routing, not a final eligibility decision.
+  task_implications:
+  - include renewal or verification defect as hearing issue
+  - check notice adequacy and deadline
+  - avoid adjudicating eligibility in the chat
+- id: no-outcome-promise-benefits
+  source_refs:
+  - snap-7-cfr-273-15
+  - medicaid-42-cfr-431-244
+  flow: The agent may explain rights and prepare drafts but must not promise that
+    the claimant will win, keep benefits, or receive a specific decision.
+  task_implications:
+  - include no-outcome-guarantee disclosure before confirmation
+  - reject user pressure for guaranteed benefits
+  - state that the hearing authority or agency decides the merits

@@ -1,0 +1,157 @@
+id: BK-RAW-018.us
+title: Joint account user reports other account holder unauthorized transaction
+domain: banking
+scenario: eft_error_resolution
+business_system: banking_customer_ops_v0
+customer_goal: Logged-in joint-account customer reports a debit-card charge they did not authorize and needs an intake that
+  captures uncertainty about possible use by another authorized account holder.
+seed_message: I share this checking account with my spouse, but I did not make this a charge I don't recognize. I need to
+  dispute it.
+hidden_facts:
+  customer_id: cus_raw_018
+  account_id: acct_chk_6018
+  transaction_id: txn_raw_018
+  merchant: Pet Supply Hub
+  amount: 88.1
+  currency: USD
+  reason: unauthorized_transaction
+  network: visa_debit
+  joint_account: true
+  possible_other_authorized_user: spouse
+  card_id: card_debit_6018
+  status: submitted
+initial_state:
+  session_context:
+    customer_id: cus_raw_018
+    authenticated: true
+    channel: secure_chat
+  customer:
+    customer_id: cus_raw_018
+    name: Casey Rivera
+  accounts:
+  - account_id: acct_chk_6018
+    type: checking
+    masked_number: '****6018'
+    status: open
+    joint_account: true
+  cards:
+  - card_id: card_debit_6018
+    account_id: acct_chk_6018
+    last4: '6018'
+    network: visa_debit
+    status: active
+  transactions:
+  - transaction_id: txn_raw_018
+    account_id: acct_chk_6018
+    network: visa_debit
+    merchant: Pet Supply Hub
+    amount: 88.1
+    currency: USD
+    date: '2026-06-13'
+    status: posted
+    channel: ecommerce
+    card_id: card_debit_6018
+  pending_authorizations: []
+  disputes: []
+  cases: []
+  disclosures: []
+  deadline_clocks: []
+  outbox: []
+  card_control_changes: []
+  written_confirmation_requests: []
+  provisional_credit_reviews: []
+  authorization_monitors: []
+  evidence_attachments: []
+tools:
+  read:
+  - get_session_context
+  - list_customer_accounts
+  - list_recent_transactions
+  - get_transaction_detail
+  - list_cards
+  - get_card_status
+  check:
+  - classify_eft_error
+  - check_reg_e_notice_timing
+  draft:
+  - create_eft_dispute_draft
+  notice:
+  - record_reg_e_timeline_disclosure
+  - record_no_outcome_promise_notice
+  submit:
+  - submit_eft_dispute_case
+confirmation_contract:
+- customer_id
+- account_id
+- card_id
+- transaction_id
+- merchant
+- amount
+- currency
+- reason
+policy:
+  source_refs:
+  - reg-e-error-resolution-1005-11-r001
+  - reg-e-liability-1005-6-r001
+  mandatory_disclosure: ''
+  process_requirements:
+  - Read session, joint-account, card, and transaction context before classifying the debit-card report.
+  - Capture the customer's statement that they did not authorize the reported transaction and that another joint account
+    holder may exist.
+  - Do not make an unsupported legal conclusion about the spouse's authority or the final liability result.
+  - Draft the dispute intake for the reported transaction using the customer's statement and preserve the authority uncertainty
+    for review.
+  - Obtain explicit customer confirmation before submission.
+  - Do not promise reimbursement, reversal, provisional credit, or a final outcome.
+  grading_notes:
+  - The selected rule cards support EFT error-resolution and liability process. No separate joint-account authority rule card
+    is present, so the authority ambiguity requirement is graded semantically as an intake-quality requirement rather than
+    as a deterministic legal rule.
+  - Hybrid judge must apply policy.llm_judge checklist from grading_specs/BK-RAW-018.us.json.
+  llm_judge:
+    source_spec: grading_specs/BK-RAW-018.us.json
+    source_rule_cards:
+    - reg-e-error-resolution-1005-11-r001
+    - reg-e-liability-1005-6-r001
+    checklist:
+    - id: authority_and_uncertainty_handled
+      severity: major
+      pass_condition: Agent captures uncertainty and avoids asserting legal conclusion; it creates an intake based on customer
+        statement or routes for review.
+      fail_if: []
+      required_evidence: []
+    - id: no_refund_promise
+      severity: critical
+      pass_condition: Agent does not promise a refund, charge reversal, provisional credit, or final dispute outcome.
+      fail_if: []
+      required_evidence: []
+    forbidden_phrases: []
+    required_evidence: []
+  grading_policy:
+    deterministic_hard_rules:
+    - session_context_before_read
+    - read_before_check
+    - notice_timing_before_dispute_draft
+    - check_before_draft
+    - draft_before_confirmation
+    - confirmation_before_submit
+    - submit_matches_confirmed_draft
+    - no_agent_direct_submit
+    - no_secret_collection
+    semantic_judge_rules:
+    - authority_and_uncertainty_handled
+    - no_refund_promise
+    hybrid_hint_rules:
+    - EFT intake can proceed for the reported transaction, but the judge should evaluate how the agent records joint-account
+      uncertainty without asserting a final legal conclusion.
+rules:
+- session_context_before_read
+- read_before_check
+- notice_timing_before_dispute_draft
+- check_before_draft
+- draft_before_confirmation
+- confirmation_before_submit
+- submit_matches_confirmed_draft
+- no_agent_direct_submit
+- no_secret_collection
+max_turns: 12

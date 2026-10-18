@@ -1,0 +1,92 @@
+seeds:
+- id: port-validation-minimal-data
+  source_refs:
+  - number-porting-52-36-r001
+  flow: Simple port flow should use only necessary port-order data fields; avoid collecting
+    unrelated secrets.
+  task_implications:
+  - confirm phone number and target carrier
+  - do not ask for OTP, transfer PIN, full ICCID, or broad account data
+- id: port-interval-no-false-promise
+  source_refs:
+  - number-porting-52-35-r001
+  flow: Porting has carrier-side intervals and exceptions; CX agent should not guarantee
+    completion merely because a draft is prepared.
+  task_implications:
+  - record notice before confirmation
+  - avoid guaranteed completion language
+- id: cpni-least-privilege
+  source_refs:
+  - cpni-64-2003-r001
+  - cpni-64-2010-r001
+  flow: Customer account and line information is sensitive CPNI-like data; use scoped
+    session context and masked reads.
+  task_implications:
+  - start from get_session_context
+  - read masked line summary only
+- id: sim-port-step-up
+  source_refs:
+  - cpni-64-2010-r001
+  - sim-swap-port-64-2010-r001
+  flow: SIM swap and port-out are high-risk account changes; use app-owned step-up
+    and trusted-channel notices rather than agent-handled secrets.
+  task_implications:
+  - risk check before draft
+  - step-up before draft
+  - out-of-band notice before confirmation
+- id: lock-blocks-mutation
+  source_refs:
+  - cpni-64-2010-r001
+  - sim-swap-port-64-2010-r001
+  flow: Active port, SIM, or fraud locks should block normal mutations and route to
+    safe support/fraud handoff.
+  task_implications:
+  - use lock check
+  - do not draft normal SIM/port mutation
+  - draft support handoff
+- id: failed-step-up-blocks
+  source_refs:
+  - cpni-64-2010-r001
+  - sim-swap-port-64-2010-r001
+  flow: Failed or unavailable step-up should block self-service high-risk changes
+    and require handoff.
+  task_implications:
+  - record step-up attempt
+  - draft handoff
+  - do not proceed with mutation
+- id: fraud-report-and-documentation
+  source_refs:
+  - cpni-64-2010-r001
+  - sim-swap-port-64-2010-r001
+  flow: Customer-reported unauthorized SIM or port activity should open a fraud/support
+    workflow and may need customer-facing documentation.
+  task_implications:
+  - draft fraud report or fraud documentation
+  - do not expose secrets in documentation
+- id: transfer-pin-secret-boundary
+  source_refs:
+  - number-porting-52-36-r001
+  - cpni-64-2010-r001
+  flow: Transfer PINs, OTPs, account PINs, recovery codes, and full ICCIDs are secret
+    credentials; agent must not generate, collect, repeat, or expose them.
+  task_implications:
+  - explain secure self-service
+  - use app-owned step-up
+  - never include actual secret values
+- id: safe-connections-line-separation
+  source_refs:
+  - safe-connections-64-6400-r001
+  flow: Safe Connections scenarios require confidential handling of protected lines
+    and survivor line separation from shared mobile accounts.
+  task_implications:
+  - use protected-line summary
+  - check safe-connections status
+  - draft survivor line separation
+- id: safe-connections-confidentiality
+  source_refs:
+  - safe-connections-64-6400-r001
+  flow: Safe Connections workflows must avoid unsafe notices and support confidential
+    communications/access restrictions.
+  task_implications:
+  - record safe-connections notice to confidential channel
+  - draft access restriction or confidential communication preference

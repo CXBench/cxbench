@@ -1,0 +1,22 @@
+{
+  "bytes": 62744,
+  "content_type": "text/html; charset=utf-8",
+  "fetched_at": "2026-06-13T14:37:24.347753+00:00",
+  "final_url": "https://www.law.cornell.edu/cfr/text/31/1020.220",
+  "id": "cfr__text__31__1020.220__da1ebfb053",
+  "kind": "cfr",
+  "references": [
+    "docs/cite-snapshots/cfr-31-1020-220-a-2.txt",
+    "docs/cite-snapshots/cfr-31-1020-220.txt",
+    "tasks/banking/CX-02.us.grader.yaml",
+    "tasks/banking/CX-02.us.yaml"
+  ],
+  "retrieved_http_date": "Sat, 13 Jun 2026 14:37:23 GMT",
+  "robots_crawl_delay_seconds": 10,
+  "sha256": "d88710aa178c4a756ce8546025bfaf531dc788846ed61866ae560b6547ca579f",
+  "source": "cornell_lii",
+  "source_last_modified": "Wed, 14 Jan 2026 21:38:20 GMT",
+  "status": 200,
+  "url": "https://www.law.cornell.edu/cfr/text/31/1020.220",
+  "user_agent": "cxbench-lii-corpus/0.1 (research; respects law.cornell.edu robots crawl-delay)"
+}
