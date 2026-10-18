@@ -41,7 +41,8 @@ def test_release_defaults_select_revised_six_domain_corpus():
     paths = sorted(ROOT.glob(DEFAULT_TASK))
     assert len(paths) == 120
     assert len({TaskSpec.load(path).domain for path in paths}) == 6
-    assert all("judge-v20260917" in str(path) for path in paths)
+    releases = [path.name for path in (ROOT / "benchmarks").iterdir() if path.is_dir()]
+    assert releases == ["cxbench-120"]
 
 
 def test_public_generation_fixture_accepts_and_executes(tmp_path):
@@ -106,17 +107,17 @@ def test_codex_executor_uses_public_cli_and_prompt_stdin(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize("resume", [False, True])
-def test_crs_shell_preserves_smoke_selection_and_external_outputs(tmp_path, resume):
+def test_openai_shell_preserves_smoke_selection_and_external_outputs(tmp_path, resume):
     executable = tmp_path / "uv"
     executable.write_text(
         f"#!{sys.executable}\n"
         "import json, os, sys\n"
-        "print(json.dumps({'args': sys.argv[1:], 'base': os.environ.get('CRS_OAI_BASE_URL')}))\n"
+        "print(json.dumps({'args': sys.argv[1:], 'base': os.environ.get('OPENAI_BASE_URL')}))\n"
     )
     executable.chmod(0o755)
     env = {key: value for key, value in os.environ.items() if not key.startswith("CXBENCH_")}
     env["PATH"] = f"{tmp_path}{os.pathsep}{env['PATH']}"
-    env.pop("CRS_OAI_BASE_URL", None)
+    env.pop("OPENAI_BASE_URL", None)
     command = [
         "bash",
         str(ROOT / "run.sh"),
@@ -135,4 +136,7 @@ def test_crs_shell_preserves_smoke_selection_and_external_outputs(tmp_path, resu
     assert argv[argv.index("--task") + 1].endswith("BK-RAW-001.us.yaml")
     assert argv[argv.index("--runs-dir") + 1] == str(tmp_path / "results")
     assert argv[argv.index("-m") + 1] == f"main_experiment.{'resume' if resume else 'run'}"
+    assert argv[argv.index("--agent-provider") + 1] == "openai"
+    assert argv[argv.index("--judge-provider") + 1] == "openai"
+    assert argv[argv.index("--user-model") + 1].startswith("openai:")
     assert captured["base"] is None  # Leave dotenv endpoint selection to the provider loader.

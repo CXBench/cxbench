@@ -43,7 +43,7 @@ def test_ablation_removes_only_target_rule_without_mutating_source() -> None:
 
 
 def test_derived_task_is_ablated_and_source_is_unchanged(tmp_path: Path) -> None:
-    source = REPO_ROOT / "benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml"
+    source = REPO_ROOT / "benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml"
     source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
 
     derived_paths, provenance = write_ablated_task_specs((source,), tmp_path / "task_specs")
@@ -62,7 +62,7 @@ def test_derived_task_is_ablated_and_source_is_unchanged(tmp_path: Path) -> None
 
 
 def test_direct_submit_is_not_graded_by_removed_rule(tmp_path: Path) -> None:
-    source = REPO_ROOT / "benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml"
+    source = REPO_ROOT / "benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml"
     raw = yaml.safe_load(source.read_text(encoding="utf-8"))
     derived, _ = ablate_task_mapping(raw)
     task = TaskSpec.from_mapping(derived, tmp_path / source.name)
@@ -87,7 +87,7 @@ def test_launcher_is_direct_only_and_reuses_model_eval_batch(monkeypatch, tmp_pa
         ["--env-file", str(tmp_path / "missing.env"), "--limit", "1", "--run-id", "ablation-test"]
     )
     config = resolve_config(args, require_api_key=False)
-    task_spec = REPO_ROOT / "benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml"
+    task_spec = REPO_ROOT / "benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml"
 
     command = build_batch_command(config, (task_spec,))
 

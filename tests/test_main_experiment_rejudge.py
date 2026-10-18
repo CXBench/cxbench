@@ -417,7 +417,7 @@ def test_resume_dry_run_has_no_writes_or_requests(interrupted_rejudge, capsys):
     "extra,message",
     [
         (["--judge-model", "different-model"], "judge-model differs"),
-        (["--judge-provider", "crs"], "judge-provider differs"),
+        (["--judge-provider", "deepseek"], "judge-provider differs"),
         (["--max-output-tokens", "4096"], "max-output-tokens differs"),
     ],
 )

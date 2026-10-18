@@ -1634,7 +1634,6 @@ def build_agent(model: str, mode: str, task: TaskSpec) -> AgentAdapter:
         "deepseek:",
         "openrouter:",
         "siliconflow:",
-        "crs:",
     )
     if any(model.startswith(p) for p in _provider_prefixes):
         return OpenAICompatibleAgent(task, mode, model)

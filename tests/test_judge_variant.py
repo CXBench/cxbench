@@ -14,22 +14,28 @@ from cxbench.task_schema import TaskSpec
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE = ROOT / "benchmarks/cxbench-banking-judge-v20260917"
-SOURCE = ROOT / "benchmarks/cxbench-120-v20260708/tasks"
+RELEASE = ROOT / "benchmarks/cxbench-120"
 TASKS = sorted((RELEASE / "tasks").glob("*.yaml"))
+MANIFEST = json.loads((RELEASE / "release_manifest.json").read_text())
+ENTRIES = {entry["id"]: entry for entry in MANIFEST["task_files"]}
+
+
+def _digest(value):
+    encoded = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode()).hexdigest()
 
 
 @pytest.mark.parametrize("path", TASKS, ids=lambda p: p.stem)
 def test_revised_task_preserves_business_contract_and_provenance(path):
-    original = yaml.safe_load((SOURCE / path.name).read_text())
     revised = yaml.safe_load(path.read_text())
-    old_judge = original["policy"].pop("llm_judge")
     new_judge = revised["policy"].pop("llm_judge")
-
-    assert revised == original
-    assert new_judge["source_spec"] == old_judge["source_spec"]
-    assert new_judge["source_rule_cards"] == old_judge["source_rule_cards"]
-    old_ids = [item["id"] for item in old_judge["checklist"]]
+    entry = ENTRIES[revised["id"]]
+    assert _digest(revised) == entry["business_contract_sha256"]
+    assert (
+        _digest({key: new_judge[key] for key in ("source_spec", "source_rule_cards")})
+        == entry["judge_provenance_sha256"]
+    )
+    old_ids = entry["source_checklist_ids"]
     new_ids = [item["id"] for item in new_judge["checklist"]]
     if revised["domain"] != "banking":
         assert new_ids == old_ids
@@ -83,9 +89,7 @@ def test_revised_release_manifest_covers_all_six_domains_and_hashes():
     for entry in entries:
         path = RELEASE / entry["file"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"]
-        source = RELEASE / entry["source_file"]
-        assert source.resolve() == (SOURCE / path.name).resolve()
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == entry["source_sha256"]
+        assert len(entry["source_sha256"]) == 64
         task = TaskSpec.load(path)
         assert task.id == entry["id"]
         assert task.title == entry["title"]

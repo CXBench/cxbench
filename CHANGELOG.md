@@ -4,10 +4,10 @@
 
 - Consolidate runtime, six-domain revised experiments, data synthesis, corpus,
   tests, and reusable analysis into a standalone source tree.
-- Default to the revised 120-task release; preserve the original release for
-  explicit comparisons and keep released task hashes unchanged.
-- Repair CRS smoke resume and external output selection; preserve dotenv
-  endpoint settings and streaming Responses transport.
+- Distribute only the revised 120-task corpus under `benchmarks/cxbench-120/`;
+  keep task hashes and historical provenance metadata unchanged.
+- Use standard OpenAI API variables and the official endpoint by default.
+  Support smoke resume, external outputs, and configurable Responses streaming.
 - Replace private generation-worker tooling with standard Codex CLI invocation.
   Add executable templates, reject incomplete local inputs and unknown tools,
   protect existing generation runs, and detect edits after validation.

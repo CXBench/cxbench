@@ -10,7 +10,7 @@ from cxbench.adapters import _tool_schema
 
 
 MATRIX = Path("data/scenario_matrices/healthcare_appeal_v1.yaml")
-CANDIDATE_DIR = Path("benchmarks/cxbench-120-v20260708/tasks")
+CANDIDATE_DIR = Path("benchmarks/cxbench-120/tasks")
 
 
 def _load_matrix_tasks():

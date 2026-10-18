@@ -98,25 +98,15 @@ class OpenAICompatConfig:
             )
         if not model.startswith("openai:"):
             raise OpenAICompatError(
-                f"{role} model must use openai:<model>, crs:<model>, deepseek:<model>, openrouter:<model>, "
+                f"{role} model must use openai:<model>, deepseek:<model>, openrouter:<model>, "
                 f"siliconflow:<model>, or shubiaobiao:<model>, got {model!r}"
             )
 
-        key_source = _first_present_env("OPENAI_API_KEY", "OPENROUTER_API_KEY", "CRS_OAI_KEY")
-        if not key_source:
-            raise OpenAICompatError(
-                f"{role} requires OPENAI_API_KEY, OPENROUTER_API_KEY, or CRS_OAI_KEY for OpenAI-compatible calls"
-            )
-        key_name, api_key = key_source
-        base_url = _default_base_url(key_name)
-        if key_name == "CRS_OAI_KEY":
-            raw_wire_api = os.environ.get("CRS_OAI_WIRE_API") or os.environ.get("OPENAI_WIRE_API")
-        else:
-            raw_wire_api = os.environ.get("OPENAI_WIRE_API")
-        if not raw_wire_api:
-            wire_api = "responses" if key_name == "CRS_OAI_KEY" else "chat"
-        else:
-            wire_api = raw_wire_api
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise OpenAICompatError(f"{role} requires OPENAI_API_KEY for openai:<model> calls")
+        base_url = os.environ.get("OPENAI_BASE_URL") or "https://api.openai.com/v1"
+        wire_api = os.environ.get("OPENAI_WIRE_API") or "responses"
         if wire_api not in {"chat", "responses"}:
             raise OpenAICompatError("OPENAI_WIRE_API must be 'chat' or 'responses'")
         return cls(
@@ -124,7 +114,7 @@ class OpenAICompatConfig:
             base_url=base_url.rstrip("/"),
             api_key=api_key,
             wire_api=wire_api,
-            provider=_provider_name(key_name),
+            provider="openai",
             timeout_seconds=int(
                 os.environ.get(
                     "OPENAI_TIMEOUT_SECONDS",
@@ -321,7 +311,7 @@ class OpenAICompatibleClient:
         instructions, input_items = _messages_to_responses_input(messages)
         if response_format and response_format.get("type") == "json_object":
             instructions = f"{instructions}\nReturn only one valid JSON object."
-        stream = _responses_stream_enabled(self.config.provider)
+        stream = _responses_stream_enabled()
         payload: Dict[str, Any] = {
             "model": self.config.model,
             "input": input_items,
@@ -329,7 +319,7 @@ class OpenAICompatibleClient:
             "stream": stream,
             "max_output_tokens": int(os.environ.get("OPENAI_MAX_OUTPUT_TOKENS", "1024")),
         }
-        reasoning_effort = _responses_reasoning_effort(self.config.provider)
+        reasoning_effort = os.environ.get("OPENAI_REASONING_EFFORT", "low")
         if reasoning_effort:
             payload["reasoning"] = {"effort": reasoning_effort}
         if response_format and response_format.get("type") == "json_schema":
@@ -598,24 +588,17 @@ def apply_provider_env(provider: str, dotenv: Dict[str, str]) -> Dict[str, str |
     mappings = _provider_env_mappings(dotenv)
     if provider not in mappings:
         raise ValueError(
-            f"unknown provider {provider!r}; expected crs, openai, deepseek, openrouter, siliconflow, shubiaobiao, or same"
+            f"unknown provider {provider!r}; expected openai, deepseek, openrouter, siliconflow, shubiaobiao, or same"
         )
-    base_managed_keys = (
+    managed_keys = (
         "OPENAI_API_KEY",
         "OPENAI_BASE_URL",
         "OPENAI_WIRE_API",
         "OPENROUTER_API_KEY",
         "OPENROUTER_BASE_URL",
     )
-    crs_managed_keys = (
-        "CRS_OAI_KEY",
-        "CRS_OAI_BASE_URL",
-        "CRS_OAI_WIRE_API",
-    )
-    managed_keys = base_managed_keys + crs_managed_keys
     old = {key: os.environ.get(key) for key in managed_keys}
-    clear_keys = managed_keys if provider == "crs" else base_managed_keys
-    for key in clear_keys:
+    for key in managed_keys:
         os.environ.pop(key, None)
     for key, value in mappings[provider].items():
         if value:
@@ -635,29 +618,14 @@ def restore_provider_env(old: Dict[str, str | None]) -> None:
 
 def _provider_env_mappings(dotenv: Dict[str, str]) -> Dict[str, Dict[str, str | None]]:
     return {
-        "crs": {
-            "CRS_OAI_KEY": os.environ.get("CRS_OAI_KEY")
-            or dotenv.get("CRS_OAI_KEY")
-            or dotenv.get("OPENAI_APIKEY"),
-            "CRS_OAI_BASE_URL": os.environ.get("CRS_OAI_BASE_URL")
-            or dotenv.get("CRS_OAI_BASE_URL")
-            or dotenv.get("CRS_OAI_BASEURL")
-            or "https://crs.uuid.im/openai/v1",
-            "OPENAI_WIRE_API": os.environ.get("CRS_OAI_WIRE_API")
-            or os.environ.get("OPENAI_WIRE_API")
-            or dotenv.get("CRS_OAI_WIRE_API")
-            or dotenv.get("OPENAI_WIRE_API")
-            or "responses",
-        },
         "openai": {
             "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY")
             or dotenv.get("OPENAI_API_KEY")
-            or dotenv.get("OPENAI_APIKEY")
-            or dotenv.get("CRS_OAI_KEY"),
+            or dotenv.get("OPENAI_APIKEY"),
             "OPENAI_BASE_URL": os.environ.get("OPENAI_BASE_URL")
             or dotenv.get("OPENAI_BASE_URL")
             or dotenv.get("OPENAI_BASEURL")
-            or dotenv.get("CRS_OAI_BASE_URL"),
+            or "https://api.openai.com/v1",
             "OPENAI_WIRE_API": os.environ.get("OPENAI_WIRE_API")
             or dotenv.get("OPENAI_WIRE_API")
             or dotenv.get("OPENAI_WIREAPI")
@@ -725,7 +693,7 @@ def _first_present_env(*names: str) -> Optional[tuple[str, str]]:
 
 
 def _explicit_provider_model(model: str) -> Optional[tuple[str, str]]:
-    for provider in ("crs", "deepseek", "openrouter", "siliconflow", "shubiaobiao"):
+    for provider in ("deepseek", "openrouter", "siliconflow", "shubiaobiao"):
         prefix = f"{provider}:"
         if model.startswith(prefix):
             return provider, model.split(":", 1)[1]
@@ -734,7 +702,6 @@ def _explicit_provider_model(model: str) -> Optional[tuple[str, str]]:
 
 def _key_for_explicit_provider(provider: str, role: str) -> str:
     aliases = {
-        "crs": ("CRS_OAI_KEY", "OPENAI_APIKEY"),
         "deepseek": ("DEEPSEEK_API_KEY", "DEEPSEEK_APIKEY"),
         "openrouter": ("OPENROUTER_API_KEY", "OPENROUTER_APIKEY"),
         "siliconflow": ("SILICONFLOW_API_KEY", "SILICONFLOW_APIKEY"),
@@ -748,12 +715,6 @@ def _key_for_explicit_provider(provider: str, role: str) -> str:
 
 
 def _explicit_provider_base_url(provider: str) -> str:
-    if provider == "crs":
-        return (
-            os.environ.get("CRS_OAI_BASE_URL")
-            or os.environ.get("CRS_OAI_BASEURL")
-            or "https://crs.uuid.im/openai/v1"
-        )
     if provider == "deepseek":
         value = os.environ.get("DEEPSEEK_BASE_URL") or os.environ.get("DEEPSEEK_BASEURL")
         if not value:
@@ -783,9 +744,7 @@ def _explicit_provider_base_url(provider: str) -> str:
 
 
 def _explicit_provider_wire_api(provider: str) -> str:
-    if provider == "crs":
-        wire_api = os.environ.get("CRS_OAI_WIRE_API") or "responses"
-    elif provider == "deepseek":
+    if provider == "deepseek":
         wire_api = (
             os.environ.get("DEEPSEEK_WIRE_API") or os.environ.get("OPENAI_WIRE_API") or "chat"
         )
@@ -806,24 +765,6 @@ def _explicit_provider_wire_api(provider: str) -> str:
     if wire_api not in {"chat", "responses"}:
         raise OpenAICompatError(f"{provider} wire API must be 'chat' or 'responses'")
     return wire_api
-
-
-def _default_base_url(key_name: str) -> str:
-    if key_name == "OPENROUTER_API_KEY":
-        return os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-    if key_name == "CRS_OAI_KEY":
-        return os.environ.get("CRS_OAI_BASE_URL") or os.environ.get(
-            "OPENAI_BASE_URL", "https://crs.uuid.im/openai/v1"
-        )
-    return os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-
-
-def _provider_name(key_name: str) -> str:
-    if key_name == "CRS_OAI_KEY":
-        return "crs"
-    if key_name == "OPENROUTER_API_KEY":
-        return "openrouter"
-    return "openai"
 
 
 def _messages_to_responses_input(
@@ -908,24 +849,17 @@ def _responses_to_chat_compat(response: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _responses_stream_enabled(provider: str) -> bool:
-    name = "CRS_OAI_RESPONSES_STREAM" if provider == "crs" else "OPENAI_RESPONSES_STREAM"
+def _responses_stream_enabled() -> bool:
+    name = "OPENAI_RESPONSES_STREAM"
     raw = os.environ.get(name)
     if raw is None or not raw.strip():
-        return provider != "crs"
+        return True
     normalized = raw.strip().lower()
     if normalized in {"1", "true", "yes", "on"}:
         return True
     if normalized in {"0", "false", "no", "off"}:
         return False
     raise OpenAICompatError(f"{name} must be true or false")
-
-
-def _responses_reasoning_effort(provider: str) -> str | None:
-    if provider == "crs":
-        value = os.environ.get("CRS_OAI_REASONING_EFFORT")
-        return value.strip() if value and value.strip() else None
-    return os.environ.get("OPENAI_REASONING_EFFORT", "low")
 
 
 _JSON_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.IGNORECASE | re.MULTILINE)

@@ -8,8 +8,8 @@ LLM judge with task-specific semantic checklists.
 
 This source release includes data synthesis, six simulated domains, a revised
 120-task benchmark, resumable experiments, trace rejudging, and offline scoring.
-The revised protocol is the default. The original task release is retained for
-explicit comparisons. No historical results or credentials are included.
+One task corpus is distributed under `benchmarks/cxbench-120/`, using the revised
+experimental protocol. No historical results or credentials are included.
 
 [中文使用说明](docs/quickstart.zh-CN.md) · [Experiment protocol](docs/experiments.md) ·
 [Data synthesis](docs/generation.md) · [Provider configuration](docs/providers.md) ·
@@ -48,34 +48,36 @@ experiment entry points, benchmark YAML files, or tests.
 These select 120 revised tasks and one revised banking task respectively. They
 validate options and task schemas without creating run artifacts.
 
-### 2. Configure CRS privately
+### 2. Configure OpenAI privately
 
 ```bash
 cp .env.example .env
 ```
 
-Set `CRS_OAI_KEY` in `.env`. Keep this file private. The launcher uses the CRS
-Responses API with streaming enabled and `gpt-5.6-sol` for all three roles by
+Set `OPENAI_API_KEY` in `.env`. Keep this file private. The default endpoint is
+`https://api.openai.com/v1`. The launcher uses the OpenAI Responses API with
+streaming enabled by default and `gpt-5.6-sol` for all three roles by
 default. Model availability depends on the endpoint. To select another supported
 model, set `CXBENCH_AGENT_MODEL`, `CXBENCH_USER_MODEL`, and
-`CXBENCH_JUDGE_MODEL` in the **shell environment**; use the `crs:` prefix for
-user and judge models. See [providers](docs/providers.md) for other endpoints.
+`CXBENCH_JUDGE_MODEL` in the **shell environment**; use the `openai:` prefix for
+user and judge models. See [API configuration](docs/providers.md) for request
+settings and explicitly configured compatible endpoints.
 
 ### 3. Run a live smoke test
 
 ```bash
-./run.sh --smoke-test --run-id crs-smoke
+./run.sh --smoke-test --run-id openai-smoke
 ```
 
 This makes real, billable API calls for the agent, user simulator, and hybrid
-judge. Artifacts appear under `runs/main_experiment/crs-smoke/`.
+judge. Artifacts appear under `runs/main_experiment/openai-smoke/`.
 A successfully executed task may receive a failing benchmark verdict: execution
 success and compliance success are different measurements.
 
 To resume the same smoke test, retain the task selection and model settings:
 
 ```bash
-./run.sh --smoke-test --resume --run-id crs-smoke
+./run.sh --smoke-test --resume --run-id openai-smoke
 ```
 
 Completed verdicts, including failures, are reused. A judge retry uses the saved
@@ -84,8 +86,8 @@ trace. It does not rerun the agent to seek a passing verdict.
 ### 4. Run the full revised benchmark
 
 ```bash
-./run.sh --run-id crs-revised-120 --concurrency 1
-./run.sh --resume --run-id crs-revised-120 --concurrency 1
+./run.sh --run-id openai-120 --concurrency 1
+./run.sh --resume --run-id openai-120 --concurrency 1
 ```
 
 The launcher defaults to one process, a 1,200-second per-attempt task timeout,
@@ -137,10 +139,10 @@ from the released benchmark. [Full generation guide](docs/generation.md).
 | Utilities | 20 |
 | Government benefits | 20 |
 
-The default directory is `benchmarks/cxbench-banking-judge-v20260917/`. Its historical
-name includes “banking”, but it contains all six domains. Each released task has
-a SHA-256 entry in its manifest. Only `policy.llm_judge` differs from the matching
-task in `cxbench-120-v20260708`; the fixed judge prompt is also versioned.
+The single release is `benchmarks/cxbench-120/`, covering all six domains.
+Each task has a SHA-256 entry in its manifest. Business-contract hashes and
+historical source metadata preserve provenance without shipping a duplicate
+task corpus. The semantic rubrics and fixed judge prompt are also versioned.
 
 **Formal results require `hybrid`.** Rule-only grading supports offline tests and
 ablations. LLM-only grading is a diagnostic view. Neither alone is a formal
@@ -156,18 +158,18 @@ batches also receive `paper_scores/` with offline aggregate statistics.
 
 ```bash
 uv run --frozen python -m main_experiment.score \
-  --batch gpt-5.6-sol=runs/main_experiment/crs-revised-120 \
+  --batch gpt-5.6-sol=runs/main_experiment/openai-120 \
   --output runs/scores/revised-120
 
 uv run --frozen python -m main_experiment.rejudge \
-  --batch runs/main_experiment/crs-smoke \
-  --output runs/rejudged/crs-smoke \
-  --judge-provider crs --judge-model crs:gpt-5.6-sol
+  --batch runs/main_experiment/openai-smoke \
+  --output runs/rejudged/openai-smoke \
+  --judge-provider openai --judge-model openai:gpt-5.6-sol
 ```
 
 Scoring rejects incomplete batches, duplicate task IDs, changed task hashes, and
 incompatible task sets across models. Rejudging writes a separate output batch.
-Never mix original and revised tasks in a single selection: their IDs overlap.
+Keep derived tasks and ablation outputs separate from the canonical release.
 
 ## Repository map
 
@@ -177,11 +179,11 @@ Never mix original and revised tasks in a single selection: their IDs overlap.
 | `main_experiment/` | Run, resume, rejudge, and formal scoring |
 | `model_eval/` | Advanced domain selection and compatible evaluation launchers |
 | `no_agent_direct_submit_ablation/` | Explicit direct-submission rule ablation |
-| `benchmarks/` | Original and revised task releases and integrity manifests |
+| `benchmarks/cxbench-120/` | The single 120-task release and integrity manifest |
 | `tasks/` | Small runtime examples and regression fixtures |
 | `data/` | Policy corpus, source metadata, and scenario matrices |
 | `configs/` | Portable generation configurations |
-| `scripts/` | Batch worker, CRS launcher, corpus downloader/converter |
+| `scripts/` | Batch worker, OpenAI launcher, corpus downloader/converter |
 | `tests/` | Offline regression tests, mocked provider tests, release checks |
 | `docs/` | User guides, protocol, architecture, provenance, domain contracts |
 

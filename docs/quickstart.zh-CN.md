@@ -1,7 +1,7 @@
 # 中文使用说明
 
 这份代码整合了数据合成、六个领域的模拟业务系统、新版 120 任务实验、失败重试、
-断点恢复、同轨迹重评和离线统计。主入口以新版实验为基准；原始任务集用于显式对照。
+断点恢复、同轨迹重评和离线统计。仅保留 `benchmarks/cxbench-120/` 这一套新版任务。
 
 ## 安装与离线检查
 
@@ -23,31 +23,32 @@ uv run --frozen pytest -q
 cp .env.example .env
 ```
 
-在 `.env` 中填入自己的 `CRS_OAI_KEY`。不要把密钥、`.env` 或运行日志提交到公开仓库。
-CRS 默认使用 Responses API，且必须开启流式响应。`./run.sh` 已处理该设置。
+在 `.env` 中填入自己的 `OPENAI_API_KEY`。不要把密钥、`.env` 或运行日志提交到公开仓库。
+默认连接 `https://api.openai.com/v1`，使用 Responses API；流式响应默认开启，
+可通过 `OPENAI_RESPONSES_STREAM` 配置。
 
 ```bash
-./run.sh --smoke-test --run-id crs-smoke
+./run.sh --smoke-test --run-id openai-smoke
 ```
 
-默认 agent、user simulator、judge 都使用 CRS 的 `gpt-5.6-sol`。
-这一步有真实 API 调用和费用，结果保存在 `runs/main_experiment/crs-smoke/`。
+默认 agent、user simulator、judge 都使用 OpenAI 的 `gpt-5.6-sol`。
+这一步有真实 API 调用和费用，结果保存在 `runs/main_experiment/openai-smoke/`。
 运行成功不等于合规评分通过；`ok=true` 且 verdict 为 `fail` 可以是有效实验结果。
 
 如需替换模型，在 shell 环境中设置 `CXBENCH_AGENT_MODEL`、`CXBENCH_USER_MODEL`、
-`CXBENCH_JUDGE_MODEL`。后两者使用 `crs:模型名`。模型必须在对应 CRS 账户上可用。
+`CXBENCH_JUDGE_MODEL`。后两者使用 `openai:模型名`。模型必须在对应 OpenAI 账户上可用。
 
 ## 全量实验与恢复
 
 ```bash
-./run.sh --run-id crs-revised-120 --concurrency 1
-./run.sh --resume --run-id crs-revised-120 --concurrency 1
+./run.sh --run-id openai-120 --concurrency 1
+./run.sh --resume --run-id openai-120 --concurrency 1
 ```
 
 烟测恢复时保留 `--smoke-test`：
 
 ```bash
-./run.sh --smoke-test --resume --run-id crs-smoke
+./run.sh --smoke-test --resume --run-id openai-smoke
 ```
 
 恢复使用原任务选择、模型和运行目录，校验任务哈希。已完成的失败 verdict 也会复用，
@@ -56,8 +57,8 @@ CRS 默认使用 Responses API，且必须开启流式响应。`./run.sh` 已处
 并非整个批次有 1,200 秒上限。持续错误时应中断并检查日志。
 
 `--runs-dir /path/to/results` 可将结果写到仓库外。
-新版路径名保留了 `banking`，但实际覆盖六个领域，每个领域 20 任务。
-不要同时选入原版和新版任务，它们的任务 ID 相同。
+唯一的 `benchmarks/cxbench-120/` 覆盖六个领域，每个领域 20 任务。
+任务文件保持新版实验的内容，历史来源通过清单中的哈希记录。
 
 ## 数据合成
 
@@ -80,10 +81,10 @@ uv run --frozen cxbench accept \
 uv run --frozen cxbench generate \
   --config configs/benchmark_generation/banking.yaml \
   --executor codex --workers 1 --out generated/banking-new \
-  --review-model crs:gpt-5.6-sol
+  --review-model openai:gpt-5.6-sol
 ```
 
-Codex CLI 的认证独立于本项目 `.env`；示例中的质量审查使用 CRS。
+Codex CLI 的认证独立于本项目 `.env`；示例中的质量审查使用 OpenAI。
 每次生成使用新的输出目录，避免覆盖旧候选。静态校验通过之后仍需审查语义与来源，
 并实际执行候选任务。[完整合成说明](generation.md)包含配置格式、反馈修复与语料更新方法。
 

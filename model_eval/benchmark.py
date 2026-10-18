@@ -94,7 +94,7 @@ def build_parser() -> argparse.ArgumentParser:
         description="Evaluate one OpenAI model on the released cxbench benchmark.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--api-key", help="API key; prefer CXBENCH_API_KEY in model_eval/.env")
+    parser.add_argument("--api-key", help="API key; prefer OPENAI_API_KEY in model_eval/.env")
     parser.add_argument("--model", help=f"bare OpenAI model name (default: {DEFAULT_MODEL})")
     parser.add_argument("--judge-model", help="hybrid judge model; defaults to the evaluated model")
     parser.add_argument(
@@ -131,7 +131,7 @@ def resolve_config(args: argparse.Namespace, *, require_api_key: bool = True) ->
     env_file = _load_env_file(Path(args.env_file).expanduser().resolve())
     api_key = _resolve_value(args.api_key, ("CXBENCH_API_KEY", "OPENAI_API_KEY"), env_file)
     if require_api_key and (not api_key or api_key == "replace_me"):
-        raise ConfigError("API key is required via --api-key or CXBENCH_API_KEY")
+        raise ConfigError("API key is required via --api-key or OPENAI_API_KEY")
 
     model = normalize_model(
         _resolve_value(args.model, ("CXBENCH_MODEL",), env_file) or DEFAULT_MODEL
@@ -142,7 +142,10 @@ def resolve_config(args: argparse.Namespace, *, require_api_key: bool = True) ->
     user_model = normalize_model(
         _resolve_value(args.user_model, ("CXBENCH_USER_MODEL",), env_file) or model
     )
-    raw_url = _resolve_value(args.base_url, ("CXBENCH_BASE_URL",), env_file) or DEFAULT_BASE_URL
+    raw_url = (
+        _resolve_value(args.base_url, ("CXBENCH_BASE_URL", "OPENAI_BASE_URL"), env_file)
+        or DEFAULT_BASE_URL
+    )
     endpoint = normalize_endpoint(raw_url, DEFAULT_WIRE_API)
     max_output_tokens = _positive_setting(
         args.max_output_tokens,

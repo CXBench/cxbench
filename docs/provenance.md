@@ -13,17 +13,18 @@ content exists in the named commit. Source fingerprint inventories are kept in
 the local verification artifacts. Personal directory paths and private results
 are intentionally excluded from the public tree.
 
-The task manifests retain byte-level provenance. Both the original 120 tasks
-and revised 120 tasks are included without rewriting task files. The revised
-release changes only the inline semantic judge rubric relative to each original
-task. Corpus snapshots retain their source metadata.
+The task manifest retains byte-level provenance for the single distributed
+120-task corpus in `benchmarks/cxbench-120/`. Its task YAML is unchanged from the
+updated experiment snapshot. Historical source hashes, business-contract hashes,
+and checklist provenance are retained as metadata without a second task folder.
+Corpus snapshots retain their source metadata.
 
 ## Preserved experimental behavior
 
 This export retains the updated runtime, domain tools, confirmation/submission
 mechanics, task budgets, judge prompt and checklists, provider retry policy,
 unlimited execution retries, same-trace judge retries, recovery checks, and
-hybrid scoring. The old task release remains available for explicit comparisons.
+hybrid scoring. The public API entry points use standard OpenAI configuration.
 
 The README uses outcome/process and trace-evidence terminology consistent with
 the accompanying research design. Private manuscript drafts and numerical paper
@@ -32,7 +33,7 @@ tables are not part of this export. No conference acceptance claim is implied.
 ## Release-maintenance changes
 
 - Default public experiment selection is the revised six-domain task release.
-- The CRS wrapper supports smoke resume and external results directories, and
+- The OpenAI wrapper supports smoke resume and external results directories, and
   leaves custom dotenv base URLs to the provider loader.
 - Reusable statistical aggregation lives in `cxbench/statistics.py`; dated
   scripts tied to private historical result directories are omitted.

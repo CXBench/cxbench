@@ -20,7 +20,7 @@ from .analysis import MODE_RUNTIME_NAMES, write_experiment_analysis
 PROJECT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = PROJECT_DIR.parent
 ENV_FILE = PROJECT_DIR / ".env"
-BENCHMARK_ID = "cxbench-banking-judge-v20260917"
+BENCHMARK_ID = "cxbench-120"
 TASKS_DIR = REPO_ROOT / "benchmarks" / BENCHMARK_ID / "tasks"
 BATCH_RUNNER = REPO_ROOT / "scripts" / "run_eval_batch.py"
 RUNS_DIR = Path("runs/mode_ablation")
@@ -33,7 +33,6 @@ DOMAINS = (
     "utilities",
 )
 PROVIDER_PREFIXES = (
-    "crs:",
     "deepseek:",
     "openrouter:",
     "siliconflow:",
@@ -338,7 +337,7 @@ def build_parser() -> argparse.ArgumentParser:
         description="Run paired direct and mediate evaluations for the submit-permission ablation.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--api-key", help="API key; prefer CXBENCH_API_KEY in model_eval/.env")
+    parser.add_argument("--api-key", help="API key; prefer OPENAI_API_KEY in model_eval/.env")
     parser.add_argument("--model", help=f"bare model name (default: {DEFAULT_MODEL})")
     parser.add_argument(
         "--url",
@@ -395,12 +394,12 @@ def resolve_config(args: argparse.Namespace) -> LaunchConfig:
         env_file,
     )
     if not api_key or api_key == "replace_me":
-        raise ConfigError("API key is required via --api-key or CXBENCH_API_KEY")
+        raise ConfigError("API key is required via --api-key or OPENAI_API_KEY")
     raw_model = _resolve_value(args.model, ("CXBENCH_MODEL",), env_file) or DEFAULT_MODEL
     raw_url = (
         _resolve_value(
             args.base_url,
-            ("CXBENCH_BASE_URL",),
+            ("CXBENCH_BASE_URL", "OPENAI_BASE_URL"),
             env_file,
         )
         or DEFAULT_BASE_URL

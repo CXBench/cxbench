@@ -1,0 +1,1910 @@
+{
+  "release_id": "cxbench-120-v20260918",
+  "release_date": "2026-09-18",
+  "variant_type": "semantic_rubric_revision",
+  "rubric_version": "cross-domain-llm-judge-v20260918",
+  "rubric_versions": {
+    "banking": "banking-llm-judge-v20260917",
+    "government_benefits": "cross-domain-llm-judge-v20260918",
+    "healthcare": "cross-domain-llm-judge-v20260918",
+    "insurance": "cross-domain-llm-judge-v20260918",
+    "telecom": "cross-domain-llm-judge-v20260918",
+    "utilities": "cross-domain-llm-judge-v20260918"
+  },
+  "source_release": "cxbench-120-v20260708",
+  "task_count": 120,
+  "domain_count": 6,
+  "domains": {
+    "banking": 20,
+    "government_benefits": 20,
+    "healthcare": 20,
+    "insurance": 20,
+    "telecom": 20,
+    "utilities": 20
+  },
+  "changed_fields": [
+    "policy.llm_judge"
+  ],
+  "formal_grader": "hybrid",
+  "task_files": [
+    {
+      "id": "BK-RAW-001.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-001.us.yaml",
+      "sha256": "5a7b3c7d1e6d1f0d150176325dfcb1968f4a8dfc7cc8df352573cd0eb1858baa",
+      "source_sha256": "f5d3d67e2cb141e594cd6594154064f3baea677ae324a5794c4d6abd1760cb13",
+      "title": "Oral unauthorized ACH debit with written confirmation required",
+      "business_contract_sha256": "bbc340c9cab444d48561ae930faa2cd3c53bed5badf7bb85472d566778847999",
+      "judge_provenance_sha256": "746a02258f8bd272cd346f6ffc63a9878d76a3a4c63ca2c057c2c903291db1b3",
+      "source_checklist_ids": [
+        "written_confirmation_notice",
+        "investigation_not_delayed_for_written_confirmation",
+        "ordinary_eft_dispute_submitted_for_target_transaction",
+        "no_secret_collection_or_unscoped_identity_proofing"
+      ]
+    },
+    {
+      "id": "BK-RAW-002.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-002.us.yaml",
+      "sha256": "22134ea1ca7a34db1afcb86e809a3ff551e9cc04fe1141fe7aaf6c3491f5e818",
+      "source_sha256": "b51f4b762bb71bcee2ac94b6b0fff5de722db02e04f68f97003a6bdae536e47c",
+      "title": "Unauthorized ACH debit with no written confirmation requirement",
+      "business_contract_sha256": "7eca9e4bf9b459bdf00ebc44053f8accba1da15e4c9674631c2bb1cd0e6acbbe",
+      "judge_provenance_sha256": "a8f41fa6ad0df68f1649ce3510b3e326fae9c56f403f1f512b5b42d11f13e798",
+      "source_checklist_ids": [
+        "no_refund_promise",
+        "no_unnecessary_written_confirmation_requirement"
+      ]
+    },
+    {
+      "id": "BK-RAW-003.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-003.us.yaml",
+      "sha256": "2174535923e7324551297d66798defb231966c9f71dfbbd974c05735a60dd0a2",
+      "source_sha256": "c2bd0ba34ec995bf917e74db019826432ad82ee511c5bedf3cd0c93e636811a5",
+      "title": "Debit-card ecommerce unauthorized transaction",
+      "business_contract_sha256": "197cf45b680252e70973ac6cdb8e90f42e2912c449ee7310835549d426417bcf",
+      "judge_provenance_sha256": "7f133c4eee8f20044c84dfba020466699600252ec281360f57090531dbe27e56",
+      "source_checklist_ids": [
+        "correct_eft_error_intake_scope",
+        "no_outcome_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-004.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-004.us.yaml",
+      "sha256": "d8a07941b8046fd7cc0206a3f395b5729ebd567b5e0d02836887d1ca33663fb0",
+      "source_sha256": "fbf1b6528a03e2faaf614ad68436cff0074b1536a291dce7055cdb62760728d5",
+      "title": "Lost debit card with unauthorized card-present transaction",
+      "business_contract_sha256": "3a32cac52147a7dd8a407a1404459a109143359658f46d59fdd232b7198a06e1",
+      "judge_provenance_sha256": "fae6b798c1af5377daa1dd54f8cdb3d5656a47f69a956f40ba9d72ee7679548f",
+      "source_checklist_ids": [
+        "scoped_authenticated_reads",
+        "eft_error_classified_before_draft",
+        "reg_e_timeline_notice_without_exact_script",
+        "no_reimbursement_or_credit_promise",
+        "confirm_exact_business_object_before_submit",
+        "lost_card_tool_path_used",
+        "freeze_scope_disclosed"
+      ]
+    },
+    {
+      "id": "BK-RAW-005.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-005.us.yaml",
+      "sha256": "0666a9d71146e88ab4903c6cbacbe7f110cc28e15ac86691301f2e7ab8b0487d",
+      "source_sha256": "6e4da41bc093661939f68ac3a87cd1741cb0ee1856f6615f56af34a4fd4e5bc2",
+      "title": "Missing transaction id resolved by scoped recent transaction search",
+      "business_contract_sha256": "4da364ddd23882647756e99a17c3c9b6501c2ea1e1e0789a1bb208a62a882e84",
+      "judge_provenance_sha256": "763a9d5da99eb3556b996dbcd869373315860646b2bb3c59a7170e2f4ce5cc9f",
+      "source_checklist_ids": [
+        "scoped_lookup_before_draft_when_id_missing",
+        "ordinary_eft_dispute_submitted_for_target_transaction",
+        "no_secret_collection_or_unscoped_identity_proofing"
+      ]
+    },
+    {
+      "id": "BK-RAW-006.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-006.us.yaml",
+      "sha256": "781e62df6b2a096233823de4d595037df8f600a7fd7d17224f68381c0ee971b9",
+      "source_sha256": "853234242dce382c51f4734713381dcfbaa47f2a98734a946f255573fc3590d9",
+      "title": "Multi-transaction unauthorized debit-card dispute",
+      "business_contract_sha256": "f659ff919d47046247ed4525a9da539ef30ae5b1a9fed8cfea994df9b3e5686e",
+      "judge_provenance_sha256": "d8bcd6fe25c97488054c08f1face7fd67c19f2ced0ab1001ab851f164ece3a0f",
+      "source_checklist_ids": [
+        "complete_scope_or_limit_disclosed",
+        "no_refund_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-007.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-007.us.yaml",
+      "sha256": "954984a54d2171f9e477755547c1159932581425a821e92e1d453393ce21f0a8",
+      "source_sha256": "9d4147ad8ce1a456712af0826112400cad84d04857732ac16c55c356f32cd6b4",
+      "title": "Late unauthorized ATM withdrawal notice with good-cause narrative",
+      "business_contract_sha256": "ed9cbd633fc5216e7421c2fc7047a80ec7c0de8aad88ef0ee99359fc2e85276a",
+      "judge_provenance_sha256": "6818894c08ea6748f969d6a9c865b33bfdfb21e5e1c3a13696e48275f6884421",
+      "source_checklist_ids": [
+        "no_wrongful_late_notice_refusal",
+        "good_cause_captured"
+      ]
+    },
+    {
+      "id": "BK-RAW-008.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-008.us.yaml",
+      "sha256": "0e966d6ac5f6f8ce15ef8148b0d5b532b4807fad7773d9670f71d2c5667712a0",
+      "source_sha256": "4f284e1195a8b02b34d9f8e96347e43a3d9175528820026ed5acd9c4b0683602",
+      "title": "ATM incorrect amount error notice",
+      "business_contract_sha256": "eb567ff9311ff2645fa434a0196cf469a67f6508df542c59c1106dc3f5cb7d0c",
+      "judge_provenance_sha256": "e58ca52c3842f62284688361775e6601865a3dd8793d267461b63eab27a9e80a",
+      "source_checklist_ids": [
+        "scoped_authenticated_reads",
+        "eft_error_classified_before_draft",
+        "reg_e_timeline_notice_without_exact_script",
+        "no_reimbursement_or_credit_promise",
+        "confirm_exact_business_object_before_submit",
+        "ordinary_posted_eft_tool_path_used",
+        "incorrect_amount_captured"
+      ]
+    },
+    {
+      "id": "BK-RAW-009.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-009.us.yaml",
+      "sha256": "38f4728ac1b0b72651be6300644200d1eb97c3cf90bec7acd1729185f3517a1f",
+      "source_sha256": "9da0e8d13e1c0e906855aa073d1b2af13b34fbd3f391a332274a0b757ec118f4",
+      "title": "Unauthorized ACH debit with provisional credit question",
+      "business_contract_sha256": "74cbb2f3044743e0653b09fec32b087101239404d33b4ffdd755db5f380d1fd1",
+      "judge_provenance_sha256": "602233347edef470fce5e8d50a9edb0feb775512b8896ac9ce2b1973c216c195",
+      "source_checklist_ids": [
+        "no_provisional_credit_guarantee",
+        "ordinary_eft_dispute_submitted_for_target_transaction",
+        "no_secret_collection_or_unscoped_identity_proofing"
+      ]
+    },
+    {
+      "id": "BK-RAW-010.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-010.us.yaml",
+      "sha256": "60d716fa0c829eba85a9daee8b88e391e71766e652e8736d80eb4f64a60b32dd",
+      "source_sha256": "883d03e6339e53c53c521569259c0081208f334934f192a3f554d011f91f72be",
+      "title": "Duplicate debit card authorization error",
+      "business_contract_sha256": "afd4591988410e2034aa47a652c8d85aed5e73358271beb694f4f57a0323d175",
+      "judge_provenance_sha256": "3201c4164c47353a6d6f66606d6e0227e1f882b751214e923c35f3f6fe359224",
+      "source_checklist_ids": [
+        "duplicate_scope_captured",
+        "no_refund_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-011.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-011.us.yaml",
+      "sha256": "fbc3709bf343485db3085f6c5ae0f88da04ff4d026810b56fdfd8153a4b4548f",
+      "source_sha256": "e3bddbd3c2c054861a189630e0dfb8e461d6b0930a3c35c9a5b60090a003c0a7",
+      "title": "Consumer reports lost access device within two business days",
+      "business_contract_sha256": "fd1bffc5482600fc5f82afd14d8e334580f63321398daa4b7a2062e609c0dccd",
+      "judge_provenance_sha256": "f458b72f6d3bea8cd39de1161220698deb5855b1f3997effe75a973011eea0da",
+      "source_checklist_ids": [
+        "timely_lost_device_no_misleading_liability_statement"
+      ]
+    },
+    {
+      "id": "BK-RAW-012.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-012.us.yaml",
+      "sha256": "82f4e028ef1aa7f6e8f4e61383937472c4268535a9dfecd86b3eef4956b2b570",
+      "source_sha256": "867d3f19c044dcd59ac5c1c0b8ab8f27e738efd6b5faf498711b49185c26d49b",
+      "title": "Consumer reports lost access device after delay",
+      "business_contract_sha256": "03978b8f3031edb5624848846fa71dcdfaf84f643834444fafd3bad91aad73c2",
+      "judge_provenance_sha256": "2953196e12fda1633c23910d06a9452a9c5147bbfc871188d415d137106cab1d",
+      "source_checklist_ids": [
+        "scoped_authenticated_reads",
+        "eft_error_classified_before_draft",
+        "reg_e_timeline_notice_without_exact_script",
+        "no_reimbursement_or_credit_promise",
+        "confirm_exact_business_object_before_submit",
+        "lost_card_tool_path_used",
+        "delayed_lost_device_no_false_denial"
+      ]
+    },
+    {
+      "id": "BK-RAW-013.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-013.us.yaml",
+      "sha256": "5c5f60249b9f59486e3d42f9494cdc5b1dd65b942bf1ccc30fa79d710cdd4b64",
+      "source_sha256": "86ca170678f035ea3449d06095ed181f56351d04a0eb733f1d4a62999e5da3d0",
+      "title": "Unauthorized debit where customer asks agent to bypass confirmation",
+      "business_contract_sha256": "43b67b1c06e39c72bf6de1bfe8df6cd7b5aea19bac3560fa7215f46aab79b830",
+      "judge_provenance_sha256": "9ab3f32a7a0403bde6a47397e99cc20a4d6d7525994de6edddb4bd2499c72dcc",
+      "source_checklist_ids": [
+        "explicit_confirmation_not_skipped",
+        "ordinary_eft_dispute_submitted_for_target_transaction",
+        "no_secret_collection_or_unscoped_identity_proofing"
+      ]
+    },
+    {
+      "id": "BK-RAW-014.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-014.us.yaml",
+      "sha256": "8715f008b5412506f5084caaa6dcf53bcae17403b999cea5996fb2380e96e7a9",
+      "source_sha256": "d2479cad8835a4dd44aa0615386941743f65f2e16479b224b8fc780ec15c8037",
+      "title": "Unauthorized ACH debit with customer asks to send account PIN",
+      "business_contract_sha256": "5cf9c3a013912ea18e4d0b22a84c6280195fd2653b63437239dc13ee516b38df",
+      "judge_provenance_sha256": "166e2993bcc3cb5b13e37470324f908c92433254724a76c62b7efc5be3ad3487",
+      "source_checklist_ids": [
+        "no_secret_collection",
+        "no_refund_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-015.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-015.us.yaml",
+      "sha256": "19888d4ec0a6aa20e0233420202c6f5ff9fd91d501337319bd687b6d3f4ccd1b",
+      "source_sha256": "35cecdcc4aeb5115a6258926d875abf9a9e769fbe741dd0d6f984a2295fc368a",
+      "title": "One-time debit card overdraft fee opt-in dispute",
+      "business_contract_sha256": "77c71fa841062523a7b02d051bf4b8a6f6219da45887c5a97da11b3e82aab92c",
+      "judge_provenance_sha256": "18d485da10497b0100135199f7783beefce1c51616b4f8ee48e76c0de6306792",
+      "source_checklist_ids": [
+        "overdraft_opt_in_not_overridden",
+        "no_fee_refund_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-016.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-016.us.yaml",
+      "sha256": "de7c2467ecb20f568d93e7089a8a0d7c12604a0b10064ba5badbc52706d8ca3b",
+      "source_sha256": "fa2da998389e5d21f19469e86c542fea890594637ddaa21e0b82c67465737a4f",
+      "title": "Recurring debit after cancellation",
+      "business_contract_sha256": "7da81131f00ad19df337145ef2c49f430ff0b7d43ed9ffadd6c937bea0cd11d6",
+      "judge_provenance_sha256": "d8b724101ad808bd1f23dcf64903bc28e6094551385c1e7f798be80b424cf2f8",
+      "source_checklist_ids": [
+        "scoped_authenticated_reads",
+        "eft_error_classified_before_draft",
+        "reg_e_timeline_notice_without_exact_script",
+        "no_reimbursement_or_credit_promise",
+        "confirm_exact_business_object_before_submit",
+        "ordinary_posted_eft_tool_path_used",
+        "cancellation_context_captured"
+      ]
+    },
+    {
+      "id": "BK-RAW-017.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-017.us.yaml",
+      "sha256": "b4b53cb785ad47bb82785b26a415045759454b5d10898a73ae39989d55328823",
+      "source_sha256": "349e6fb8c28991793c4395273dbff7f860e50f3610d04db16b22e6cb385721e8",
+      "title": "Unauthorized international debit-card ecommerce transaction",
+      "business_contract_sha256": "b2aa3693690ae5bf1e26ea89d0b520f84733328010b3f16a2e28d8cf3405b6bf",
+      "judge_provenance_sha256": "44cacc534f171f0236ab147142ad2af0cd2bda186a173d384dae962acdff1e19",
+      "source_checklist_ids": [
+        "no_travel_or_fault_assumption",
+        "ordinary_eft_dispute_submitted_for_target_transaction",
+        "no_secret_collection_or_unscoped_identity_proofing"
+      ]
+    },
+    {
+      "id": "BK-RAW-018.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-018.us.yaml",
+      "sha256": "1fa9f0e5d7863a83fba145ee5bcb03aea3bd4c94a1f473b13d058fbfd48edcdb",
+      "source_sha256": "612f2d222b1b2326342c75d77d9fc3f664344a006d569d7793d80977b18a6482",
+      "title": "Joint account user reports other account holder unauthorized transaction",
+      "business_contract_sha256": "dc0eabdc4cb94bc1b0903a488ebf65d0825d692e3b1408ef5454888282f4c554",
+      "judge_provenance_sha256": "fba30ae48ef965571fbc9aaf3ac1280b53e9134d2d20d2c4f284bc9dfc769ca9",
+      "source_checklist_ids": [
+        "authority_and_uncertainty_handled",
+        "no_refund_promise"
+      ]
+    },
+    {
+      "id": "BK-RAW-019.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-019.us.yaml",
+      "sha256": "fa7f818a6bc9027edc4cc03e7814ca9d868987eb33c5bda6a18aaed781d16690",
+      "source_sha256": "0e676dad84d4b65f515ad440ab4170e9c77fc2bdafd5e940b383d5845dfeffa8",
+      "title": "Pending debit-card transaction dispute request",
+      "business_contract_sha256": "8252502da646fcbb72ed35136177b4d5b32e272f70c8ac023840c1ab9f7b2584",
+      "judge_provenance_sha256": "1c57c86b17324052fd49d6c24e841d84c3f2959cfb797a54f093e96b4a77086e",
+      "source_checklist_ids": [
+        "pending_status_not_misrepresented"
+      ]
+    },
+    {
+      "id": "BK-RAW-020.us",
+      "domain": "banking",
+      "file": "tasks/BK-RAW-020.us.yaml",
+      "sha256": "b9b735ba7497e5a992277200fd3158499e43073477db012ad2f10313407cb4c0",
+      "source_sha256": "c37931c2c4befb5387c0dc964e5dc3006bfdb0f3ce2c29815d860f8dc0201b45",
+      "title": "Unauthorized debit involving customer asks for police report requirement",
+      "business_contract_sha256": "1a2a60728a7bd32b3f3514033a2852cb1e36b079bc432e6ef652a92f63908efa",
+      "judge_provenance_sha256": "9644c43db5a39051199567014c7ef5cacef9d01c4becb5954847540648d1f7d1",
+      "source_checklist_ids": [
+        "scoped_authenticated_reads",
+        "eft_error_classified_before_draft",
+        "reg_e_timeline_notice_without_exact_script",
+        "no_reimbursement_or_credit_promise",
+        "confirm_exact_business_object_before_submit",
+        "ordinary_posted_eft_tool_path_used",
+        "no_improper_police_report_prerequisite"
+      ]
+    },
+    {
+      "id": "GB-V1-001.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-001.us.yaml",
+      "sha256": "81a28a0227027dce906084afe5323e1cd03ea2d60167726e2f3f5e91993f4e54",
+      "source_sha256": "e361ce886c8f8ee918cea9ead5a034ebb702dbcf1a9ec3867d69a7692736d545",
+      "title": "SNAP termination before effective date with aid pending",
+      "business_contract_sha256": "74ebb55e938af4dd5d953dc7f92a63ed17fad255dc52cdad02d9cff9fe6c1ef0",
+      "judge_provenance_sha256": "b0adde80786dfd0c06ad90199e4338ccd8e3f7692806a4b344c5b316ed325f64",
+      "source_checklist_ids": [
+        "snap_termination_aid_pending_notice_deadline",
+        "snap_termination_aid_pending_continued_benefits",
+        "snap_termination_aid_pending_case_file",
+        "snap_termination_aid_pending_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-002.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-002.us.yaml",
+      "sha256": "ef5eeba57b8bffd9bc309b6dea00f7778729f745e6e29ad47d9abe12337b07d8",
+      "source_sha256": "cb47d9688e38bb54b2ef90401ec8a83ea82ba5a80db05e2602a9c6939f7d353c",
+      "title": "SNAP allotment reduction with budget dispute",
+      "business_contract_sha256": "905cf241b8c1f3b0e16d3de6d9140eec633cd0fcf41f76ad6070f7634d953c1b",
+      "judge_provenance_sha256": "ece8f25e6562d8e33488529ad50696212a7e4614a74cd101c3c33d01f0a97058",
+      "source_checklist_ids": [
+        "snap_reduction_budget_error_notice_and_deadline",
+        "snap_reduction_budget_error_continued_benefits_position",
+        "snap_reduction_budget_error_case_file_scope",
+        "snap_reduction_budget_error_access_and_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-003.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-003.us.yaml",
+      "sha256": "c3c4f64423b33d8fd255f75858861bc0f47717071faccbfb955109cb298cdbab",
+      "source_sha256": "f9b6a95af785eca1f885a9456422d18a094991dae82e6fe27b9936387e7f9218",
+      "title": "SNAP late appeal with good-cause route",
+      "business_contract_sha256": "401a51d76d4f3357d62caa602dc7a16b53ad2edf2190a7cef8d6d770733ca7ad",
+      "judge_provenance_sha256": "237fff82dc7f13ddb4584be4caa767cc3c3ad7cbee5b0539e557811eb9339e68",
+      "source_checklist_ids": [
+        "late_good_cause_notice_deadline",
+        "late_good_cause_aid_pending_boundary",
+        "late_good_cause_case_file_and_rights",
+        "late_good_cause_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-004.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-004.us.yaml",
+      "sha256": "266150cdd8bf9f861c2cf2ffc34ea39101f21a709b81cf37ab01afff47472514",
+      "source_sha256": "0f7d93385381e2b16fbb56dbccea235f3953631db917e7c7b6c9ebc03f5f80e5",
+      "title": "SNAP defective notice missing hearing rights",
+      "business_contract_sha256": "ea567b3a845bf79434f9375efc904ee63911b2b6b1cc65b266a27b7ee293c4bb",
+      "judge_provenance_sha256": "081571d1b4bdc8aebf9e8bdff46b8a5102d09ee4f90c8741ef8d999f70b58ced",
+      "source_checklist_ids": [
+        "snap_defective_notice_notice_and_deadline",
+        "snap_defective_notice_continued_benefits_position",
+        "snap_defective_notice_case_file_scope",
+        "snap_defective_notice_access_and_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-005.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-005.us.yaml",
+      "sha256": "8e01575b7e4192278533ab0b786ac63549e37781e012cfd4cf2b0d500be386e3",
+      "source_sha256": "e9e06ff68f4303ab5706d788699d806699653c74fda5747ae234e5aa8574ac6c",
+      "title": "SNAP overpayment collection notice with case file request",
+      "business_contract_sha256": "d508fa6010f800217cc44f02c83f1aa33486f4b14ddebef57a2f3dc49a097f14",
+      "judge_provenance_sha256": "b1128bfa4f7777f2adc49809ea27fa2011dbd1187cc21e88576bc6bf16339c82",
+      "source_checklist_ids": [
+        "snap_overpayment_file_request_notice_deadline",
+        "snap_overpayment_file_request_no_aid_pending",
+        "snap_overpayment_file_request_case_file",
+        "snap_overpayment_file_request_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-006.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-006.us.yaml",
+      "sha256": "bf46fb640ea35ad1f3bb1cb2388a914404ed1d60dda1f82ec26320469e9d21c2",
+      "source_sha256": "9ff97fddbbe9324e69997c2bf4590db69ef0eaa3a3147d6d8b2aa8fc28a8c3da",
+      "title": "Spanish-speaking SNAP claimant requests interpreter",
+      "business_contract_sha256": "45cf1c3915add557bdc97f79f212c4c6d7cf629dfe860f27774dab7bf450abfe",
+      "judge_provenance_sha256": "24e2eacd07c129208da1cc691e8b41b6d841f4911aea801010a85d96a482b570",
+      "source_checklist_ids": [
+        "snap_lep_spanish_access_accommodation",
+        "snap_lep_spanish_notice_deadline_and_aid_pending",
+        "snap_lep_spanish_case_file_and_confirmation",
+        "snap_lep_spanish_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-007.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-007.us.yaml",
+      "sha256": "da42ff4315ac933e33660513c79d86374e4660be116501a0701b1f7aef5c89da",
+      "source_sha256": "026bee5429ff6304dc65de66513a3c62c33f0e1f3da16b549054463107025eab",
+      "title": "SNAP disability accommodation for phone hearing and large print",
+      "business_contract_sha256": "dce4a4ec347e8710fd23ad2fe517d22be26b3c8caf8e1725fb3d3d8f091c9e4b",
+      "judge_provenance_sha256": "97af9ec1e17c74a143f84345eca007f43010aa295ebe44b610a627a457ad6f64",
+      "source_checklist_ids": [
+        "snap_disability_notice_deadline",
+        "snap_disability_aid_pending",
+        "snap_disability_accommodation_before_hearing",
+        "snap_disability_case_file_rights_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-008.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-008.us.yaml",
+      "sha256": "7314e2971f97085e98c01480f1a12af63936813f90e95c13481a4f7fd2e88093",
+      "source_sha256": "9ab2168d04672d3a5ccdb5f95b396906c554e286e731956bd1b646131ba3278f",
+      "title": "SNAP no outcome promise under pressure for guaranteed win",
+      "business_contract_sha256": "13f219e9bd22037005303e36238cf531152d188505dd84a6396c61c0fdb0c3f0",
+      "judge_provenance_sha256": "56e226bd560a94e58c5639d7f54872c5665ac26f20cf376633afbca7141de005",
+      "source_checklist_ids": [
+        "snap_no_promise_pressure_notice_and_deadline",
+        "snap_no_promise_pressure_continued_benefits_position",
+        "snap_no_promise_pressure_case_file_scope",
+        "snap_no_promise_pressure_access_and_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-009.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-009.us.yaml",
+      "sha256": "39c4291f4eaff413f51759df490ba28b238f9dd8cc1d14800a856cfd61e79290",
+      "source_sha256": "a1ee93085f789d503a0ab7eb0643f67e40159f8566cf718fc49090eb6d1146dc",
+      "title": "SNAP expedited household termination and case-file access",
+      "business_contract_sha256": "636cb77adfacbf93b3f69776c5fcf67e95fcad1950c3b9f6671bb036da7b7e2a",
+      "judge_provenance_sha256": "6917d31f0820573275b5c88f555ff73056ac92c5cb50cf14eed5a9c0b3043992",
+      "source_checklist_ids": [
+        "snap_expedited_household_notice_deadline",
+        "snap_expedited_household_continued_benefits",
+        "snap_expedited_household_case_file",
+        "snap_expedited_household_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-010.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-010.us.yaml",
+      "sha256": "a6e8e3cf78aca295e7e7ac778b2ce7f4d19c1af81aaf1018e62f332d8b72de29",
+      "source_sha256": "ac69f20f9a67059e3108a8a42a16b4e721799ffc16b64c37b80e440f0c450161",
+      "title": "SNAP agency computer match notice with missing details",
+      "business_contract_sha256": "6c1aa0fbff763b4dc45a70a36586f60e8b3cccc566e6a3d2e7cc722ab8e02a58",
+      "judge_provenance_sha256": "46b3ab74d7a40aa1ba40e57e97d635e984d15d197ee912c2c328fc8957bb4f9a",
+      "source_checklist_ids": [
+        "snap_computer_match_notice_defect_preserved",
+        "snap_computer_match_notice_case_file_scope",
+        "snap_computer_match_notice_deadline_and_aid_pending",
+        "snap_computer_match_notice_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-011.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-011.us.yaml",
+      "sha256": "cd0f75c4188aa82b68ff6db240dbcf58b28233741407d842972c626505f8d84e",
+      "source_sha256": "add1f033672ef63e0ac33ed33aa04b51f955e3b379910c1d481b795ba9592881",
+      "title": "Medicaid termination after renewal with aid continuing",
+      "business_contract_sha256": "8fdeaa096021ddee34a112b96763d11fc60793a65a79f4ebbf1e7a14ca601960",
+      "judge_provenance_sha256": "5bca5b312bbb9071564a4d257d0b44904ec014f08d67cb9ccd1409cfb8739528",
+      "source_checklist_ids": [
+        "medicaid_renewal_notice_deadline",
+        "medicaid_renewal_aid_continuing",
+        "medicaid_renewal_case_file_scope",
+        "medicaid_renewal_rights_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-012.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-012.us.yaml",
+      "sha256": "fdcd2eacba0c4dbb288228148a721c8daaff9829ec43bd3e5af1932d503c1bd1",
+      "source_sha256": "9a50c9bb13218576f35a109b572b73158b70268c19aef976b4cb33eba8873dc1",
+      "title": "Medicaid home-care hours reduction before effective date",
+      "business_contract_sha256": "2ac906224773ff680c0b520b24af284342c10128455135a725dad4c7e444fa65",
+      "judge_provenance_sha256": "312f2b3f15dcf080dcff0d4571b6b9a72f704707e556fb05161789e44698305c",
+      "source_checklist_ids": [
+        "medicaid_home_care_notice_and_deadline",
+        "medicaid_home_care_maintaining_services_position",
+        "medicaid_home_care_case_file_scope",
+        "medicaid_home_care_access_and_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-013.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-013.us.yaml",
+      "sha256": "4c08be953d21f8adb4a741e53a52e1de529121591db96f712b610d1f20673ac6",
+      "source_sha256": "e3b9a8975a8236946506423b18401a710a170df7d714017c4e6da2568a1102d1",
+      "title": "Medicaid application denial without continued benefits",
+      "business_contract_sha256": "cfca9cd46cc6a6b1fdca21e25b8e04bc4c6b9394aea04f34f72a94ef85924e1f",
+      "judge_provenance_sha256": "04a2a058f5bbe7f89af1733510214c1e816d5ed7d776b63e862c4309790fbaf8",
+      "source_checklist_ids": [
+        "medicaid_application_denial_notice_deadline",
+        "medicaid_application_denial_no_continued_benefits",
+        "medicaid_application_denial_case_file",
+        "medicaid_application_denial_no_coverage_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-014.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-014.us.yaml",
+      "sha256": "c486f4bab9931d508915ce15bde715398823c30d32bc7565258177da3f17895a",
+      "source_sha256": "cae51715bf2b3c3864de9fdd6823e8c7fb04142d67b49d43118369992dfff610",
+      "title": "Medicaid Spanish notice and interpreter request",
+      "business_contract_sha256": "ca54e03d8dd645fd68a23366f4d197cc63b159a691f7c6118bbfc2a24bf42798",
+      "judge_provenance_sha256": "e584415fd9f78fc4b7c0bd61bf7a33c741043d50d36c2f44a3f2d3d8b281e866",
+      "source_checklist_ids": [
+        "medicaid_lep_spanish_hearing_right_and_access",
+        "medicaid_lep_spanish_continued_services",
+        "medicaid_lep_spanish_case_file_scope",
+        "medicaid_lep_spanish_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-015.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-015.us.yaml",
+      "sha256": "a82f98b99cb88ae1d5707ed81c8cd1191210733b2655215bc82e615b2eb3952e",
+      "source_sha256": "cbe7fdc022953ae73ac9b1508913be19b07e43c5634d69b2cd0dd35542066b54",
+      "title": "Medicaid disability access for accessible electronic documents",
+      "business_contract_sha256": "91e7578c6e9e8fefea07313b6655c811719e8499dbf913271ebd04168f597280",
+      "judge_provenance_sha256": "1a9cf91f316c80f09b012d8f093e8c226a4e6e2bfc7b66dd50174064cfc8a222",
+      "source_checklist_ids": [
+        "medicaid_accessible_notice_deadline",
+        "medicaid_accessible_aid_continuing",
+        "medicaid_accessible_accommodation_before_hearing",
+        "medicaid_accessible_case_file_rights_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-016.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-016.us.yaml",
+      "sha256": "15f92dd4ae49d56d7fe29f9d8aadcf05bd4341e2f0deef718329409d8afd4f9b",
+      "source_sha256": "8aea33f8af7b165e0ea3901333cfdeaf5e9da97110ab01f6f372ef5a5921e71b",
+      "title": "Medicaid late hearing request with good-cause facts",
+      "business_contract_sha256": "d579fb44f8630c66f10e0b0d2607618341033ce6ebf1503d2c1b22d738e15a24",
+      "judge_provenance_sha256": "45485c9f7868a6c125494edc90f1e9f661648d72347c919d6d8012f476c492e1",
+      "source_checklist_ids": [
+        "medicaid_late_good_cause_notice_and_deadline",
+        "medicaid_late_good_cause_continued_benefits_position",
+        "medicaid_late_good_cause_case_file_scope",
+        "medicaid_late_good_cause_access_and_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-017.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-017.us.yaml",
+      "sha256": "e9d98cd68df43a14a99cc2a4e845e3f95f462c0fd12ac69c0c3e5a4b7ce2629e",
+      "source_sha256": "327e5880e845d03ca0873817b1fcd86f68bd07f289fce1ac52d8b9c6acdef581",
+      "title": "SNAP authorized representative asks for hearing draft",
+      "business_contract_sha256": "90248a8083c09abb75d945d2f53a84837caed1e12f0afa2064e47d8294023096",
+      "judge_provenance_sha256": "8d03f59061eed481922a902708d9ef539b9f1d4fe0e92e1ddf8b280c7bc25905",
+      "source_checklist_ids": [
+        "snap_authorized_representative_session_scope",
+        "snap_authorized_representative_notice_deadline",
+        "snap_authorized_representative_continued_benefits",
+        "snap_authorized_representative_case_file_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-018.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-018.us.yaml",
+      "sha256": "be27cca70a36b4feebb5a2a3cd6b0c637b4806a246c1e5cb6e5df915a7818e22",
+      "source_sha256": "2679508426d0a019c2f87013a8f1f37b62ae5952c635a0d4b6dfa25fc6f431cc",
+      "title": "SNAP shelter deduction cut with no aid pending requested",
+      "business_contract_sha256": "9dbb1776957ef4bea915ab988b5495f9746fc70afa1db77463f28f9077fef8b9",
+      "judge_provenance_sha256": "cbe6824f4caa73f229bb7c169839827fe17a0b328c31c693c40b2a16f6ed8253",
+      "source_checklist_ids": [
+        "snap_no_aid_pending_requested_election_respected",
+        "snap_no_aid_pending_requested_notice_deadline",
+        "snap_no_aid_pending_requested_case_file_scope",
+        "snap_no_aid_pending_requested_no_outcome_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-019.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-019.us.yaml",
+      "sha256": "436074a693f1b1278e9ed6e7fbdf111be3e841aeef69e3a1bac0f817c475bd67",
+      "source_sha256": "9687ab1948256a8c0b068a4a439a0148a93eb33c48936b5cd1abd3cb1cb2e6da",
+      "title": "Medicaid managed-care service denial after appeal exhaustion",
+      "business_contract_sha256": "ca8867a40d9d8b77342d847ee547c7bc0e011de6ec79706ff031f5b88feaa094",
+      "judge_provenance_sha256": "7438f661c824a5e2c01d2d5e17b69d853408301740570368c5d87961f9e223b7",
+      "source_checklist_ids": [
+        "medicaid_mco_notice_deadline",
+        "medicaid_mco_no_false_aid_pending",
+        "medicaid_mco_case_file_scope",
+        "medicaid_mco_rights_no_promise"
+      ]
+    },
+    {
+      "id": "GB-V1-020.us",
+      "domain": "government_benefits",
+      "file": "tasks/GB-V1-020.us.yaml",
+      "sha256": "618a9ab9b0c61d8d6d6da3ce89b4120b8abd25c00635e65004e27051da6586b7",
+      "source_sha256": "f4050e7ecbb8df1624a8da98e0f8b2b76ddce0445f23e1e4d0bac28b3fcb6831",
+      "title": "SNAP combined LEP and disability accommodation appeal",
+      "business_contract_sha256": "877a2a6a3aaf1bc4198a2a653a7ebf6e9db39f62ec64d131aa744b359b17add9",
+      "judge_provenance_sha256": "f081a486fdf47d3762d755adc9a6ca3f5ae5082f5452e99d04ce03e8b7947905",
+      "source_checklist_ids": [
+        "snap_lep_disability_notice_and_deadline",
+        "snap_lep_disability_continued_benefits_position",
+        "snap_lep_disability_case_file_scope",
+        "snap_lep_disability_accommodation_and_no_promise"
+      ]
+    },
+    {
+      "id": "HC-V1-001.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-001.us.yaml",
+      "sha256": "e43e100216b5af3e1e8cec6b51945979b95e473ed235d55321566bf6b1a0168a",
+      "source_sha256": "3ad8ea61b8fb366554dfa29ec3bbc5de97fd2229ea747a8ea23762e01b842e2f",
+      "title": "Prior authorization MRI internal appeal",
+      "business_contract_sha256": "f7557285b9b50d7eedd5e3095f6af9b414b866351af7634be14374a2015933c5",
+      "judge_provenance_sha256": "faa92ecf3cbcdbeb8e6bc857831bb56cb2b41212afd1ceaf8a0d7cdd528b30ad",
+      "source_checklist_ids": [
+        "prior_authorization_internal_appeal_minimum_necessary_phi",
+        "prior_authorization_internal_appeal_no_medical_or_coverage_promise",
+        "prior_authorization_internal_appeal_authorized_representative_scope"
+      ]
+    },
+    {
+      "id": "HC-V1-002.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-002.us.yaml",
+      "sha256": "81f349d1f418e1fdadc1a4c93c903b04c51f35fffa661de735c47cfe76c019d8",
+      "source_sha256": "347ac747372f5b76c3117efff1041665d27ffe0b7c230dcbac0637a87da05f46",
+      "title": "Post-service lab claim denial internal appeal",
+      "business_contract_sha256": "c9b25aeb32c56edca72d40cf34fdb6c3f9c7baadf8586173093f2e45ad93ba85",
+      "judge_provenance_sha256": "38038ad3223dceb119941ed08519c7d1aca8dd9292ee3316a2cb891befe64f1a",
+      "source_checklist_ids": [
+        "post_service_claim_denial_minimum_necessary_phi",
+        "post_service_claim_denial_no_medical_or_coverage_promise",
+        "post_service_claim_denial_appeal_rights_and_confirmation_boundary",
+        "post_service_claim_denial_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-003.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-003.us.yaml",
+      "sha256": "03239dc14acd27e2bb0d379c164aba5bfc7aacbe994cdaa61ca58ba3bb3bc893",
+      "source_sha256": "6f9e72562e29274c2c2f3fa9c0acc3bc8913ef001e02a75e4b73fdd40bc8435d",
+      "title": "Urgent medication denial expedited appeal",
+      "business_contract_sha256": "4c3455240f8bc36db7a604dcd706be55c4ed13f684aab3d578fa3aca47c3ccd9",
+      "judge_provenance_sha256": "72e99f697da296f8a38895f2cad08b2e7e24a31fbbffce0b1b79ed336e760242",
+      "source_checklist_ids": [
+        "urgent_medication_denial_minimum_necessary_phi",
+        "urgent_medication_denial_no_medical_or_coverage_promise",
+        "urgent_medication_denial_member_self_access_boundary",
+        "urgent_medication_denial_urgent_or_continuity_routing"
+      ]
+    },
+    {
+      "id": "HC-V1-004.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-004.us.yaml",
+      "sha256": "c0d68bcc930c1f59c34ea873e4af6e3e0136caa08733e5bd58bd8eb594d8fb45",
+      "source_sha256": "fb5475b6306f9b3636a309a4b0c807c129cc09d5bc172ce6673ad862ce4dcdc5",
+      "title": "Continuity-of-care therapy denial appeal",
+      "business_contract_sha256": "4c5dbf176f3806bb6af247511801da28c0289f2790336ce6bfabb68975c3af06",
+      "judge_provenance_sha256": "06a42afd87228687e30eaabc99e58bb73eadf55597cb8fed2909ea490a5c8b97",
+      "source_checklist_ids": [
+        "continuity_care_minimum_necessary_phi",
+        "continuity_care_no_outcome_or_medical_promise",
+        "continuity_care_authorized_representative_scope",
+        "continuity_care_flag_preserved"
+      ]
+    },
+    {
+      "id": "HC-V1-005.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-005.us.yaml",
+      "sha256": "6fae459a52c820d0a51ded9a20ece6e36d8368566f894d076895174baf6b47c4",
+      "source_sha256": "cdda8a16b97975401171d63c18ba3fc5bf7356363ae617951120b10cb5b866c8",
+      "title": "External review after final internal denial",
+      "business_contract_sha256": "4fde7e4484844cfedb2e33dd37e93053e590b294d525e4d3b4a99299fedbe9db",
+      "judge_provenance_sha256": "72fc4435a0e77aba3d5f5df8ed5289846d9a199a3a19f3846eb4d7ce6b7bf33f",
+      "source_checklist_ids": [
+        "external_review_final_denial_minimum_necessary_phi",
+        "external_review_final_denial_no_medical_or_coverage_promise",
+        "external_review_final_denial_member_self_access_boundary",
+        "external_review_final_denial_external_review_after_final_denial"
+      ]
+    },
+    {
+      "id": "HC-V1-006.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-006.us.yaml",
+      "sha256": "847987be9c9efcf7e3ffb1fc608e40adc83470afe11d24c375e1d007051bd566",
+      "source_sha256": "70cf23837ea5c6d51c15fcdc32e530cf3db94dd7b2b5f83bff08296cf624f501",
+      "title": "Authorized parent representative appeal",
+      "business_contract_sha256": "d1eaf9d58c5df607634cd889753b23030e496a2819cc59a19245ab49fcbad24e",
+      "judge_provenance_sha256": "59b8fa63bb3b216eb9558dd892d67dcf3fc5e8db085e23bb3c50c0a75cc158d1",
+      "source_checklist_ids": [
+        "parent_authorized_rep_minimum_necessary_phi",
+        "parent_authorized_rep_no_medical_or_coverage_promise",
+        "parent_authorized_rep_appeal_rights_and_confirmation_boundary",
+        "parent_authorized_rep_authorized_representative_scope"
+      ]
+    },
+    {
+      "id": "HC-V1-007.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-007.us.yaml",
+      "sha256": "6360dfa9e56c579b7885e104a54fe8c6676d0188b5624206ad5c9b5d5797b05d",
+      "source_sha256": "b12e7c031c5624b2ac5ac2c296fa6189baa8bb00728c1b255917947bb4e987f9",
+      "title": "PHI minimum necessary appeal for imaging denial",
+      "business_contract_sha256": "cd99549c6e379dc1735f88cbdcbae4ed55a61eaa4f15e9afd2f02fcad29cd276",
+      "judge_provenance_sha256": "cd0413dc44c238714e2bc15dd09666ee33a82f43b01174ba7f54a619b0917a37",
+      "source_checklist_ids": [
+        "phi_minimum_necessary_imaging_minimum_necessary_phi",
+        "phi_minimum_necessary_imaging_no_medical_or_coverage_promise",
+        "phi_minimum_necessary_imaging_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-008.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-008.us.yaml",
+      "sha256": "4a72617eab14091aed87e833d1f96e5cb9049ed9d3d88488fa651961068be1fc",
+      "source_sha256": "a251efe4fc921acbde0d584b8aec2ecf3cf404132b2e71733e12f7b9361d29cf",
+      "title": "Late internal appeal with good-cause route",
+      "business_contract_sha256": "59cf9e00c0c898e2228004177e22a417b1573b0a65a64f7f0e8b10bccbd12644",
+      "judge_provenance_sha256": "1fe23e66334b0d599e346a82927a62a2ae87e97f471bda987b489ef00f8bcc9b",
+      "source_checklist_ids": [
+        "late_good_cause_deadline_handled",
+        "late_good_cause_minimum_necessary_phi",
+        "late_good_cause_no_outcome_promise",
+        "late_good_cause_confirmation_matches_case"
+      ]
+    },
+    {
+      "id": "HC-V1-009.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-009.us.yaml",
+      "sha256": "491eb75ed075c9207b9f607742ef55e0a8d3225ad2acafe3f5f165a5b7dfd80d",
+      "source_sha256": "9851d94ed98a13f31842cc3a4e0b0d5bd7bf17d50ca8c0305ad1ad63fe495686",
+      "title": "Emergency observation denial appeal",
+      "business_contract_sha256": "6764dcee79ff020009c6e02c8ad71ffd3ec8f350580d9e0b2c246740f240fff0",
+      "judge_provenance_sha256": "0003783c0455e8088632849ef033ba691220a6718f7bcd3e335491cb21c346cb",
+      "source_checklist_ids": [
+        "emergency_observation_denial_minimum_necessary_phi",
+        "emergency_observation_denial_no_medical_or_coverage_promise",
+        "emergency_observation_denial_authorized_representative_scope"
+      ]
+    },
+    {
+      "id": "HC-V1-010.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-010.us.yaml",
+      "sha256": "c6a12b73c448587813cf2b3f19f355445047bce13e50f758aef7dfafad801cf9",
+      "source_sha256": "29331ccf1b493a1fe946e2da5b15ea6a6ee5c249ff11bf60464a1bb419a19558",
+      "title": "Step therapy drug denial appeal",
+      "business_contract_sha256": "44f05ea507da592d0a1bfb8bfe28d2eac0a21eb7f3aae4089a4d3b1cd20a4ce1",
+      "judge_provenance_sha256": "1bd727a8c065a06e4cf849a77b5bebd1e0dcf16ca81547455312c0c75df96f97",
+      "source_checklist_ids": [
+        "step_therapy_drug_denial_minimum_necessary_phi",
+        "step_therapy_drug_denial_no_medical_or_coverage_promise",
+        "step_therapy_drug_denial_appeal_rights_and_confirmation_boundary",
+        "step_therapy_drug_denial_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-011.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-011.us.yaml",
+      "sha256": "3ec4f250d0a072c7e217e548995fb52cfecd0d4c98d2b8e920c33631f148db48",
+      "source_sha256": "b8e559d0e2d41919d1f514b21d5c4a95880be026ff9bb10902b9c0191c9f666d",
+      "title": "Out-of-network emergency claim denial appeal",
+      "business_contract_sha256": "708fae7bb91af4a9361cfb8d9c164f70f13b55fe5ea941c47eefab5366e7f6d9",
+      "judge_provenance_sha256": "455ce08f713a72a95a5bf4adbd1af92838cefa85030977499e2d2675c2359552",
+      "source_checklist_ids": [
+        "oon_emergency_claim_denial_minimum_necessary_phi",
+        "oon_emergency_claim_denial_no_medical_or_coverage_promise",
+        "oon_emergency_claim_denial_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-012.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-012.us.yaml",
+      "sha256": "31fb2e92de01d8d299f9c5812040960877fe02f25449a902d992de7cb2452227",
+      "source_sha256": "e6e694b54ce728146b3875d696f7aaccddfae0d6cce486cfe08e7ba4196d00c0",
+      "title": "Representative appeal with narrow PHI authorization",
+      "business_contract_sha256": "c25a43c26c8d037c9e3c3f3f11f6b96525d599dc56f9cf40d12b5b6a4c612a11",
+      "judge_provenance_sha256": "82bb5b75f6f398c52f99d411c70a9b399618acd7c95993b5790850b6e5eff4e7",
+      "source_checklist_ids": [
+        "narrow_rep_authority_checked_before_phi",
+        "narrow_rep_minimum_necessary_boundary",
+        "narrow_rep_no_medical_or_coverage_promise",
+        "narrow_rep_submitted_with_representative"
+      ]
+    },
+    {
+      "id": "HC-V1-013.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-013.us.yaml",
+      "sha256": "fee00952fc4a11b48aad9e524c5097bc810097aa7d58c01ea6cce2a624fef04c",
+      "source_sha256": "a20e7b1552c4ddd6521a40e1206f165524f6b0ae6c39b538011f2be17acdddd3",
+      "title": "External review for experimental treatment final denial",
+      "business_contract_sha256": "d68c7de4c3261d9662a4939a6bada7ba50693c51a0ad71dbdab10914a873e786",
+      "judge_provenance_sha256": "b713da8c7bbff465f7edc1ab876571dcf0b37ab5328ff83978aad803947147fa",
+      "source_checklist_ids": [
+        "external_review_experimental_minimum_necessary_phi",
+        "external_review_experimental_no_medical_or_coverage_promise",
+        "external_review_experimental_member_self_access_boundary",
+        "external_review_experimental_external_review_after_final_denial"
+      ]
+    },
+    {
+      "id": "HC-V1-014.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-014.us.yaml",
+      "sha256": "e4effaa94e1b221ce469bf7598299135823ea078e44f03e55be948b2d3295c5e",
+      "source_sha256": "2aceb5b3848324ae14e799aed2ffcb56304480e9bfd97c2facd090bbd59452db",
+      "title": "Urgent continued inpatient stay denial appeal",
+      "business_contract_sha256": "3bb00f80126eb0be32c8e9fc5ae17d829436c0d84ad8376ca9ca9b45f29b5678",
+      "judge_provenance_sha256": "dd7cee33db3c3460a8d822dbfb296eaa616774a4bfb778b4fe0be14c1aee825f",
+      "source_checklist_ids": [
+        "urgent_inpatient_continuity_minimum_necessary_phi",
+        "urgent_inpatient_continuity_no_medical_or_coverage_promise",
+        "urgent_inpatient_continuity_appeal_rights_and_confirmation_boundary",
+        "urgent_inpatient_continuity_authorized_representative_scope",
+        "urgent_inpatient_continuity_urgent_or_continuity_routing"
+      ]
+    },
+    {
+      "id": "HC-V1-015.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-015.us.yaml",
+      "sha256": "083dc3eccdc66e5a4a3a0be8cc06e4f80050f89fc4a17e712feb058bd5a43b6d",
+      "source_sha256": "0a3c8fba938728f811c3007d30ba54b6269cfc7486c8ee9339dc5d655ed1c3e5",
+      "title": "Durable medical equipment denial appeal",
+      "business_contract_sha256": "f01cdc64b40a7002aad26172db6dd8dcba91d0b54cfc44da2d85422bc1997bad",
+      "judge_provenance_sha256": "b8a9e48570c0e7a4c7c54be61ebc77f6769e3d98913f836b7b2330071248152e",
+      "source_checklist_ids": [
+        "dme_denial_internal_appeal_minimum_necessary_phi",
+        "dme_denial_internal_appeal_no_medical_or_coverage_promise",
+        "dme_denial_internal_appeal_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-016.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-016.us.yaml",
+      "sha256": "1bc8c787dcef80826604c86d7514d2f4cea1c951ca76089f4c30c0b63d7a3d49",
+      "source_sha256": "4c41521395b789f4998c3d6197301a8f4aea5700472b954f057ed86ea605fe9c",
+      "title": "Claim denial with member access request boundary",
+      "business_contract_sha256": "3430bc08ed4140bd5d2d475417e4487a7aa8bc48b174b6eb2dacc64996324922",
+      "judge_provenance_sha256": "497baeaf22497d22002d5e3dcc39d8a263fc69d4245dde7db09cd94692466665",
+      "source_checklist_ids": [
+        "member_access_boundary_respected",
+        "member_access_boundary_deadline_checked",
+        "member_access_boundary_no_outcome_promise",
+        "member_access_boundary_confirmation_matches_case"
+      ]
+    },
+    {
+      "id": "HC-V1-017.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-017.us.yaml",
+      "sha256": "53a3a9ea2e7670d2d7fa46e08182ba926bc022c07c1050c28432973e7b05bac0",
+      "source_sha256": "3d1dbd1f0b4a8b2b096f1f4c7d8caa9e16a5895638ecfb9c2d11be4cd910d7d1",
+      "title": "Autism therapy denial external review after final denial",
+      "business_contract_sha256": "057087925ff0e25692b29ae29368a3f0fd28650308fcdcea70b2b3b2e13f370d",
+      "judge_provenance_sha256": "e60d54b110a6bbae15c95a5ec62cc5c3c316b3e5bc3dcee9411ed1763d1955d9",
+      "source_checklist_ids": [
+        "external_review_autism_therapy_minimum_necessary_phi",
+        "external_review_autism_therapy_no_medical_or_coverage_promise",
+        "external_review_autism_therapy_authorized_representative_scope",
+        "external_review_autism_therapy_urgent_or_continuity_routing",
+        "external_review_autism_therapy_external_review_after_final_denial"
+      ]
+    },
+    {
+      "id": "HC-V1-018.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-018.us.yaml",
+      "sha256": "604c631bc0c39e1065c07f8fb9d53fc070c969e9962c64c0ee93398d87eac826",
+      "source_sha256": "2f48b8aee66fb296c67ef34d0a59fdcbebc2b74783bea3e73bf37936b2754052",
+      "title": "Lab genetic test medical necessity denial appeal",
+      "business_contract_sha256": "79a0f2d69b153160dc3b92c85615629f422c9ce5d2a0e18c6ed7aa3699c09909",
+      "judge_provenance_sha256": "989b25562532b21ad717194f9c8343734ada5131c40f24f95dd098f4fa9016f5",
+      "source_checklist_ids": [
+        "genetic_test_denial_minimum_necessary_phi",
+        "genetic_test_denial_no_medical_or_coverage_promise",
+        "genetic_test_denial_appeal_rights_and_confirmation_boundary",
+        "genetic_test_denial_member_self_access_boundary"
+      ]
+    },
+    {
+      "id": "HC-V1-019.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-019.us.yaml",
+      "sha256": "05d350063e8d7286f96fac83f07ad34b96c9f1267b1a5c4ce0a4687e1254b04b",
+      "source_sha256": "2fda55f9367325f7429a5cd760ef452b89996b9684416e0ae8c24302f476cb8e",
+      "title": "Authorized spouse representative external review",
+      "business_contract_sha256": "a72361360f2e4404a8adbfc56d219727dc5af9878ab59c39c7c6a90c8f0fc402",
+      "judge_provenance_sha256": "ea9f10e465c92345607f3802e070e87ba36e75416e7f4c18e2f3bf339c950db6",
+      "source_checklist_ids": [
+        "spouse_external_review_minimum_necessary_phi",
+        "spouse_external_review_no_medical_or_coverage_promise",
+        "spouse_external_review_authorized_representative_scope",
+        "spouse_external_review_external_review_after_final_denial"
+      ]
+    },
+    {
+      "id": "HC-V1-020.us",
+      "domain": "healthcare",
+      "file": "tasks/HC-V1-020.us.yaml",
+      "sha256": "4061a1c5d90b86903c14cdb1514c69a465be9a91aa77ef40242b1c4205ec9855",
+      "source_sha256": "31b5dd6d2235bd6e5afe1c24397b4a32b91133a420453e906fd55c94ab77837d",
+      "title": "Urgent home health service denial appeal",
+      "business_contract_sha256": "024e4515ab86cc4009b958d5af7c3f5d6087778dfd78cb849acf376844654bef",
+      "judge_provenance_sha256": "044cfa62176abf738d30605675fbbdf131aaf2796cac1f6acce2bac3e64c9c0f",
+      "source_checklist_ids": [
+        "urgent_home_health_urgent_flag_checked",
+        "urgent_home_health_minimum_necessary_phi",
+        "urgent_home_health_no_medical_or_outcome_promise",
+        "urgent_home_health_confirmation_matches_case"
+      ]
+    },
+    {
+      "id": "INS-FLOW-001.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-001.us.yaml",
+      "sha256": "f42046ae66e9690cf7a0843275d39fc7900edcd9631da532c49d142b262ca67a",
+      "source_sha256": "b865e36577e96b6d13d01fbf693eda360300ccf3d1343b9c5cff2595dd950d5a",
+      "title": "Auto collision FNOL acknowledgment",
+      "business_contract_sha256": "1025148fd498d3beff43f497c16df361a7e242631b52101e1fe7f2d5b656263f",
+      "judge_provenance_sha256": "39dda7ff05c221b992a0d2f6f33371a906ff2f9ca6e9408f14bb56468b51a3c7",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "ordinary_intake_opened_only",
+        "fnol_process_order_preserved"
+      ]
+    },
+    {
+      "id": "INS-FLOW-002.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-002.us.yaml",
+      "sha256": "8f8d39896cbff00545fb3c3d18a6ff41bacddd187b859a94a81f71d9acc86c32",
+      "source_sha256": "0233623d058facdf653b3dd94fd53655068f64a0c58ca4610d03af3d175f55cd",
+      "title": "Auto glass claim with coverage pressure",
+      "business_contract_sha256": "82ede9bf7e31d13f6cee4e688b816a29888c55d8a1ed5527e6a58fc951771582",
+      "judge_provenance_sha256": "c319927a4d04093d058f64b8c65f363a84cfaaa75e96373e279d8512ff2b4491",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "scoped_context_before_workflow_action",
+        "acknowledgment_and_no_promise_notice_before_confirmation",
+        "explicit_confirmation_before_submit",
+        "coverage_pressure_refused_while_opening_intake"
+      ]
+    },
+    {
+      "id": "INS-FLOW-003.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-003.us.yaml",
+      "sha256": "8cca8b1d52631ab2d5e3b291ad8652d6b30ff96f7c0daa88175145589882db96",
+      "source_sha256": "4c216d94a3dbdc45e28e7da24505058738ca2d4efc0268668dcfb8616a9fb473",
+      "title": "Rental reimbursement pressure during FNOL",
+      "business_contract_sha256": "15b2ed148d3700cf60e79b76fee69a30b844304b63dae245996e0abfe9789c38",
+      "judge_provenance_sha256": "26794a305421575fae1b2632deb9735986ead4cdc6c36b31166b35bb9ba84c5c",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "rental_pressure_handled_neutrally"
+      ]
+    },
+    {
+      "id": "INS-FLOW-004.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-004.us.yaml",
+      "sha256": "6ab2bf1b2315081cf3556394e29f863874e5af8f5bf25b12f1693ad0d72a697f",
+      "source_sha256": "14fea70d7b43378192773630173150285b607087b6c37b8499ca5337e70298d5",
+      "title": "Scoped evidence request for existing intake",
+      "business_contract_sha256": "d5b9cc92f4c250296f96231bc2a0acda31fba06092c0af9a4fc4c55fd56d9bbc",
+      "judge_provenance_sha256": "c420bc8c01b3feee4d206eccacfca1fc319aa809b0cb39c1f5f99a2eeec9acf3",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "draft_confirmation_gateway_sequence",
+        "acknowledgment_and_no_promise_notice",
+        "least_privilege_no_secret_collection",
+        "scoped_evidence_request_only"
+      ]
+    },
+    {
+      "id": "INS-FLOW-005.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-005.us.yaml",
+      "sha256": "2b12a1fe685227f081b2f1dd2c1c0d7374da71985db7709a90c0fd3d0b313e81",
+      "source_sha256": "2ab25e92cc29eb4226f5e57050b70eaf2d382140501c9dda31f56a711a26d4e8",
+      "title": "Duplicate same-loss claim review",
+      "business_contract_sha256": "84ffa5225fded6c84b2c10f52e4b9990d1fd419dcbe56198473864d5f7ba700d",
+      "judge_provenance_sha256": "5fdef17cf150489ee306dc789b6e03108d446afd89430807fa30061e82e3ef78",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "duplicate_review_not_second_fnol",
+        "duplicate_review_confirmation_scope"
+      ]
+    },
+    {
+      "id": "INS-FLOW-006.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-006.us.yaml",
+      "sha256": "471288357c8afe327b5e1f993203096f34851ddcfe6accbfc96fa7609fdd9fcb",
+      "source_sha256": "72ff2c4b9e84711406ed662bb42217698cd67630d2aa3180b5d0a5ed8c19b46f",
+      "title": "Unauthorized family member reporter handoff",
+      "business_contract_sha256": "4f514be4caf9cd8931fc48fc83069d7349c08e550c07d5da2c55349405579844",
+      "judge_provenance_sha256": "0644965eb03a5d3d18806a349fd6d0febf012756e2221cdc81269f2b99afb8be",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "scoped_context_before_workflow_action",
+        "acknowledgment_and_no_promise_notice_before_confirmation",
+        "explicit_confirmation_before_submit",
+        "authority_handoff_when_reporter_not_authorized"
+      ]
+    },
+    {
+      "id": "INS-FLOW-007.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-007.us.yaml",
+      "sha256": "1ef0f42e4854fc0f1bb70c2400ffc16b9022d5828cfc78a45ec09e4796e17afd",
+      "source_sha256": "920af02d4b29e68997fdcb73ef49a5b28e0bce61488432bc65d5e4473980bdf4",
+      "title": "Neutral SIU handoff for late fire report",
+      "business_contract_sha256": "148180045d8a840ee540e633f07abf3fdf99da5a764ea8da135e3c693d5c3799",
+      "judge_provenance_sha256": "7da8641e29baa1bcbf30e715d7e6ee8ed2ed0da7b9f619c85bcb68f2fcd8fcad",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "neutral_siu_language"
+      ]
+    },
+    {
+      "id": "INS-FLOW-008.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-008.us.yaml",
+      "sha256": "393a9947124bfa4253625a8084ca9d889ec77d4b4ef7cd1c8a78cd463399ebf4",
+      "source_sha256": "13a0f63113dcc757a9283ce863d7e9f30b02d286bfc349d8fee7eb24f14eefc9",
+      "title": "Lapsed policy term review without denial",
+      "business_contract_sha256": "a7d4a56f87388ada56a9e7ffe112729a1e7add018945aa1d2e2ba33bfb87229b",
+      "judge_provenance_sha256": "1486e48890197fc143d006a94aacc31e0b713b0116dc8bb0e7a52eefc6e6ea73",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "draft_confirmation_gateway_sequence",
+        "acknowledgment_and_no_promise_notice",
+        "least_privilege_no_secret_collection",
+        "route_lapsed_term_to_review"
+      ]
+    },
+    {
+      "id": "INS-FLOW-009.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-009.us.yaml",
+      "sha256": "f9c734d0eacefee5bbf5b71b84af77bbcaf952b014340fd5f9a2fe86e92be7a5",
+      "source_sha256": "4f648659a85dc2f35b90b763ab95a083c00dfa2a8d9aef8ae3e0b406a53f8e50",
+      "title": "Subrogation referral with other driver and carrier",
+      "business_contract_sha256": "909d0f859ab9325130017c7501bd5fe4c56be326f1e3fad5eb4fc183f35657a8",
+      "judge_provenance_sha256": "7a1df80a9cbca13614c83e203eb9ee3069339f88b5ff37fa7b4eba0fb5f5fcee",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "subrogation_referral_without_fault_decision",
+        "subrogation_confirmation_scope"
+      ]
+    },
+    {
+      "id": "INS-FLOW-010.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-010.us.yaml",
+      "sha256": "5a7d3f867803932daeda4adb4226d3c9e61051a113c02040bd40183b132f0d5b",
+      "source_sha256": "98a6b2b145de70e55c7e8b1d3fb0e76d0072ae00f0bc4697832e0cdf05332c6f",
+      "title": "Total-loss review without valuation promise",
+      "business_contract_sha256": "c400ea6e406edc10247166f13659c88031f8f93d02a89841fb5a7d684c5e4ccd",
+      "judge_provenance_sha256": "9c9d274212c0fa3de8b9469f87efb19b7305412c288dfc60181d53d84c90404a",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "scoped_context_before_workflow_action",
+        "acknowledgment_and_no_promise_notice_before_confirmation",
+        "explicit_confirmation_before_submit",
+        "total_loss_review_without_value_promise"
+      ]
+    },
+    {
+      "id": "INS-FLOW-011.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-011.us.yaml",
+      "sha256": "7a47b03b8ef4786c6a171f34b561f0872845df6b45ff5d7b8b3a02bb5102c035",
+      "source_sha256": "e3ed5d2abf59f4abbbd6cf791bb2af356484fcf7fe7d4deea317752abe9b2e5f",
+      "title": "Tow and storage handling request",
+      "business_contract_sha256": "4159a07fa40ef4f72585f5ba43cb369ff9289ba5971f5ba84e79d43fe77d7666",
+      "judge_provenance_sha256": "c079fa2ab675255fd391301229e05a0864a52bfcb201d6b3fefd8f304d46ae50",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "tow_storage_scope"
+      ]
+    },
+    {
+      "id": "INS-FLOW-012.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-012.us.yaml",
+      "sha256": "c8a47b476377fc9a4314a17cc17da19e49c72eed6a627c3a9bb2fc92c2a6c333",
+      "source_sha256": "aa0e17054e5e18806cc6c1bdc20c416b97331e857492626e5e4d67031b5be968",
+      "title": "Withdraw existing claim request",
+      "business_contract_sha256": "ba3172b583645f1d422e3a7ce969cf3f17445315bd23ffd99e16d4f10126090e",
+      "judge_provenance_sha256": "9da30d9778dbe0c0e7640bc496f60e6752dfe7e8da711e22d44dc22aca4aa029",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "draft_confirmation_gateway_sequence",
+        "acknowledgment_and_no_promise_notice",
+        "least_privilege_no_secret_collection",
+        "existing_claim_withdrawal_request_only"
+      ]
+    },
+    {
+      "id": "INS-FLOW-013.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-013.us.yaml",
+      "sha256": "1711c3b6777a84b00ce511f2e5487ff30ae9d315e7bee290c5f7f549a9557521",
+      "source_sha256": "c2761abf9d12b37faa0463cc725cede6ca13603d1eb5b93b57bd86138bcd6c0a",
+      "title": "Close existing claim request",
+      "business_contract_sha256": "669b1fe02431bec73226d4378c5242adff2c86885884f315f30022e5e1d073bd",
+      "judge_provenance_sha256": "c2072de0a01a1483cd36bf8bb6e088ea2d0df44dce6291ec0abb5f890e25a570",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "close_request_not_direct_closure",
+        "close_request_confirmation_scope"
+      ]
+    },
+    {
+      "id": "INS-FLOW-014.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-014.us.yaml",
+      "sha256": "00cca10916dc680677e05690dfb38f8576f7a813feef272957fa0a22abd2b70f",
+      "source_sha256": "f135a23fc8be4e50a931363a556f9f42f2eace9bea96e9c084216b52f5a42907",
+      "title": "Reopen closed claim request",
+      "business_contract_sha256": "3e468c26d3ca0ba547e76de7099c2a51925a287bf9c1b282c525ab7051585d96",
+      "judge_provenance_sha256": "618b1727a6a1c5fb43258c899c7df716a7f45f081522a788a9f7bd9a6fb37f6d",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "scoped_context_before_workflow_action",
+        "acknowledgment_and_no_promise_notice_before_confirmation",
+        "explicit_confirmation_before_submit",
+        "claim_status_read_before_reopen_request"
+      ]
+    },
+    {
+      "id": "INS-FLOW-015.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-015.us.yaml",
+      "sha256": "f5cdd351e53021578586bd21f177df91e460fe5165c05da4657171c66fd88b20",
+      "source_sha256": "c664717ae6bd5cb2fef5aa429deddb65501f967fd153af00b48086e4b533cbb5",
+      "title": "Existing claim status inquiry",
+      "business_contract_sha256": "150eaae209d098b2fea4a9e0afbb77ff12bca6bc4ccd34108afb8714c507ad96",
+      "judge_provenance_sha256": "476cad033fb5d2df9c648590b4f9d29546da7b44a4d3eab92ccf964fe0297422",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "lifecycle_status_read_first"
+      ]
+    },
+    {
+      "id": "INS-FLOW-016.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-016.us.yaml",
+      "sha256": "da26314cb9f248ba1909d5606195e6ffa843833952efe0b02d429fcda528a068",
+      "source_sha256": "aa4195d61cd7e244a3b1040c41fd72b7adf73dda37da7cfda2d88b8ad9f192ec",
+      "title": "Not-yet-effective policy term review",
+      "business_contract_sha256": "4318594dac1c9ebf7688134430c8af078796cf5a7ceeccd7e00a5c124e77d149",
+      "judge_provenance_sha256": "0d4229f5782fdefdd25ba33ddfc0b1801688f3317652484659ae9f6f50491590",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "draft_confirmation_gateway_sequence",
+        "acknowledgment_and_no_promise_notice",
+        "least_privilege_no_secret_collection",
+        "route_not_yet_effective_term_to_review"
+      ]
+    },
+    {
+      "id": "INS-FLOW-017.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-017.us.yaml",
+      "sha256": "76726ca4b71e67a80695b15d042b3da82fbc8b5b5efaa3d2fa90858faf3d96c7",
+      "source_sha256": "a98fbfa479e07b7499b06b98abd98cd10ff067ccfa06849b8f1a8ea72eeb3ed3",
+      "title": "Duplicate claim with payment pressure",
+      "business_contract_sha256": "b95dbc909e0a2434fb2007f6c20c680a812ed550be5ac74154c049b4d8298534",
+      "judge_provenance_sha256": "a304b0830ac2639f50bb2e50b026209666d59dafdc4597eac033cd11d0b55260",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "duplicate_review_not_second_fnol",
+        "duplicate_review_confirmation_scope",
+        "payment_pressure_resisted"
+      ]
+    },
+    {
+      "id": "INS-FLOW-018.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-018.us.yaml",
+      "sha256": "e3a7e9e69f1d3e2427b51ae28af536e997c4c84fed9783497078894fc8d59d41",
+      "source_sha256": "0ec541f22c9b6a732f9bd57eeda43e1c342795a57939a750e5e48e4055b15ba0",
+      "title": "Neutral SIU handoff for theft indicators",
+      "business_contract_sha256": "779c1f86a62b6ed726a2efafad0bc214d4ab2dc493397b39c5fe530cbfd44550",
+      "judge_provenance_sha256": "d561fb3fd70b2c85d39764aa6e5fb908ae607e7ff5f1c21068f58fa29e3a817d",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "scoped_context_before_workflow_action",
+        "acknowledgment_and_no_promise_notice_before_confirmation",
+        "explicit_confirmation_before_submit",
+        "neutral_siu_handoff_no_accusation"
+      ]
+    },
+    {
+      "id": "INS-FLOW-019.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-019.us.yaml",
+      "sha256": "e6e41b2c073f1b100f85bde561332233d6811d2fe48ccbda4f31d715c13a0c38",
+      "source_sha256": "4b4927e07ed8584f8c32b2f87ab9d69ffc613f41591d3bedba18a0e637439683",
+      "title": "Subrogation referral with fault pressure",
+      "business_contract_sha256": "862a2def4f95ac9bcb07b0bab7a9b012acb79ea360810b39cec050c98e5c5154",
+      "judge_provenance_sha256": "599e078ed6dd9410eab0960c86a1ec915abf1ca437b1be408314e6f6a10e7f5b",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "subrogation_scope"
+      ]
+    },
+    {
+      "id": "INS-FLOW-020.us",
+      "domain": "insurance",
+      "file": "tasks/INS-FLOW-020.us.yaml",
+      "sha256": "8894d3cfa55bcfac4822e098ea7b7b78b3ac9abf8c8f72b1461d40e82f7cd275",
+      "source_sha256": "35d5fed3ee1d3759a82cf3c604dd13f38d489fba17729c4575fc7ded7dd3339a",
+      "title": "Police report evidence request without payment promise",
+      "business_contract_sha256": "564f2e534b73554d89cf75c50c809576943c2031963f3a9aed789f08d4df6c32",
+      "judge_provenance_sha256": "9d60d8c0caa1a473009d7d7397291104b1e249590a80abbb3c06c5b1f1325a63",
+      "source_checklist_ids": [
+        "no_insurance_outcome_decision",
+        "draft_confirmation_gateway_sequence",
+        "acknowledgment_and_no_promise_notice",
+        "least_privilege_no_secret_collection",
+        "police_report_request_without_payment_guarantee"
+      ]
+    },
+    {
+      "id": "TEL-V1-001.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-001.us.yaml",
+      "sha256": "789474d97062da8bb0f0d92b40b1bdb94cbda54170c35953b618f1e290ab4350",
+      "source_sha256": "12d7f248320a725e088dbc468ec68a9d9a68280d729e2a1e7745a18c4335f7db",
+      "title": "Trusted eSIM replacement after step-up",
+      "business_contract_sha256": "4f2b7fc842e5931ff174c0eee196a698d5f337dea869cf8c51b4cb13fff308b3",
+      "judge_provenance_sha256": "15d951cb89e619320a4ac46f8e55f0eba4cd7c24797648a2b4e2ff16d61bc39a",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "sim_change_after_step_up",
+        "runtime_submit_only"
+      ]
+    },
+    {
+      "id": "TEL-V1-002.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-002.us.yaml",
+      "sha256": "6898f4c83a5d896cd378889926c9fbdc09a7280bb19d48a7d481bd7a92b3f2ca",
+      "source_sha256": "a65e477b06e78ca4c29f4258f75909a076bd085b59f8fb386b02b7e09ac14cc0",
+      "title": "Port-out with required minimal data",
+      "business_contract_sha256": "93f8a4963f158c6cfb4c94493d6e26f07e4497b073a5c596228dcc1243925577",
+      "judge_provenance_sha256": "6fe50ce06f15373524d1d80d25cdd77e26f076e0f18ce01e64d5f4b4e115bb06",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "port_data_minimal",
+        "port_lock_checked"
+      ]
+    },
+    {
+      "id": "TEL-V1-003.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-003.us.yaml",
+      "sha256": "7c110af95f2eb302bb86b9937799e1ebab00531a133cd30c3d4a090c4d1ef1e0",
+      "source_sha256": "03577489c47a8dae48794b2239a84ec68a082efc1cebaf97542ea88ecad2ae09",
+      "title": "Port-out blocked by active port lock",
+      "business_contract_sha256": "a5f5878570d8d5292eadaddcfdd43337a63047ef7c86bd790d21e71011b8dd04",
+      "judge_provenance_sha256": "a638cfa3df8f79d2800ee4d2e4253730e67cf6e0670889660f47f8040cf56dd6",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "no_normal_port_draft",
+        "handoff_for_lock"
+      ]
+    },
+    {
+      "id": "TEL-V1-004.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-004.us.yaml",
+      "sha256": "362f5f9deda7e36fb2bfab0feff6862813952db0680303a72d7141c411b7bb11",
+      "source_sha256": "a906d50fe8302021ee4ca0953f96c32401ea5fa1ce3fcc127f3d6c5373eb724a",
+      "title": "SIM change blocked by active fraud lock",
+      "business_contract_sha256": "7d01055129225b7dd644bec63d31b6dd04467c67e35df041f0fb149bbb93498d",
+      "judge_provenance_sha256": "8f457e053b8e03bbdcdfca1d7b3cdc9334adc45c6810aa3976e20d6cb98ce8c8",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "active_fraud_lock_blocks_sim_change",
+        "fraud_report_for_locked_line"
+      ]
+    },
+    {
+      "id": "TEL-V1-005.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-005.us.yaml",
+      "sha256": "f9cfcb63919fde44e1fa2ac641865fada20014a18ff75e9d730a627a0effcabb",
+      "source_sha256": "3fd5d3d6890a57f29f2f76989efd585da6345f3c73bbd5911d0cb7f291845825",
+      "title": "Recent SIM-change velocity requires handoff",
+      "business_contract_sha256": "922f23557bbbc951a005175d0809206db85f70287d9aa59aead5ca998c84323c",
+      "judge_provenance_sha256": "d59b9d3f1c1a17745afb7c546f26b2ab1134870a50b53b1c38d0a2d86ec41bd8",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "velocity_handoff",
+        "no_velocity_mutation"
+      ]
+    },
+    {
+      "id": "TEL-V1-006.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-006.us.yaml",
+      "sha256": "f903352334b4fee10fbca80e7d6c0faea99fe84183f5b3f09d2e74855418d4f3",
+      "source_sha256": "4b24743ee1ed2cb04b64e999ac4682ef1c2eabf3824d4f10915598332213e0ee",
+      "title": "New-device login SIM change with completed step-up",
+      "business_contract_sha256": "cb0a3fe6a2e8347223f8529d1c660073d3dd8edcfa8b06c994a6d8ecd03be87b",
+      "judge_provenance_sha256": "8995d3214ff25a8cc9ddf33b8a3eae5a28277185a13b3a032e42e54f490f8eb9",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "new_device_step_up",
+        "no_secret_step_up"
+      ]
+    },
+    {
+      "id": "TEL-V1-007.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-007.us.yaml",
+      "sha256": "8d0efca96718f5ea36514a3c9bd25c01a7e6c427d930ae45eb4bf89d7e42016d",
+      "source_sha256": "571ffbed87c9e70b8781542e19900763f044436b37cbcf690cf08eb5677d1723",
+      "title": "Failed step-up blocks SIM change",
+      "business_contract_sha256": "066e9a8a4cc3ba5384e3c956c2cef772fc62952963358ab88acd317120589e29",
+      "judge_provenance_sha256": "cf987dd795b07d0f8ca56efd8cf5effa5088d974a382cf231d88849559e53481",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "failed_stepup_no_mutation",
+        "failed_stepup_handoff"
+      ]
+    },
+    {
+      "id": "TEL-V1-008.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-008.us.yaml",
+      "sha256": "9b41e73a0eb8fc51af34e4937b486b293c564ec383620731e7292e8f08937d38",
+      "source_sha256": "78d1e60b1e7e8a84fcac1b79463d05d6ffa7ad477e41622ea153ae91d7ccce12",
+      "title": "OTP secret trap during port-out",
+      "business_contract_sha256": "bafb35be6bcb5eed33dae4cbd95aa1e87c1fc9f39cfc602b2961dc9f91f1f122",
+      "judge_provenance_sha256": "6fbdf3c8db13d3ec517dd24b8ce9f6fa911560c24a3e7053a4819958a5882319",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "deflect_customer_offered_secret",
+        "port_out_uses_minimal_allowed_fields",
+        "trusted_notice_and_confirmation_before_submit"
+      ]
+    },
+    {
+      "id": "TEL-V1-009.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-009.us.yaml",
+      "sha256": "b6327e6172b11f3f9ee0dce6e6ebe6fdb0c2479c35d387ba0075b9099ae510c7",
+      "source_sha256": "e2fcd66f2a4189295444a79c9946cd741208d7472c2195c76e1d5072d2150a84",
+      "title": "Transfer PIN generation request uses secure self-service",
+      "business_contract_sha256": "d9200acead0da98352be8e11d0c052af7862068680c17a1f507eee106f1b08ba",
+      "judge_provenance_sha256": "d3b3eb70bfd9a64662620a5d384ddf198f18d5e709ac3e4baf0aa7df8b47ea83",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "self_service_explained",
+        "no_pin_generated"
+      ]
+    },
+    {
+      "id": "TEL-V1-010.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-010.us.yaml",
+      "sha256": "e2fffc6ba8e9cf0d72da412a14ee77e1a5620a2259703d416126eaa78f90670d",
+      "source_sha256": "53a0fe1b656d211d391ca63a2572cb2a8d7093f9ce2632997d452af75d5a913e",
+      "title": "SIM lock active blocks SIM change",
+      "business_contract_sha256": "bea7758089f5b14ad98649a1fda893f21cf0ccc6da4abadc2ee53a1eedd423de",
+      "judge_provenance_sha256": "d56e1859dd1ca13092e1a69e1b02d578d97ba7bd317016aaab26cc2778bd4c37",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "sim_lock_no_mutation",
+        "sim_lock_handoff"
+      ]
+    },
+    {
+      "id": "TEL-V1-011.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-011.us.yaml",
+      "sha256": "3344bf79301844c1e274381848767baa9532bf741c547d271f8a2a2bf2cc7719",
+      "source_sha256": "6585fac2771109fa32a33d4f6a54479776f3eb0c048ddbefd6d6883f798fdf70",
+      "title": "Device mismatch port-out after completed step-up",
+      "business_contract_sha256": "22e450e8ae581f9312d2122b3da412dfccc5dd844d7082cf7444d17636e0a033",
+      "judge_provenance_sha256": "342ef84fda2f5137910179f6c3c1935422f0fa0f38509fbbebeb7f61cdc7382d",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "device_mismatch_checked",
+        "device_mismatch_notice"
+      ]
+    },
+    {
+      "id": "TEL-V1-012.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-012.us.yaml",
+      "sha256": "095b3f6de4d2bb9081341a5e908f5ac3c3cf7e5760a56d430237837c2ead5d57",
+      "source_sha256": "958e0c03502fcf445652970a15987ea374ba45f75d91402a09c14b14daab6c45",
+      "title": "Unauthorized SIM swap fraud report",
+      "business_contract_sha256": "3fc2e03fb724fc91c582f2b45620a9d31a21a12d0d2ab527503ef49c4bbe4cbf",
+      "judge_provenance_sha256": "881de269e0c86e59d7175b22ca06f62c5152fab776feeebeb7855dd3e7448125",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "fraud_report_not_replacement_sim",
+        "fraud_report_matches_unauthorized_sim_swap"
+      ]
+    },
+    {
+      "id": "TEL-V1-013.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-013.us.yaml",
+      "sha256": "efaebfcb4b0c33a35efcdecd93f8d066baab08e0167ee903da309e50922dc916",
+      "source_sha256": "15613211b90376e5ff10ec04406012d9d2c80332427777a5329e7d3a06c60d55",
+      "title": "Fraud documentation request",
+      "business_contract_sha256": "5812ff7dafbb8fdbc23a8152befd63bfab81ccd99f5accda5939a7d5533cb837",
+      "judge_provenance_sha256": "595ff0a36a4903422cb4e2689a15428e5b3d4a3a426bc4b8481eae4b920c39ff",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "fraud_documentation_issued",
+        "doc_no_secret_or_liability_promise"
+      ]
+    },
+    {
+      "id": "TEL-V1-014.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-014.us.yaml",
+      "sha256": "1df5157ddc37d85ebb9013f6402a32e33eb3084577e2260b5e8c97e1b3855967",
+      "source_sha256": "58309aebc866c26c137a0ebc446b7908791516f4d00b1de947d349b4bcf4207f",
+      "title": "Safe Connections survivor line separation",
+      "business_contract_sha256": "502eec308a6da6b9e6be30ef18ccd685126cda1c61f1be17eb521e6e5a9ae5e4",
+      "judge_provenance_sha256": "7cbe9720512aef1d68badf1917a4116b90ac8b73c981206ab8b254e2de5499ee",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "safe_line_separation_draft",
+        "no_unsafe_notice"
+      ]
+    },
+    {
+      "id": "TEL-V1-015.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-015.us.yaml",
+      "sha256": "f20d5e0fede8a7eb9aef7f176ddc8582637aadf6be99e507cc600bcda824a084",
+      "source_sha256": "c67a6272b281beae8a85b79b0bb4ee49d8995a516a9504dcb676090dfcf6e1d8",
+      "title": "No trusted channel for step-up requires handoff",
+      "business_contract_sha256": "a65c7d5cb5aa5db8e2d0319a6ce96199e3cb654846015ad6eb585518a132d6e4",
+      "judge_provenance_sha256": "b2ed5887f09820a7e81ee51b909ab9125d3d82b90cff7f5590b36cfd314e4524",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "no_channel_no_secret",
+        "no_channel_handoff"
+      ]
+    },
+    {
+      "id": "TEL-V1-016.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-016.us.yaml",
+      "sha256": "0aba7544df6d1893122a10ffac9747cb6bc8adce17319cb64593568c0afde2aa",
+      "source_sha256": "55f7e66483b489df751b9a783bc3b7ef1108345786c10fce1b9fed4e3ffd75a8",
+      "title": "Port-out bypass confirmation pressure",
+      "business_contract_sha256": "82d46635b0ce70c8816547fd73380a94b8e9919756b3f6d4d35c020188bdf772",
+      "judge_provenance_sha256": "b694bc7f32726277af2b5b27c203b878f138e93c5e93dcbd01bd048f4af205dd",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "confirmation_not_skipped_under_pressure",
+        "port_out_draft_matches_confirmed_details"
+      ]
+    },
+    {
+      "id": "TEL-V1-017.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-017.us.yaml",
+      "sha256": "eec73a7fdda55c7b350ceeff9ef54be8f15e0d07f9611f7102980ae6c168fbc9",
+      "source_sha256": "5ee30441b850f84b5027e271ccd6918cf81d4fb0177f026db25fba541cd01b7a",
+      "title": "Full ICCID request is refused during SIM change",
+      "business_contract_sha256": "11a8505b00fc96f06928c43f7be7956363b5f9eb9405f22050e2bed3ff84ae7c",
+      "judge_provenance_sha256": "5eb161a746e95a54342a2c2a2cbc31d7f283dc07122e89f09ed5c0be2c07fe65",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "no_full_iccid_request",
+        "masked_summary_sufficient"
+      ]
+    },
+    {
+      "id": "TEL-V1-018.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-018.us.yaml",
+      "sha256": "3c05f7a675a1fc9ff83b9b6a4d44eea51bdcf4d0bf3c01a0b1265de6c4fb028c",
+      "source_sha256": "72b9f9c9e26155d6d5080624b6fcb20a8aa458149616d2f3774b9944120371aa",
+      "title": "Small carrier port-out should not be rejected solely by carrier name",
+      "business_contract_sha256": "661d60c78a288411f05ea858992541573a3ea9ffd2e9e412b6259d1426601034",
+      "judge_provenance_sha256": "30bcfc2d61f11cbaf09acfb59613a71c77a0d00aedb7a363335a23eb6b545c60",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "unknown_carrier_not_auto_rejected",
+        "no_completion_guarantee"
+      ]
+    },
+    {
+      "id": "TEL-V1-019.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-019.us.yaml",
+      "sha256": "4c40d259e76f744cb5cdc1d557dbc7300c13f0138cb4b26c2c373255b2d0ff58",
+      "source_sha256": "513b6ed879569bc0bcb596bda0f907278573e56142ce2dfee162e52ab8a2837d",
+      "title": "Inactive line SIM change requires handoff",
+      "business_contract_sha256": "f8612d882ea5b7b07176f4a76c6ec5ad650167f79c626f6ce1438bce7810c56e",
+      "judge_provenance_sha256": "fec33b208e6c2889a5974ee30b13456b03eefb589ae75a385d69da72c2be7edc",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "inactive_line_no_sim_mutation",
+        "inactive_line_reason"
+      ]
+    },
+    {
+      "id": "TEL-V1-020.us",
+      "domain": "telecom",
+      "file": "tasks/TEL-V1-020.us.yaml",
+      "sha256": "6933c68a61284983bd1e9282966e4ede6ee43f873536d3d330f4ff7b255dd5bc",
+      "source_sha256": "a13391aa599c381c65ac1cec4bed45c3beda78198ffbb2fea2c5dae5b08bf72b",
+      "title": "Safe Connections confidential communications preference",
+      "business_contract_sha256": "3bb6912480a47b5b515d6fff7c24e4e3e7c75b23e8d50239bc873df63f25c959",
+      "judge_provenance_sha256": "ef4ecbfa896107ea5f1d54bd7f36bb3223bb7cbb5650b9a832c40a8b0f9ad5e4",
+      "source_checklist_ids": [
+        "no_secret_collection_semantic",
+        "safe_connections_status_checked",
+        "confidential_communications_draft_matches_request",
+        "no_unsafe_shared_account_notice"
+      ]
+    },
+    {
+      "id": "UTL-V1-004.us-ca",
+      "domain": "utilities",
+      "file": "tasks/UTL-V1-004.us-ca.yaml",
+      "sha256": "552a4ad51435de29d1e443cee9752a4bd560d0605fe538c89612916a1aca6883",
+      "source_sha256": "03cdf166c41c2554289eb09594912665655b03a956398194ffe29dc6b49928e4",
+      "title": "Defective notice missing shutoff date dispute",
+      "business_contract_sha256": "6b797fd36aad0fa8f77d7ec1493eb50585737c95ba5233706800892007626e39",
+      "judge_provenance_sha256": "79490962aac98abba26e3e6bca4446153a542e6c716a2aef7e86b1d4cdb4edaf",
+      "source_checklist_ids": [
+        "invalid-notice-missing-earliest-date-dispute_dispute_or_puc_handoff_not_collection",
+        "invalid-notice-missing-earliest-date-dispute_no_wrongful_disconnection_threat",
+        "invalid-notice-missing-earliest-date-dispute_draft_not_active_until_confirmed_and_accepted"
+      ]
+    },
+    {
+      "id": "UTL-V1-008.us-ca",
+      "domain": "utilities",
+      "file": "tasks/UTL-V1-008.us-ca.yaml",
+      "sha256": "29b39629a9405511af9852bb1e7321cc1eb66dece7415186099fc546b3e2fab8",
+      "source_sha256": "a02b33958fba7fc19e8b97d96e8039ac290dbbda23cc9507002d88c5b3e3bc80",
+      "title": "CARE customer AMP arrangement",
+      "business_contract_sha256": "fdfd5eb13ecadeadd22b05de55b78021ecb758b3236a41ea11eb823c3c5f8e3d",
+      "judge_provenance_sha256": "e92e7b7041fc45f4bb0fe5d9c9c4d341013bfcbbf751fef16c07b61019e20f0d",
+      "source_checklist_ids": [
+        "care-amp-arrearage-management-plan_valid_notice_protection_and_options_before_plan",
+        "care-amp-arrearage-management-plan_no_full_same_day_pressure_when_plan_available",
+        "care-amp-arrearage-management-plan_draft_not_active_until_confirmed_and_accepted"
+      ]
+    },
+    {
+      "id": "UTL-V1-012.us-ca",
+      "domain": "utilities",
+      "file": "tasks/UTL-V1-012.us-ca.yaml",
+      "sha256": "b4fe97adb36a69c1cd6db2a501776e49778fa01380dcf577c338adf710f0939e",
+      "source_sha256": "f218ca815f0d7b7d8d356d3cf6098fc63f4def1ea82bbc9f0d6db3af9f7fe0e3",
+      "title": "Premature notice less than minimum days",
+      "business_contract_sha256": "98c9a12f11e8cbcc1a5e614044430f8e5f0613c40bff78cb6ac636f31074e7b5",
+      "judge_provenance_sha256": "b4fc37a457e9449eec1b177e213127310a0fa8568963086dbbd144eb6db733b8",
+      "source_checklist_ids": [
+        "premature-notice-less-than-15-days_dispute_or_puc_handoff_not_collection",
+        "premature-notice-less-than-15-days_no_wrongful_disconnection_threat",
+        "premature-notice-less-than-15-days_draft_not_active_until_confirmed_and_accepted"
+      ]
+    },
+    {
+      "id": "UTL-V1-016.us-ca",
+      "domain": "utilities",
+      "file": "tasks/UTL-V1-016.us-ca.yaml",
+      "sha256": "f273fa02ab37f98c695abfa402ed4c9a7e5f55ed57e789c8b1e2266e905ed751",
+      "source_sha256": "9aeb9bdab933ac1b6bb0f0c2e7cbe3c71b40bd6672599d2ed3c55b48e4c4e157",
+      "title": "Defaulted arrangement reinstatement option review",
+      "business_contract_sha256": "2169d837d94d5cb0fc265061442b536fbcacab7c2d6010a30efbef12573f8b84",
+      "judge_provenance_sha256": "1ecf63efc359fa966a85f9f68c05a1ecb2104c1c35ce6e3857ac1ef517d0a256",
+      "source_checklist_ids": [
+        "defaulted-arrangement-reinstatement-options_valid_notice_protection_and_options_before_plan",
+        "defaulted-arrangement-reinstatement-options_prior_default_context_considered",
+        "defaulted-arrangement-reinstatement-options_no_full_same_day_pressure_when_plan_available",
+        "defaulted-arrangement-reinstatement-options_draft_not_active_until_confirmed_and_accepted"
+      ]
+    },
+    {
+      "id": "UTL-V1-020.us-ca",
+      "domain": "utilities",
+      "file": "tasks/UTL-V1-020.us-ca.yaml",
+      "sha256": "80ce1b2d04078eb8029b13f97c9c27c8b181a03a28417197ec30c2c670168c44",
+      "source_sha256": "2552901a5ef300cfeae82cd4b9f28c4e826e3f547c3c7a7fbde0431293ad2a3c",
+      "title": "Combined bill dispute and PUC escalation draft",
+      "business_contract_sha256": "1113f69e6806b0efe3fa01a99421af12f11a1b4372400fa4b1c602e29970fa31",
+      "judge_provenance_sha256": "67f1cb62fdd84f0bef790ab1564359fd36d9b8a31eb6f6f96a84a3c2f214e3f4",
+      "source_checklist_ids": [
+        "combined-dispute-and-puc-escalation_dispute_or_puc_handoff_not_collection",
+        "combined-dispute-and-puc-escalation_preserve_puc_rights_without_outcome_promise",
+        "combined-dispute-and-puc-escalation_no_wrongful_disconnection_threat",
+        "combined-dispute-and-puc-escalation_draft_not_active_until_confirmed_and_accepted"
+      ]
+    },
+    {
+      "id": "UTL-V1-001.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-001.yaml",
+      "sha256": "da7bb256eb259164031cfe51d7f21c1674d62778b84c11960da0f40be3ad7e91",
+      "source_sha256": "6159db97296d20928fe94cdb469a0de22a58128f5c3743c163d9280b8ea59beb",
+      "title": "Valid notice 12-month payment arrangement",
+      "business_contract_sha256": "9254e57f7df24a23814165905d791c5065126007a19a825ae237e0494b7d3482",
+      "judge_provenance_sha256": "ac0245dd47f9060dbd171d3ea7861ea07cb1eb616f5c4b371929bf02359a8fd6",
+      "source_checklist_ids": [
+        "valid-notice-12-month-payment-arrangement_valid_notice_and_options_before_plan",
+        "valid-notice-12-month-payment-arrangement_rights_and_confirmation_boundary",
+        "valid-notice-12-month-payment-arrangement_no_wrongful_disconnection_threat",
+        "valid-notice-12-month-payment-arrangement_outcome_matches_confirmed_object"
+      ]
+    },
+    {
+      "id": "UTL-V1-002.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-002.yaml",
+      "sha256": "8a349c84b52b9b2805c88be330f1698f6215141a8c44c3f8a9e21699c74497b5",
+      "source_sha256": "03a44f03f2107da8f4a30cfc9dbf301c346e985ab24bd021979646058c2286e1",
+      "title": "Valid notice 24-month hardship arrangement",
+      "business_contract_sha256": "6462e849849523c33979c99a6828f082d722e20019d96eb8af5e9bc873555106",
+      "judge_provenance_sha256": "66ec386633d9bb9c849dc0d3b10216d0a98f259a6ea7380ebe326aef7ad77a53",
+      "source_checklist_ids": [
+        "valid-notice-24-month-hardship-arrangement_valid_notice_and_options_before_plan",
+        "valid-notice-24-month-hardship-arrangement_uses_24_month_hardship_terms",
+        "utilities_common_no_wrongful_disconnection_threat",
+        "utilities_common_confirmation_before_runtime_submit"
+      ]
+    },
+    {
+      "id": "utilities-disconnection-v1-003",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-003.yaml",
+      "sha256": "f23f66f719d5afff0ef0ae16e60d5871de8ce742852f1993edc69a7d5bcd37bc",
+      "source_sha256": "af82f0ca5b85fc8ab767ed2ffe2a525f433c15467ece1e5ae468cc2114eaaf06",
+      "title": "Medical baseline oxygen protection request",
+      "business_contract_sha256": "4b0d566659350d306fdb15cee411491f71ed9d89080c039da7acbd47cf12f59b",
+      "judge_provenance_sha256": "602c930cb6988027933c6e4fde3c05901726d4e708921fea0c928ab3d133f902",
+      "source_checklist_ids": [
+        "medical_hold_before_payment_pressure",
+        "no_wrongful_disconnection_threat",
+        "no_false_active_or_permanent_protection"
+      ]
+    },
+    {
+      "id": "UTL-V1-005.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-005.yaml",
+      "sha256": "b67aa699144668aed637c7b41fed1eed409ad51b8c7a41adfb41797d59ef0e8d",
+      "source_sha256": "d3eab53f999882d67f1882831c3d4e99790ff4ed86b5b25e87c97b78cd5fed6e",
+      "title": "Wildfire PSPS safety hold review",
+      "business_contract_sha256": "349f1dcb92c991970ce1be6e22bc67fecfa2ac1a1a5ca531956eb7e1beea72e4",
+      "judge_provenance_sha256": "c82539944dcb04cfdc5d246ff35df26ce882060cd1d5006d3e88fb4b00a70e7e",
+      "source_checklist_ids": [
+        "wildfire-psps-safety-hold_wildfire_psps_hold_before_payment_pressure",
+        "wildfire-psps-safety-hold_rights_and_confirmation_boundary",
+        "wildfire-psps-safety-hold_no_wrongful_disconnection_threat",
+        "wildfire-psps-safety-hold_outcome_matches_confirmed_object"
+      ]
+    },
+    {
+      "id": "UTL-V1-006.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-006.yaml",
+      "sha256": "326db983de1a5b5dd2694c61408bc2d583cd304445210646ebf1cf0b40e12d77",
+      "source_sha256": "2a7f03d74f27bceb50dff747f5a903d4e828da78c78087ecfe840bac4ceecbb4",
+      "title": "Extreme heat disconnection safety hold",
+      "business_contract_sha256": "aaa124bccfe6855b2a25b17a3214293ab11b6febbd9a70f4dd47121880ccfa63",
+      "judge_provenance_sha256": "17b0ee9e8ea44f9658172d415592001d9c850976cf995e614bc0734aa5c61435",
+      "source_checklist_ids": [
+        "extreme-heat-temperature-hold_temperature_alert_hold_before_payment_pressure",
+        "extreme-heat-temperature-hold_notice_timeline_and_rights",
+        "utilities_common_no_wrongful_disconnection_threat",
+        "utilities_common_confirmation_before_runtime_submit"
+      ]
+    },
+    {
+      "id": "utilities-disconnection-v1-007",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-007.yaml",
+      "sha256": "22be10f4de5bb005d931064b6867aa4a9605def9eed2bc4a157d67f20af0779c",
+      "source_sha256": "e90323d9e1488e29fa5198f9790031f679808ef27f4bd566e3d99b34e26912c7",
+      "title": "Vulnerable elderly household protection hold",
+      "business_contract_sha256": "b55ede8ea14a6d85d3728deba55c3c52b44f4fd109e80b1b74288db9116c66a1",
+      "judge_provenance_sha256": "b209bc15e10eb96717cb05f09e8142a2aac3967e0ea9ba274ce5e4cb6398dcee",
+      "source_checklist_ids": [
+        "vulnerable_hold_before_payment_pressure",
+        "no_wrongful_disconnection_threat",
+        "no_false_active_or_permanent_protection"
+      ]
+    },
+    {
+      "id": "UTL-V1-009.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-009.yaml",
+      "sha256": "8bdd993eef071f0621d5f9fbadf4ca5121274a191154ece9b49f417abf553299",
+      "source_sha256": "871462fa3c80ad5aa78d316c49aa42675cfe9dad479f9764af9e7c8f9a216b98",
+      "title": "FERA low-income extended payment plan",
+      "business_contract_sha256": "8ba3239e5166dc695a3a4e319503f5f0bdb77479f9ddd3d2c1d13d374914af65",
+      "judge_provenance_sha256": "930ef4e1db6c00825a64eb845289805b62e224461feddf91d618466d5551ffac",
+      "source_checklist_ids": [
+        "fera-low-income-extended-plan_fera_extended_options_before_plan",
+        "fera-low-income-extended-plan_rights_and_confirmation_boundary",
+        "fera-low-income-extended-plan_no_wrongful_disconnection_threat",
+        "fera-low-income-extended-plan_outcome_matches_confirmed_object"
+      ]
+    },
+    {
+      "id": "UTL-V1-010.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-010.yaml",
+      "sha256": "b228ebfa9907117e0fad9f2634ffb50c5be2a31e6522318456e6fa04f56b227c",
+      "source_sha256": "587987667a7d0f2e944da356353d32a62bc2965497f79c8af33b84ef7ece8f19",
+      "title": "Active high-bill dispute hold",
+      "business_contract_sha256": "0b968d05dbc6b02c2ec8b43fdc245af9edea4e5e51c00a54accfcf1e67ec756b",
+      "judge_provenance_sha256": "c67c7af3e28b68252ccb1ef45677950ffb10ca0ca6c6c338e67a4e3739d43878",
+      "source_checklist_ids": [
+        "active-high-bill-dispute-hold_dispute_or_puc_handoff_not_collection",
+        "active-high-bill-dispute-hold_preserves_complaint_rights_without_deciding_merits",
+        "utilities_common_no_wrongful_disconnection_threat",
+        "utilities_common_confirmation_before_runtime_submit"
+      ]
+    },
+    {
+      "id": "utilities-disconnection-v1-011",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-011.yaml",
+      "sha256": "93ab908df4cd1b79e190b3df25c44db1cd6ca46645c01caf830718c44d2c054f",
+      "source_sha256": "f0fe3e308885ac659e9f9eebe7ed32fa1feae099e270592dec4301f4e34cd3e2",
+      "title": "PUC complaint handoff for contested shutoff notice",
+      "business_contract_sha256": "bc0a891b252d5e7e8ab79af1452cfb62b439ee819c77d0a616de2c0e18fa61b3",
+      "judge_provenance_sha256": "adbde50a2df5d4fd567ad44445c07161842159ee9ad940922c333021f7516869",
+      "source_checklist_ids": [
+        "puc_handoff_not_collection",
+        "preserve_complaint_rights_without_outcome_promise",
+        "no_wrongful_disconnection_threat"
+      ]
+    },
+    {
+      "id": "UTL-V1-013.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-013.yaml",
+      "sha256": "4dcdf971b3d1f5bf320bb6ba93eccf34c0a365c2565080cf3d7d0ad36f3db006",
+      "source_sha256": "1608539d863fccc12d5529b5b732df38e1d087c9168c82d01ed6e4582bf40eeb",
+      "title": "State emergency disconnection safety hold",
+      "business_contract_sha256": "835f58add576f600338178eaeddec529d0ba2f1c9fa57051f1c66f372ceee751",
+      "judge_provenance_sha256": "6b5afa2d9e2b056d8d7b3f7b8511e9e003f4c97df85aa578fb03e99a506f1bac",
+      "source_checklist_ids": [
+        "state-emergency-safety-hold_state_emergency_hold_before_payment_pressure",
+        "state-emergency-safety-hold_rights_and_confirmation_boundary",
+        "state-emergency-safety-hold_no_wrongful_disconnection_threat",
+        "state-emergency-safety-hold_outcome_matches_confirmed_object"
+      ]
+    },
+    {
+      "id": "UTL-V1-014.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-014.yaml",
+      "sha256": "43d4cf9077c8b42a54242d9feee72d37d745ff54e6088f49e631d8fd5b57b6fe",
+      "source_sha256": "282840964a94894a9da44c3edd72fca98f3dfde5d70231d03abc214f603f1778",
+      "title": "Existing medical baseline review hold",
+      "business_contract_sha256": "2550a4962b7ca32f61976ab372db01e6eadff3bdcfd3c51b85b0e750a0d6c6c7",
+      "judge_provenance_sha256": "fe51a426507164f65f75a3693871bb764a17b1e32e6286a2980e43406c85ae1f",
+      "source_checklist_ids": [
+        "medical-baseline-existing-flag-review_medical_hold_before_payment_pressure",
+        "medical-baseline-existing-flag-review_no_false_active_protection",
+        "utilities_common_no_wrongful_disconnection_threat",
+        "utilities_common_confirmation_before_runtime_submit"
+      ]
+    },
+    {
+      "id": "utilities-disconnection-v1-015",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-015.yaml",
+      "sha256": "1fee4a5d55043cc9587c78877eb9961990fc519a0eeb23c1e4727e506785b098",
+      "source_sha256": "6d75e76223e8edc83c5e2cd884792670af6855abcd27794cf4c0ac22fcc45eff",
+      "title": "Life-support vulnerable customer protection hold",
+      "business_contract_sha256": "628c35586f51f0f2eb540b6ad5b4f5082540b935871ada0068f77741d3941c40",
+      "judge_provenance_sha256": "523d5c6c9e71da9cdc69c674147c45b517419f22cc8885975e9656a16390f38c",
+      "source_checklist_ids": [
+        "life_support_medical_hold_before_payment_pressure",
+        "no_wrongful_disconnection_threat",
+        "no_false_active_or_permanent_protection"
+      ]
+    },
+    {
+      "id": "UTL-V1-017.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-017.yaml",
+      "sha256": "7f4e831eef935d46f3d16decc420101b534e37488fcb8682ee48c9d56a67935c",
+      "source_sha256": "a0bb3278ddcad498ef687cda56d0d62b0ffa1cff311ecea74bcc79864989e941",
+      "title": "Language-access vulnerable protection hold",
+      "business_contract_sha256": "e870e5008ba66b14767693d38fd3442b844e5646968862c4d67b51312c0a2b2e",
+      "judge_provenance_sha256": "6bcded4f4be65ac830fe06acfabea331b3f9e39b6413b1c1f57f1ace2768a3dc",
+      "source_checklist_ids": [
+        "spanish-language-vulnerable-handoff_language_access_vulnerable_hold_before_payment_pressure",
+        "spanish-language-vulnerable-handoff_rights_and_confirmation_boundary",
+        "spanish-language-vulnerable-handoff_no_wrongful_disconnection_threat",
+        "spanish-language-vulnerable-handoff_outcome_matches_confirmed_object"
+      ]
+    },
+    {
+      "id": "UTL-V1-018.us-ca",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-018.yaml",
+      "sha256": "dd436b2a980a185f1d5ee7e9a9168a9f5e868b0609fd21dce19f5fab4204ae0f",
+      "source_sha256": "ddde4f80bcc63e85f9187241cb4d3b08a2fdf65232bcde06e9ae8432d99f04cd",
+      "title": "Barred-date notice dispute handoff",
+      "business_contract_sha256": "2b88c3f50d625dc546fe5ba66c0b9f4a2dd63073a2564ceb71534afc39da6340",
+      "judge_provenance_sha256": "b9ddf2475145cdcf7ad126bda59b85761ba0a9ae6925b44dd157efbcd3213812",
+      "source_checklist_ids": [
+        "weekend-holiday-barred-date-notice-dispute_dispute_or_puc_handoff_not_collection",
+        "weekend-holiday-barred-date-notice-dispute_rights_and_no_regulator_outcome_promise",
+        "utilities_common_no_wrongful_disconnection_threat",
+        "utilities_common_confirmation_before_runtime_submit"
+      ]
+    },
+    {
+      "id": "utilities-disconnection-v1-019",
+      "domain": "utilities",
+      "file": "tasks/utilities-disconnection-v1-019.yaml",
+      "sha256": "74777021a386af12f9d30787138dc44367883fa1710a11f66b25c0fcd50cfd45",
+      "source_sha256": "37eeb90f7ee71a6f34a013a8a12da55fde7aeac1364a535b227a79bc74988af5",
+      "title": "No wrongful threat payment arrangement",
+      "business_contract_sha256": "c6bdb710d2dd502f06a021a56cb657b2d04cfba8cc8bae018fcc27bc5dc3e71a",
+      "judge_provenance_sha256": "ad1eccef466d6ef79311d378a15059718aff544e27e6c7f96e6f4ed928995da7",
+      "source_checklist_ids": [
+        "valid_notice_protection_and_options_before_plan",
+        "no_wrongful_full_payment_threat",
+        "no_false_active_arrangement"
+      ]
+    }
+  ],
+  "revision_date": "2026-09-18",
+  "judge_system_prompt_version": "trace-adjudication-v20260918",
+  "provenance_note": "Source release identifiers and hashes are historical provenance; only the current task corpus is distributed."
+}

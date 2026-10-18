@@ -15,7 +15,7 @@ from scripts import run_eval_batch as batch
 
 from .score import score_batches
 
-DEFAULT_TASK = "benchmarks/cxbench-banking-judge-v20260917/tasks/*.yaml"
+DEFAULT_TASK = "benchmarks/cxbench-120/tasks/*.yaml"
 
 
 def build_parser() -> argparse.ArgumentParser:

@@ -279,7 +279,7 @@ def test_generate_benchmark_quality_gate_blocks_acceptance(monkeypatch, tmp_path
 
     config = _write_generation_fixture(tmp_path)
     out = tmp_path / "run"
-    monkeypatch.setenv("CRS_OAI_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setattr(generation, "OpenAICompatibleClient", FakeQualityReviewClient)
 
     validation = generate_benchmark(config, out, review_model="openai:fake-review")

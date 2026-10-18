@@ -1,21 +1,13 @@
-# cxbench Benchmark Releases
+# Benchmark
 
-This directory contains accepted benchmark corpus releases.
+This directory distributes one canonical corpus:
 
-## Releases
+| Corpus | Tasks | Domains | Protocol |
+| --- | ---: | ---: | --- |
+| [cxbench-120](cxbench-120/README.md) | 120 | 6 | Revised semantic checklists, final hybrid grading |
 
-| Release | Tasks | Domains | Date | Notes |
-|---|---:|---:|---|---|
-| [`cxbench-120-v20260708`](./cxbench-120-v20260708/) | 120 | 6 | 2026-07-08 | Accepted 20 tasks per domain from `generated/benchmark_candidates/codex-6domain-20260625-v2`. |
+The corpus contains 20 tasks per domain. Its manifest records task hashes,
+versioned rubrics, and historical provenance without an additional task copy.
+All experiment entry points select this corpus by default.
 
-See the [experiment protocol](../docs/experiments.md) for current grading and reporting conventions.
-
-## Rubric variants
-
-| Variant | Tasks | Scope |
-| --- | ---: | --- |
-| [`cxbench-banking-judge-v20260917`](./cxbench-banking-judge-v20260917/) | 120 | Default: revised six-domain LLM checklists; only `policy.llm_judge` changes. Original task IDs are reused. |
-
-The revised directory retains its historical banking name but covers all six
-domains. Each directory contains task YAML and a hash manifest. Select one
-release at a time: task IDs intentionally overlap.
+See the [experiment protocol](../docs/experiments.md) for execution and scoring.

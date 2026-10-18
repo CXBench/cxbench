@@ -1,105 +1,97 @@
-# Provider configuration
+# OpenAI API configuration
 
-## CRS quick start
+## Standard setup
 
-Copy `.env.example` to `.env` at the repository root and set:
+Copy `.env.example` to `.env` at the repository root and set your own key:
 
 ```dotenv
-CRS_OAI_KEY=your_private_key
-CRS_OAI_BASE_URL=https://crs.uuid.im/openai/v1
-CRS_OAI_WIRE_API=responses
-CRS_OAI_RESPONSES_STREAM=true
+OPENAI_API_KEY=your_private_key
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_WIRE_API=responses
+OPENAI_RESPONSES_STREAM=true
+OPENAI_REASONING_EFFORT=low
+OPENAI_MAX_OUTPUT_TOKENS=8192
 ```
 
-The CRS launcher explicitly enables Responses streaming. The tested endpoint
-requires it; non-streaming requests have returned HTTP 400. The loader uses the
-CRS base URL from the process environment or `.env`, falling back to the default
-above. The shell launcher does not override a custom `.env` endpoint.
+The client sends standard OpenAI HTTP requests with bearer-token authentication.
+The public launcher uses `POST /v1/responses`, supporting function calls and
+streaming events. The key and base URL are supplied through the standard
+`OPENAI_*` variables. `openai:<model>` never falls back to another provider's key.
+No credentials are stored in task files or result manifests.
 
-Keys are read at runtime. They are not required by offline tests, dry runs, or
-local template generation. Never place credentials in source code or CLI
-arguments, and never commit `.env` or run logs containing provider responses.
+The default model is `gpt-5.6-sol` for all three roles. Model access depends on
+your OpenAI account. See the official [model documentation](https://developers.openai.com/api/docs/models/gpt-5.6-sol)
+and [Responses API guide](https://developers.openai.com/api/docs/guides/migrate-to-responses).
+The root launcher uses Responses explicitly; the generic client also supports
+Chat Completions when `OPENAI_WIRE_API=chat` is selected. Tool/reasoning support
+can differ across model and API combinations, so prefer Responses for this setup.
 
-Model selection for `./run.sh` comes from shell variables, not `.env`:
+## Select model roles
+
+Model-selection variables belong in the shell environment:
 
 ```bash
 export CXBENCH_AGENT_MODEL=gpt-5.6-sol
-export CXBENCH_USER_MODEL=crs:gpt-5.6-sol
-export CXBENCH_JUDGE_MODEL=crs:gpt-5.6-sol
-./run.sh --smoke-test --run-id crs-smoke
+export CXBENCH_USER_MODEL=openai:gpt-5.6-sol
+export CXBENCH_JUDGE_MODEL=openai:gpt-5.6-sol
+./run.sh --smoke-test --run-id openai-smoke
 ```
 
-Use models enabled for your account. An API error indicating an unavailable
-model requires choosing another supported identifier; changing credentials or
-retry counts does not establish model availability.
+The agent model is a bare identifier; user and judge model strings include
+`openai:` to select the adapter. These model-role variables are distinct from
+API credentials. Never place credentials in CLI arguments or commit `.env`.
 
-## Shared request settings
+## Request controls
 
 | Variable | Default | Meaning |
-| --- | ---: | --- |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | required for live calls | Private API credential |
+| `OPENAI_BASE_URL` | `https://api.openai.com/v1` | API root |
+| `OPENAI_WIRE_API` | `responses` | Generic client transport: `responses` or `chat` |
+| `OPENAI_RESPONSES_STREAM` | `true` | Enable streaming Responses; `false` is supported |
+| `OPENAI_REASONING_EFFORT` | `low` | Responses reasoning effort; an empty value omits the field |
 | `OPENAI_TIMEOUT_SECONDS` | 120 | Request timeout in seconds |
 | `OPENAI_MAX_RETRIES` | 5 | Additional transient request attempts |
-| `OPENAI_RETRY_BACKOFF_SECONDS` | 2 | Base transport retry delay |
+| `OPENAI_RETRY_BACKOFF_SECONDS` | 2 | Base request retry delay |
 | `OPENAI_VALIDATION_RETRIES` | 1 | Additional attempts for malformed model output |
-| `OPENAI_MAX_OUTPUT_TOKENS` | 1,024 in the raw client | Per-response output cap; the experiment runner sets 8,192 |
+| `OPENAI_MAX_OUTPUT_TOKENS` | 1,024 in the raw client | The experiment runner and example environment use 8,192 |
 
-The batch's `--max-output-tokens` controls its output cap. The launcher sets
-Responses streaming for CRS even when the user-simulator and judge use explicit
-`crs:` model strings. Shell environment values normally take precedence over
-dotenv values; explicit command-line runner options override the corresponding
-generic provider settings for that run.
+Shell environment values take precedence over dotenv values. Runner CLI settings
+such as `--wire-api` and `--max-output-tokens` override the corresponding generic
+settings during that run. The root shell launcher fixes the wire API to Responses;
+use the general Python runner to explicitly select Chat Completions.
+Streaming remains configurable and is not forced by the launcher.
 
-## Other supported profiles
+## Compatible endpoints
 
-| Provider | Key variable | Base URL variable | Transport variable |
-| --- | --- | --- | --- |
-| OpenAI-compatible | `OPENAI_API_KEY` | `OPENAI_BASE_URL` | `OPENAI_WIRE_API` |
-| CRS | `CRS_OAI_KEY` | `CRS_OAI_BASE_URL` | `CRS_OAI_WIRE_API` |
-| OpenRouter | `OPENROUTER_API_KEY` | `OPENROUTER_BASE_URL` | `OPENROUTER_WIRE_API` |
-| DeepSeek | `DEEPSEEK_API_KEY` | `DEEPSEEK_BASE_URL` | `DEEPSEEK_WIRE_API` |
-| SiliconFlow | `SILICONFLOW_API_KEY` | `SILICONFLOW_BASE_URL` | `SILICONFLOW_WIRE_API` |
-| Shubiaobiao | `SHUBIAOBIAO_API_KEY` | `SHUBIAOBIAO_BASE_URL` | `SHUBIAOBIAO_WIRE_API` |
+A compatible service can be configured explicitly through `OPENAI_BASE_URL` and
+`OPENAI_API_KEY` while retaining the same request format and `openai:` model
+prefix. This does not imply that the service is operated by OpenAI, supports all
+OpenAI models, or implements every streaming/tool feature. Use model identifiers
+and request settings supported by that endpoint. The official OpenAI endpoint
+remains the default.
 
-Transport values are `chat` and `responses`. Set an explicit base URL for routed
-providers. Prefix user/judge models with the intended provider to avoid reliance
-on key auto-detection. The general batch runner takes a bare agent model name
-and an explicit `--agent-provider`.
+## Advanced launchers
 
-For a generic compatible endpoint:
-
-```bash
-uv run --frozen python -m main_experiment.run \
-  --agent-provider openai --model MODEL_ID \
-  --user-model openai:MODEL_ID \
-  --judge-provider openai --judge-model openai:MODEL_ID \
-  --base-url https://YOUR_ENDPOINT/v1 --wire-api chat \
-  --executor process --concurrency 1 \
-  --task 'benchmarks/cxbench-banking-judge-v20260917/tasks/BK-RAW-001.us.yaml' \
-  --run-id compatible-smoke
-```
-
-Supply `OPENAI_API_KEY` privately. `--base-url` applies only to the generic
-`openai` profile; other profiles use their named environment variables.
-
-## Advanced launcher configuration
-
-`model_eval` and `no_agent_direct_submit_ablation` accept `--env-file` (default
-`model_eval/.env`) and `CXBENCH_API_KEY`, `CXBENCH_MODEL`, `CXBENCH_BASE_URL`, and
-`CXBENCH_MAX_OUTPUT_TOKENS`. They route through the generic compatible client.
-These are separate from the root CRS launcher settings; use each entry point's
-`--help` and `--dry-run` to inspect the plan. Prefer the root launcher for CRS.
+`model_eval` and the submission-rule ablation accept `--env-file`; their default
+is `model_eval/.env`. Pass `--env-file .env` to reuse the root configuration.
+They accept `OPENAI_API_KEY` and `OPENAI_BASE_URL`; the existing `CXBENCH_API_KEY`
+and `CXBENCH_BASE_URL` aliases remain available. These launchers retain their
+Chat Completions default, while the recommended root launcher uses Responses.
+Inspect `--help` and `--dry-run` when using the advanced paths.
 
 ## Troubleshooting
 
 | Symptom | Check |
 | --- | --- |
-| 401/403 or missing API key | Active provider, credential variable, account access |
-| 404/model unavailable | Exact model identifier supported by that endpoint |
-| CRS rejects non-streaming requests | `CRS_OAI_RESPONSES_STREAM=true`; use `./run.sh` |
-| 429, connection failure, timeout | Provider limits, network, and request timeout; reduce concurrency |
-| Repeated task/judge retries | Inspect the failing attempt/trace; retries do not fix unsupported task interfaces |
-| Resume rejects task hashes/options | Restore the original selection and configuration; use a new run for changes |
-| Run succeeds but verdict is `fail` | Read `report.md` and judge findings; this can be a valid measurement |
+| Missing key, 401, or 403 | `OPENAI_API_KEY`, account access, and selected endpoint |
+| Model unavailable | Exact identifier and account/model permissions |
+| 429 or timeouts | Request limits, network, request timeout; reduce concurrency |
+| Unsupported request parameter | Model/API combination; use the documented Responses configuration |
+| Repeated task/judge errors | Inspect failed attempts and traces; execution retries do not fix incompatible interfaces |
+| Resume rejects hashes/options | Repeat the original selection and configuration |
+| Completed run has a `fail` verdict | Read the report and judge findings; execution success differs from compliance success |
 
-The adapter uses the platform TLS trust store. Keep certificate validation
-enabled and fix the local trust configuration if TLS verification fails.
+Keep TLS verification enabled. Offline tests and dry runs do not require an API
+key. An earlier compatible-endpoint smoke run is not evidence that the official
+OpenAI endpoint was tested; see [validation](validation.md).

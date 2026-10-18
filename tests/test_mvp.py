@@ -341,41 +341,28 @@ def test_healthcare_draft_mismatch_feedback_is_field_specific_natural_language()
     assert "diff" not in feedback.lower()
 
 
-def test_crs_config_defaults_to_responses(monkeypatch, tmp_path):
+def test_openai_config_defaults_to_official_responses_endpoint(monkeypatch, tmp_path):
     from cxbench.openai_compat import OpenAICompatConfig
 
     monkeypatch.chdir(tmp_path)
-    for key in [
-        "OPENAI_API_KEY",
-        "OPENAI_BASE_URL",
-        "OPENAI_WIRE_API",
-        "OPENROUTER_API_KEY",
-        "OPENROUTER_BASE_URL",
-        "CRS_OAI_BASE_URL",
-        "CRS_OAI_WIRE_API",
-    ]:
+    for key in ["OPENAI_BASE_URL", "OPENAI_WIRE_API"]:
         monkeypatch.delenv(key, raising=False)
-    monkeypatch.setenv("CRS_OAI_KEY", "test-key")
-
-    config = OpenAICompatConfig.from_model_string("openai:gpt-5.4-mini", role="test")
-
-    assert config.provider == "crs"
-    assert config.model == "gpt-5.4-mini"
-    assert config.base_url == "https://crs.uuid.im/openai/v1"
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    config = OpenAICompatConfig.from_model_string("openai:gpt-5.6-sol", role="test")
+    assert config.provider == "openai"
+    assert config.model == "gpt-5.6-sol"
+    assert config.base_url == "https://api.openai.com/v1"
     assert config.wire_api == "responses"
 
 
-def test_openai_config_defaults_to_chat(monkeypatch, tmp_path):
+def test_openai_config_supports_explicit_chat_transport(monkeypatch, tmp_path):
     from cxbench.openai_compat import OpenAICompatConfig
 
     monkeypatch.chdir(tmp_path)
-    for key in ["OPENROUTER_API_KEY", "CRS_OAI_KEY", "OPENAI_BASE_URL", "OPENAI_WIRE_API"]:
-        monkeypatch.delenv(key, raising=False)
+    monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
-    monkeypatch.setenv("CRS_OAI_WIRE_API", "responses")
-
-    config = OpenAICompatConfig.from_model_string("openai:gpt-5.4-mini", role="test")
-
+    monkeypatch.setenv("OPENAI_WIRE_API", "chat")
+    config = OpenAICompatConfig.from_model_string("openai:gpt-5.6-sol", role="test")
     assert config.provider == "openai"
     assert config.base_url == "https://api.openai.com/v1"
     assert config.wire_api == "chat"

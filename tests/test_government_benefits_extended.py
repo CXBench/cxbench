@@ -11,7 +11,7 @@ from cxbench.tools_benefits import GovernmentBenefitsAppealSystem
 
 
 MATRIX = Path("data/scenario_matrices/government_benefits_appeal_v1.yaml")
-RELEASE = Path("benchmarks/cxbench-120-v20260708")
+RELEASE = Path("benchmarks/cxbench-120")
 
 
 def _tasks() -> list[dict]:

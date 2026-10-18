@@ -17,7 +17,7 @@ from model_eval.score import (
 )
 
 
-TASK_PATH = REPO_ROOT / "benchmarks" / "cxbench-120-v20260708" / "tasks" / "BK-RAW-001.us.yaml"
+TASK_PATH = REPO_ROOT / "benchmarks" / "cxbench-120" / "tasks" / "BK-RAW-001.us.yaml"
 
 
 def _write_task_run(run_dir: Path, *, recorded_task_path: str | None = None) -> None:
@@ -63,11 +63,13 @@ def test_batch_plan_recovers_recorded_wsl_paths_and_validates_task_hash(
     batch_dir = tmp_path / "batch"
     task_run_name = "BK-RAW-001.us-least_privilege-test"
     task_run_dir = batch_dir / "task_runs" / task_run_name
-    recorded_task_path = f"/mnt/{tmp_path.name}/cxbench-main/benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml"
+    recorded_task_path = (
+        f"/mnt/{tmp_path.name}/cxbench-main/benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml"
+    )
     _write_task_run(task_run_dir, recorded_task_path=recorded_task_path)
     manifest = {
         "run_id": "source-run",
-        "benchmark": "cxbench-120-v20260708",
+        "benchmark": "cxbench-120",
         "model": "gpt-test",
         "mode": "least_privilege",
         "grader": "hybrid",
@@ -103,7 +105,7 @@ def test_batch_plan_rejects_task_drift_before_scoring(tmp_path: Path) -> None:
     batch_dir = tmp_path / "batch"
     (batch_dir / "task_runs").mkdir(parents=True)
     manifest = {
-        "benchmark": "cxbench-120-v20260708",
+        "benchmark": "cxbench-120",
         "task_count": 1,
         "tasks": [{"path": str(TASK_PATH), "sha256": "0" * 64}],
     }

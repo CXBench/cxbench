@@ -1,6 +1,6 @@
 # Main experiments
 
-Use the root [quick start](../README.md) for CRS. This package provides:
+Use the root [quick start](../README.md) for OpenAI. This package provides:
 
 - `python -m main_experiment.run`: validate and run a batch; default is the revised release.
 - `python -m main_experiment.resume`: reuse completed tasks and finish missing execution/grading.

@@ -39,7 +39,7 @@ def test_explicit_task_replaces_default_corpus(tmp_path, capsys):
             _args(
                 tmp_path,
                 "--task",
-                "benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml",
+                "benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml",
                 "--dry-run",
             )
         )

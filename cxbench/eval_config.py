@@ -8,7 +8,7 @@ from typing import Optional
 
 LLM_USER_SIM_STRATEGIES = {"llm", "react", "verify", "reflection"}
 GRADERS = {"rule", "llm", "hybrid"}
-PROVIDER_PREFIXES = ("openai:", "crs:", "deepseek:", "openrouter:", "siliconflow:", "shubiaobiao:")
+PROVIDER_PREFIXES = ("openai:", "deepseek:", "openrouter:", "siliconflow:", "shubiaobiao:")
 
 
 @dataclass(frozen=True)

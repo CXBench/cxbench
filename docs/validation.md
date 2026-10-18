@@ -1,57 +1,54 @@
 # Release validation
 
-Verified on 2026-10-18 on macOS with CPython 3.12.14, using an isolated environment
-outside the release directory. This is an integration record, not a benchmark
-performance claim.
+The local validation environment uses macOS and CPython 3.12.14 outside the
+publishable folder. The source suite checks runtime behavior, schema integrity,
+provider request construction, retry/recovery, generation, and scoring without
+credentials. This record distinguishes integration checks from benchmark results.
 
-| Check | Result |
-| --- | --- |
-| Locked source installation | `uv sync --frozen --python 3.12` succeeded |
-| Offline regression suite | 564 tests passed |
-| Lint and formatting | Ruff checks passed |
-| Task release integrity | Original and revised task hashes preserved; revised changes confined to semantic rubric fields |
-| Domain policy corpus | All indexed sources resolve |
-| Full and smoke dry runs | Correctly select 120 tasks and 1 task; no API calls or run writes |
-| Local synthesis | Generated and accepted a complete fixture; executed its outcome and rule-only checks |
-| Domain generation examples | All six examples replayed successfully with diagnostic rule-only grading |
-| Source/wheel build | Both artifacts built successfully |
-| Installed wheel | Imported outside the source tree; CLI, bundled policy index, and diagnostic runtime smoke succeeded |
-| Private-credential scan | No source-profile credential values found in the release |
-| Core runtime preservation | 15 runtime/protocol modules have identical Python syntax trees to the consolidated source before export |
+## Current distribution
 
-## Live CRS integration
+The canonical corpus is `benchmarks/cxbench-120/`: 120 tasks across six domains.
+Task YAML bytes match the updated experimental snapshot. Integrity tests verify
+current task hashes and historical business/checklist provenance from the
+manifest, without requiring another corpus directory.
 
-A fresh run executed revised task `BK-RAW-001.us` from this release. Agent, user
-simulator, and semantic judge all used CRS `gpt-5.6-sol` through streaming
-Responses. The run used least-privilege mode and final hybrid grading.
+The API interface uses `OPENAI_API_KEY`, `OPENAI_BASE_URL`, and the official
+OpenAI endpoint by default. Mocked transport tests cover Responses streaming and
+non-streaming requests, reasoning settings, function-call lifecycle, Chat
+Completions, output validation, and provider isolation. Launcher tests cover
+OpenAI model roles, smoke selection, resume, and external output directories.
 
-| Observation | Recorded value |
-| --- | --- |
-| Execution completed (`ok`) | true |
-| Execution error | none |
-| Agent attempts / judge attempts | 1 / 1 |
-| Outcome success | true |
-| Hybrid process success | false |
-| Final verdict | fail |
-| User interactions | 7 |
-| Tool calls | 19 |
-| Agent provider calls | 26 |
-| Execution / judge elapsed time | approximately 248 s / 45 s |
+Local checks for this revision:
 
-The failing compliance verdict is a valid measurement and was preserved. The
-batch produced formal score artifacts. A subsequent smoke resume reused the
-completed task (`reused=1`, `to_run=0`, `to_grade=0`) without API credentials or
-new model calls. Logs, credentials, environments, and raw live traces are kept
-outside the publishable folder.
+- Full offline suite: **564 tests passed** on Python 3.12.14.
+- Ruff lint and formatting checks passed.
+- Full and smoke dry runs selected 120 tasks and one task respectively.
+- Local synthesis generated and accepted one fixture task without API calls.
+- Source and wheel builds passed; the source archive contains one benchmark corpus.
+- Local documentation links and corpus paths resolve.
 
-## Scope and remaining limits
+CI runs the same offline suite on Python 3.12 and 3.13 on Linux.
 
-The full 120-task live benchmark was not rerun for this export. No historical
-paper table is claimed to be reproduced. Optional Codex-based novel synthesis
-and feedback repair were validated through mocked invocation and offline tests,
-not a live Codex generation run. The local generation fixture is deterministic.
+## Earlier integration evidence
 
-CI is configured for Python 3.12 and 3.13 on Linux; this local record covers
-Python 3.12 on macOS. External model availability, provider costs, and stochastic
-judge decisions can change. Licensing still requires owner confirmation as
-described in [LICENSING.md](../LICENSING.md).
+Before the API interface cleanup, a compatible endpoint completed one live run
+of revised task `BK-RAW-001.us` using `gpt-5.6-sol` for all roles. It completed one
+agent attempt and one judge attempt without execution errors. The business
+outcome succeeded; hybrid process grading failed. The valid failing verdict was
+preserved. Resume reused the task without further model calls.
+
+That earlier run used a separately configured compatible service. It was not a
+call to `api.openai.com`, and it does not validate official OpenAI account access
+or the current default endpoint. The cleanup does not relabel that result as an
+OpenAI-hosted test. Raw traces, credentials, and environments remain outside the
+source tree.
+
+## Limits
+
+The current default official endpoint has not been exercised with a live OpenAI
+API key in this revision. Full 120-task live evaluation and live Codex-based novel
+synthesis/feedback repair have not been rerun. The local synthesis smoke is a
+deterministic fixture, and optional Codex invocation is covered by mocked tests.
+No paper-table reproduction or performance claim follows from these checks.
+
+Licensing still requires owner confirmation; see [LICENSING.md](../LICENSING.md).

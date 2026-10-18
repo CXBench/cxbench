@@ -44,9 +44,7 @@ def main(argv: list[str] | None = None) -> int:
         default="hybrid",
         help="rule and llm graders are each incomplete; hybrid is the only mode that yields the accurate cxbench verdict and is the default",
     )
-    run_parser.add_argument(
-        "--judge-model", help="LLM judge model, e.g. openai:gpt-5-mini or crs:gpt-5.4-mini"
-    )
+    run_parser.add_argument("--judge-model", help="LLM judge model, e.g. openai:gpt-5.6-sol")
     run_parser.add_argument(
         "--user-sim",
         choices=["llm", "react", "verify", "reflection"],
@@ -56,7 +54,7 @@ def main(argv: list[str] | None = None) -> int:
     run_parser.add_argument(
         "--user-model",
         required=True,
-        help="LLM user simulator model, e.g. openai:gpt-5.4-mini or crs:gpt-5.4-mini",
+        help="LLM user simulator model, e.g. openai:gpt-5.6-sol",
     )
     run_parser.add_argument(
         "--user-max-attempts", type=int, default=3, help="max verify/reflection attempts"

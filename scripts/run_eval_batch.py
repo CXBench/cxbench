@@ -476,7 +476,7 @@ def build_parser(
     parser.add_argument("--model", required=True, help="agent model name without openai: prefix")
     parser.add_argument(
         "--agent-provider",
-        choices=["crs", "openai", "deepseek", "openrouter", "siliconflow", "shubiaobiao"],
+        choices=["openai", "deepseek", "openrouter", "siliconflow", "shubiaobiao"],
         default="openai",
     )
     parser.add_argument(
@@ -488,11 +488,11 @@ def build_parser(
     parser.add_argument(
         "--judge-model",
         default="gpt-5.4-mini",
-        help="judge model name, optionally prefixed with crs:/openai:/deepseek:/openrouter:/siliconflow:/shubiaobiao:",
+        help="judge model name, optionally prefixed with openai:/deepseek:/openrouter:/siliconflow:/shubiaobiao:",
     )
     parser.add_argument(
         "--judge-provider",
-        choices=["same", "crs", "openai", "deepseek", "openrouter", "siliconflow", "shubiaobiao"],
+        choices=["same", "openai", "deepseek", "openrouter", "siliconflow", "shubiaobiao"],
         default="openai",
     )
     parser.add_argument(
@@ -504,7 +504,7 @@ def build_parser(
     parser.add_argument(
         "--user-model",
         required=True,
-        help="LLM user simulator model name, optionally prefixed with crs:/openai:/deepseek:/openrouter:/siliconflow:/shubiaobiao:",
+        help="LLM user simulator model name, optionally prefixed with openai:/deepseek:/openrouter:/siliconflow:/shubiaobiao:",
     )
     parser.add_argument("--user-max-attempts", type=int, default=3)
     parser.add_argument(

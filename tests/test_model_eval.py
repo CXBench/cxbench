@@ -62,7 +62,7 @@ def test_primary_benchmark_is_wsl_first_process_eval(monkeypatch, tmp_path: Path
 
 
 def test_model_eval_defaults_to_process_workers() -> None:
-    task = REPO_ROOT / "benchmarks/cxbench-120-v20260708/tasks/BK-RAW-001.us.yaml"
+    task = REPO_ROOT / "benchmarks/cxbench-120/tasks/BK-RAW-001.us.yaml"
     config = LaunchConfig(
         api_key="test-key",
         model="gpt-test",

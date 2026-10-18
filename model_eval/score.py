@@ -29,7 +29,6 @@ DEFAULT_MAX_OUTPUT_TOKENS = 8192
 SCORE_SCHEMA_VERSION = 1
 _PROVIDER_PREFIXES = (
     "openai",
-    "crs",
     "deepseek",
     "openrouter",
     "siliconflow",
@@ -824,7 +823,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--concurrency", type=_positive_int, default=DEFAULT_CONCURRENCY)
     parser.add_argument("--env-file", default=str(ENV_FILE), help="dotenv-style provider settings")
-    parser.add_argument("--api-key", help="API key; prefer CXBENCH_API_KEY in the env file")
+    parser.add_argument("--api-key", help="API key; prefer OPENAI_API_KEY in the env file")
     parser.add_argument("--base-url", help="OpenAI-compatible base URL used only by the judge")
     parser.add_argument("--wire-api", choices=["chat", "responses"], help="judge transport")
     parser.add_argument("--max-output-tokens", type=_positive_int, help="judge output limit")

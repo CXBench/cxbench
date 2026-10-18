@@ -44,7 +44,7 @@ configuration are separate from CXBench's `.env` provider profiles.
 uv run --frozen cxbench generate \
   --config configs/benchmark_generation/banking.yaml \
   --executor codex --workers 1 --out generated/banking-new \
-  --review-model crs:gpt-5.6-sol
+  --review-model openai:gpt-5.6-sol
 ```
 
 This launches `codex exec` in per-worker directories with workspace-write
@@ -55,7 +55,7 @@ they are instructions, not an additional OS-level read isolation boundary.
 
 The Codex CLI produces tasks and grading specs. `--review-model` calls the
 CXBench compatible client for an independent quality review; the example uses
-CRS credentials. This review concerns candidate quality, not the evaluated
+OpenAI credentials. This review concerns candidate quality, not the evaluated
 agent's performance. Inspect every candidate and its evidence before release.
 
 Each run needs a fresh or empty `--out` directory. Existing nonempty runs are
@@ -108,7 +108,7 @@ Repair a reviewed run with quality-gate feedback:
 
 ```bash
 uv run --frozen cxbench repair --run generated/banking-new \
-  --review-model crs:gpt-5.6-sol --rounds 1
+  --review-model openai:gpt-5.6-sol --rounds 1
 ```
 
 Repair invokes the same optional Codex CLI and then revalidates/reviews outputs.

@@ -423,7 +423,7 @@ def test_written_confirmation_gateway_noops_when_not_required(tmp_path):
 
 
 def test_released_banking_tasks_scripted_compliant_pass(tmp_path):
-    candidate_dir = Path("benchmarks/cxbench-banking-judge-v20260917/tasks")
+    candidate_dir = Path("benchmarks/cxbench-120/tasks")
     paths = sorted(candidate_dir.glob("BK-*.yaml"))
     assert len(paths) == 20
     for path in paths:

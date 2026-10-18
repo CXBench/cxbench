@@ -1,5 +1,8 @@
+import pytest
+
 from cxbench.openai_compat import (
     OpenAICompatConfig,
+    OpenAICompatError,
     OpenAICompatibleClient,
     _messages_to_responses_input,
     parse_json_object,
@@ -15,17 +18,14 @@ def test_json_repair_parses_trailing_comma_object():
 
 def test_config_reads_retry_timeout_env(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("CRS_OAI_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setenv("OPENAI_TIMEOUT_SECONDS", "7")
     monkeypatch.setenv("OPENAI_MAX_RETRIES", "3")
     monkeypatch.setenv("OPENAI_RETRY_BACKOFF_SECONDS", "0")
     monkeypatch.setenv("OPENAI_VALIDATION_RETRIES", "2")
-    for key in ["OPENAI_API_KEY", "OPENROUTER_API_KEY", "OPENAI_WIRE_API", "CRS_OAI_WIRE_API"]:
-        monkeypatch.delenv(key, raising=False)
-
-    config = OpenAICompatConfig.from_model_string("openai:gpt-5.4-mini", role="test")
-
-    assert config.provider == "crs"
+    monkeypatch.delenv("OPENAI_WIRE_API", raising=False)
+    config = OpenAICompatConfig.from_model_string("openai:gpt-5.6-sol", role="test")
+    assert config.provider == "openai"
     assert config.wire_api == "responses"
     assert config.timeout_seconds == 7
     assert config.max_retries == 3
@@ -62,16 +62,16 @@ def test_responses_input_preserves_tool_call_lifecycle():
     assert items[1]["call_id"] == "call_1"
 
 
-def test_crs_responses_defaults_to_non_stream_without_reasoning(monkeypatch):
-    monkeypatch.delenv("CRS_OAI_RESPONSES_STREAM", raising=False)
-    monkeypatch.delenv("CRS_OAI_REASONING_EFFORT", raising=False)
+def test_openai_responses_supports_non_stream_without_reasoning(monkeypatch):
+    monkeypatch.setenv("OPENAI_RESPONSES_STREAM", "false")
+    monkeypatch.setenv("OPENAI_REASONING_EFFORT", "")
     client = OpenAICompatibleClient(
         OpenAICompatConfig(
             model="gpt-5.4",
-            base_url="https://crs.example/openai/v1",
+            base_url="https://api.openai.com/v1",
             api_key="test-key",
             wire_api="responses",
-            provider="crs",
+            provider="openai",
         )
     )
     captured = {}
@@ -93,7 +93,7 @@ def test_crs_responses_defaults_to_non_stream_without_reasoning(monkeypatch):
     monkeypatch.setattr(
         client,
         "_post_responses_stream",
-        lambda payload: (_ for _ in ()).throw(AssertionError("CRS must default to non-streaming")),
+        lambda payload: (_ for _ in ()).throw(AssertionError("streaming was explicitly disabled")),
     )
 
     response = client.create([{"role": "user", "content": "hello"}])
@@ -104,16 +104,16 @@ def test_crs_responses_defaults_to_non_stream_without_reasoning(monkeypatch):
     assert response["choices"][0]["message"]["content"] == "ok"
 
 
-def test_crs_responses_stream_and_reasoning_can_be_enabled(monkeypatch):
-    monkeypatch.setenv("CRS_OAI_RESPONSES_STREAM", "true")
-    monkeypatch.setenv("CRS_OAI_REASONING_EFFORT", "medium")
+def test_openai_responses_defaults_to_streaming_and_supports_reasoning(monkeypatch):
+    monkeypatch.delenv("OPENAI_RESPONSES_STREAM", raising=False)
+    monkeypatch.setenv("OPENAI_REASONING_EFFORT", "medium")
     client = OpenAICompatibleClient(
         OpenAICompatConfig(
             model="gpt-5.4",
-            base_url="https://crs.example/openai/v1",
+            base_url="https://api.openai.com/v1",
             api_key="test-key",
             wire_api="responses",
-            provider="crs",
+            provider="openai",
         )
     )
     captured = {}
@@ -195,31 +195,26 @@ def test_chat_payload_uses_configured_max_output_tokens(monkeypatch):
     assert captured["payload"]["max_completion_tokens"] == 2048
 
 
-def test_explicit_crs_provider_prefix(monkeypatch, tmp_path):
+def test_openai_profile_uses_standard_environment(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("CRS_OAI_KEY", "crs-key")
-    monkeypatch.setenv("CRS_OAI_BASE_URL", "https://crs.example/openai")
-    monkeypatch.setenv("CRS_OAI_WIRE_API", "responses")
-    monkeypatch.setenv("OPENAI_API_KEY", "should-not-win")
-
-    config = OpenAICompatConfig.from_model_string("crs:gpt-5.4-mini", role="user-sim")
-
-    assert config.provider == "crs"
-    assert config.model == "gpt-5.4-mini"
-    assert config.api_key == "crs-key"
-    assert config.base_url == "https://crs.example/openai"
+    monkeypatch.setenv("OPENAI_API_KEY", "openai-key")
+    monkeypatch.setenv("OPENAI_BASE_URL", "https://api.openai.com/v1/")
+    monkeypatch.setenv("OPENAI_WIRE_API", "responses")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "should-not-win")
+    config = OpenAICompatConfig.from_model_string("openai:gpt-5.6-sol", role="user-sim")
+    assert config.provider == "openai"
+    assert config.model == "gpt-5.6-sol"
+    assert config.api_key == "openai-key"
+    assert config.base_url == "https://api.openai.com/v1"
     assert config.wire_api == "responses"
 
 
-def test_explicit_crs_provider_prefix_ignores_openai_wire_api(monkeypatch, tmp_path):
+def test_openai_profile_does_not_fall_back_to_another_provider_key(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("CRS_OAI_KEY", "crs-key")
-    monkeypatch.setenv("OPENAI_WIRE_API", "chat")
-
-    config = OpenAICompatConfig.from_model_string("crs:gpt-5.4-mini", role="user-sim")
-
-    assert config.provider == "crs"
-    assert config.wire_api == "responses"
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setenv("OPENROUTER_API_KEY", "unrelated-key")
+    with pytest.raises(OpenAICompatError, match="requires OPENAI_API_KEY"):
+        OpenAICompatConfig.from_model_string("openai:gpt-5.6-sol", role="user-sim")
 
 
 def test_explicit_deepseek_provider_prefix(monkeypatch, tmp_path):

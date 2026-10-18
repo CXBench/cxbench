@@ -1065,9 +1065,7 @@ def build_user_sim(
     if normalized == "human":
         return HumanUserSim(task)
     if normalized in {"llm", "react", "verify", "reflection"} and not model:
-        raise ValueError(
-            f"user-sim strategy {strategy!r} requires --user-model openai:<model> or crs:<model>"
-        )
+        raise ValueError(f"user-sim strategy {strategy!r} requires --user-model openai:<model>")
     if normalized == "llm":
         return LLMUserSim(task, model=model or "", max_attempts=max_attempts)
     if normalized == "react":

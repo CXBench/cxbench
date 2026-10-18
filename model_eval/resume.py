@@ -132,9 +132,7 @@ def _resolve_manifest_task(raw_path: str) -> Path:
     candidates = [supplied]
     if not supplied.is_absolute():
         candidates.append(REPO_ROOT / supplied)
-    candidates.append(
-        REPO_ROOT / "benchmarks" / "cxbench-120-v20260708" / "tasks" / _portable_name(raw_path)
-    )
+    candidates.append(REPO_ROOT / "benchmarks" / "cxbench-120" / "tasks" / _portable_name(raw_path))
     for candidate in candidates:
         if candidate.is_file():
             return candidate.resolve()
@@ -540,7 +538,7 @@ def _provider_environment(
     values = _load_env_file(env_file.expanduser().resolve())
     resolved_key = _resolve_value(api_key, ("CXBENCH_API_KEY", "OPENAI_API_KEY"), values)
     if not resolved_key or resolved_key == "replace_me":
-        raise ResumeError("API key is required via --api-key or CXBENCH_API_KEY")
+        raise ResumeError("API key is required via --api-key or OPENAI_API_KEY")
 
     required = ["base_url", "wire_api", "max_output_tokens"]
     if launcher.get("wire_api") == "responses":
@@ -817,8 +815,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--mode-dir", default=str(DEFAULT_MODE_DIR), help="existing mode output directory"
     )
-    parser.add_argument("--env-file", default=str(ENV_FILE), help="file containing CXBENCH_API_KEY")
-    parser.add_argument("--api-key", help="API key; prefer CXBENCH_API_KEY in model_eval/.env")
+    parser.add_argument("--env-file", default=str(ENV_FILE), help="file containing OPENAI_API_KEY")
+    parser.add_argument("--api-key", help="API key; prefer OPENAI_API_KEY in model_eval/.env")
     parser.add_argument("--concurrency", type=_positive_int, default=DEFAULT_CONCURRENCY)
     parser.add_argument("--executor", choices=["process", "thread"], default="process")
     parser.add_argument(

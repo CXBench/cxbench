@@ -16,17 +16,15 @@ a saved draft from customer-visible disclosure, and confirmation from submission
 
 ## Released tasks
 
-The default release is `cxbench-banking-judge-v20260917`: 120 tasks, 20 per domain.
+The single distributed corpus is `benchmarks/cxbench-120/`, identified in its
+manifest as `cxbench-120-v20260918`: 120 tasks, 20 per domain.
 Its banking rubric version is `banking-llm-judge-v20260917`; the other five domains
 use `cross-domain-llm-judge-v20260918`. The fixed judge prompt version is
-`trace-adjudication-v20260918`. The earlier `cxbench-120-v20260708` is available
-only for explicitly identified comparisons. Select it with `--task` in the Python
-runner, not by editing the default task files.
+`trace-adjudication-v20260918`. Older task corpora are not distributed alongside it.
 
-Task manifests record hashes. Revised task YAML changes are confined to
-`policy.llm_judge`; the runtime and fixed judge prompt are shared across releases.
-Running the original task release with this code therefore does not recreate an
-older judge implementation automatically. Do not pool scores across rubrics.
+The manifest records task hashes, historical source hashes, and business-contract
+hashes. Task content retains the updated semantic checklists. Preserve the task
+and judge versions in reported results; do not pool scores from different rubrics.
 
 ## Execution modes
 
@@ -48,9 +46,9 @@ resulting trace.
 
 | Setting | `./run.sh` default |
 | --- | --- |
-| Agent | CRS `gpt-5.6-sol` |
-| User simulator | CRS `gpt-5.6-sol`, `llm` strategy |
-| Semantic judge | CRS `gpt-5.6-sol` |
+| Agent | OpenAI `gpt-5.6-sol` |
+| User simulator | OpenAI `gpt-5.6-sol`, `llm` strategy |
+| Semantic judge | OpenAI `gpt-5.6-sol` |
 | Transport | Responses API with streaming |
 | Mode | `least_privilege` |
 | Final grader | `hybrid` |
@@ -59,19 +57,19 @@ resulting trace.
 | Output limit | 8,192 tokens per model response |
 | Execution/judge retry delay | 5 seconds |
 
-These launcher settings provide a conservative CRS reproduction path. The
+These launcher settings provide a conservative OpenAI reproduction path. The
 general Python runner retains the broader batch defaults (20 thread workers,
 600-second task timeout, provider/model options). Set all roles explicitly when
 using it. For example:
 
 ```bash
 uv run --frozen python -m main_experiment.run \
-  --agent-provider crs --model gpt-5.6-sol \
-  --user-model crs:gpt-5.6-sol \
-  --judge-provider crs --judge-model crs:gpt-5.6-sol \
+  --agent-provider openai --model gpt-5.6-sol \
+  --user-model openai:gpt-5.6-sol \
+  --judge-provider openai --judge-model openai:gpt-5.6-sol \
   --wire-api responses --mode least_privilege --grader hybrid \
   --executor process --concurrency 1 --task-timeout 1200 \
-  --task 'benchmarks/cxbench-banking-judge-v20260917/tasks/BK-*.yaml' \
+  --task 'benchmarks/cxbench-120/tasks/BK-*.yaml' \
   --run-id banking-revised
 ```
 
