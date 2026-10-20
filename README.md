@@ -15,6 +15,9 @@ experimental protocol. No historical results or credentials are included.
 [Data synthesis](docs/generation.md) · [Provider configuration](docs/providers.md) ·
 [Architecture](docs/architecture.md)
 
+Paper: [arXiv:2610.25954](https://arxiv.org/abs/2610.25954)
+([PDF](https://arxiv.org/pdf/2610.25954)).
+
 ## Requirements and installation
 
 - Python 3.12 or newer; Python 3.12 is the reproducibility baseline.
@@ -207,7 +210,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing tasks or grading. The
 from release-maintenance changes. [Validation](docs/validation.md) records what
 was actually checked for this release.
 
-## Licensing, sources, and citation
+## Licensing and sources
 
 See [LICENSING.md](LICENSING.md) for code licensing status and
 [NOTICE.md](NOTICE.md) for third-party policy sources. Legal source texts and
@@ -215,6 +218,23 @@ dependency licenses are separate from the project's own code. These simulations
 are research artifacts and do not provide legal advice.
 
 The original project is [PacificStudio/cxbench](https://github.com/PacificStudio/cxbench).
-No publication or acceptance status is asserted by this release. Until a public
-paper citation is supplied, cite the repository URL and the exact release/commit
-and task manifest used.
+
+## Citation
+
+If you use CXBench in your research, please cite our
+[arXiv preprint](https://arxiv.org/abs/2610.25954):
+
+```bibtex
+@misc{yu2026cxbench,
+  title = {CXBench: A Benchmark for Process-Compliant LLM Agents in Regulated Customer-Experience Workflows},
+  author = {Boxi Yu and Yuzhong Zhang and Zhenfeng Su and Linfu Xi and Yinghan Yao and Shitao Chen and Yang Cao and Liting Lin and Lionel Briand and Emir Mu{\~n}oz},
+  year = {2026},
+  eprint = {2610.25954},
+  archivePrefix = {arXiv},
+  url = {https://arxiv.org/abs/2610.25954}
+}
+```
+
+[CITATION.cff](CITATION.cff) supplies GitHub's "Cite this repository" metadata and
+sets this paper as the preferred citation. For reproducibility, also report the
+exact code revision and task manifest used.

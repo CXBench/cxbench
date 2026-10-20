@@ -38,7 +38,7 @@ packages = ["cxbench"]
 include = [
     "cxbench", "main_experiment", "model_eval", "no_agent_direct_submit_ablation",
     "scripts", "tasks", "benchmarks", "data", "configs", "docs", "tests",
-    "README.md", "CONTRIBUTING.md", "LICENSING.md", "LICENSE", "NOTICE.md",
+    "README.md", "CITATION.cff", "CONTRIBUTING.md", "LICENSING.md", "LICENSE", "NOTICE.md",
     "CHANGELOG.md", "pyproject.toml", "uv.lock", "run.sh", ".env.example",
     ".gitignore", ".gitattributes", ".github",
 ]

@@ -111,3 +111,12 @@ Codex CLI 的认证独立于本项目 `.env`；示例中的质量审查使用 Op
 代码许可状态见 [LICENSING.md](../LICENSING.md)，第三方政策语料说明见
 [NOTICE.md](../NOTICE.md)。在发布前由代码权利人确认许可证；第三方文本的权利归属
 不能直接用项目代码许可证代替。
+
+## 引用
+
+如在研究中使用 CXBench，请引用我们的
+[arXiv 论文](https://arxiv.org/abs/2610.25954)
+（[PDF](https://arxiv.org/pdf/2610.25954)）。
+[README 的 Citation 部分](../README.md#citation)提供 BibTeX，
+[CITATION.cff](../CITATION.cff)提供 GitHub 引用信息。
+报告实验时请同时注明代码提交版本和任务清单，以便复现。

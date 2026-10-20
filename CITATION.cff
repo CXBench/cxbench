@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use CXBench in your research, please cite the paper below."
+type: software
+title: CXBench
+authors:
+  - name: CXBench contributors
+repository-code: "https://github.com/CXBench/cxbench"
+url: "https://github.com/CXBench/cxbench"
+preferred-citation:
+  type: article
+  title: "CXBench: A Benchmark for Process-Compliant LLM Agents in Regulated Customer-Experience Workflows"
+  authors:
+    - family-names: Yu
+      given-names: Boxi
+    - family-names: Zhang
+      given-names: Yuzhong
+    - family-names: Su
+      given-names: Zhenfeng
+    - family-names: Xi
+      given-names: Linfu
+    - family-names: Yao
+      given-names: Yinghan
+    - family-names: Chen
+      given-names: Shitao
+    - family-names: Cao
+      given-names: Yang
+    - family-names: Lin
+      given-names: Liting
+    - family-names: Briand
+      given-names: Lionel
+    - family-names: "Mu\u00f1oz"
+      given-names: Emir
+  journal: arXiv
+  year: 2026
+  month: 10
+  date-published: "2026-10-19"
+  url: "https://arxiv.org/abs/2610.25954"
+  identifiers:
+    - type: other
+      value: "arXiv:2610.25954"
